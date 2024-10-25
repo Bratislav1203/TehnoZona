@@ -1,0 +1,16 @@
+<div class="product-card">
+  <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
+  <div class="product-details">
+    <h3 class="product-name">{{ product.name }}</h3>
+    <p class="product-price">{{ product.price | currency: 'RSD' }}</p>
+  </div>
+  <hr class="divider" />
+  <div class="bottom-section">
+    <div class="quantity-control">
+      <button (click)="decreaseQuantity()">−</button>
+      <span>{{ quantity }}</span>
+      <button (click)="increaseQuantity()">+</button>
+    </div>
+    <button class="add-to-cart">Dodaj u korpu</button>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<h3 class="product-row-title">OVDE IDE NASLOV REDA</h3>
+<div class="product-row-container">
+  <app-category-menu ></app-category-menu>
+  <div class="product-row">
+    <app-productcard *ngFor="let product of visibleProducts" [product]="product"></app-productcard>
+  </div>
+</div>

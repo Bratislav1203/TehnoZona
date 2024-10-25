@@ -1,0 +1,94 @@
+.product-card {
+  width: 200px; /* Fiksna širina kartice */
+  height: 350px; /* Fiksna visina kartice */
+  border: 1px solid #d1d3e2;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-image {
+  width: 100%;
+  height: 150px; /* Fiksna visina slike */
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1; /* Omogućava detaljima da popune prostor */
+}
+
+.product-name {
+  font-size: 14px; /* Manja veličina fonta za naslov */
+  font-weight: 500;
+  margin: 10px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Ograničava tekst na dva reda */
+  -webkit-box-orient: vertical;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: auto;
+}
+
+.divider {
+  width: 100%;
+  margin: 10px 0;
+  border: none;
+  border-top: 1px solid #d1d3e2;
+}
+
+.bottom-section {
+  margin-top: auto; /* Osigurava da donji deo uvek bude na dnu */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.quantity-control button {
+  background-color: #ffa726;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+}
+
+.quantity-control span {
+  font-size: 16px;
+}
+
+.add-to-cart {
+  background-color: #ffa726;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart:hover {
+  background-color: #fb8c00;
+}

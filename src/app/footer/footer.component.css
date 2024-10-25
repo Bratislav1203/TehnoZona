@@ -1,0 +1,51 @@
+.footer {
+  background-color: #f7f8fa; /* Svetlo siva pozadina */
+  color: #212121; /* Tamno siva boja teksta */
+  margin-top: 40px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 40px;
+  border-bottom: 4px solid #4285f4; /* Plava linija na vrhu */
+}
+
+.footer-section {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.footer-section h3 {
+  color: #4285f4; /* Plava boja naslova */
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #212121; /* Tamno siva boja linkova */
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #4285f4; /* Plava boja na hover */
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 15px 40px;
+  background-color: #e0e0e0; /* Svetlija siva za donji deo */
+  color: #212121; /* Tamno siva boja za tekst */
+  font-size: 12px;
+  line-height: 1.5;
+}

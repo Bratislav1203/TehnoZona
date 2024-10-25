@@ -1,0 +1,94 @@
+/* Header Styles */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: white; /* Light gray background */
+  color: #000; /* Black text color */
+  z-index: 1000;
+  height: 50px;
+}
+
+/* Show header when not hidden */
+.header:not(.hidden) {
+  transform: translateY(0);
+}
+
+/* Hide header when scrolling down or stationary */
+.hidden {
+  transform: translateY(-100%);
+}
+
+/* Logo Styles */
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo img {
+  height: 50px;
+}
+
+/* Search Bar Styles */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: text !important;
+}
+
+.search-bar input {
+  padding: 8px 12px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #d1d3e2;
+  outline: none;
+  border-right: none;
+  width: 250px;
+}
+
+.search-icon {
+  background-color: #4285f4; /* Blue background for button */
+  color: white;
+  padding: 8px;
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid #4285f4;
+}
+
+/* Actions Styles */
+.actions {
+  display: flex;
+  gap: 15px; /* Space between items */
+  margin-right: 40px;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #4285f4; /* Blue text and icon color */
+}
+
+.action-item i {
+  margin-right: 5px; /* Space between icon and text */
+}
+
+.action-item:hover {
+  color: #fb8c00; /* Color change on hover */
+}
+
+/* Add padding to body to prevent content overlap */
+body {
+  padding-top: 70px; /* Adjust based on header height */
+}

@@ -1,0 +1,12 @@
+<div class="ad-banner">
+  <div class="ad-slide" *ngFor="let ad of ads">
+    <img [src]="ad.image" alt="{{ ad.title }}" class="ad-image" />
+    <div class="ad-content">
+      <h3 class="ad-title">{{ ad.title }}</h3>
+      <p class="ad-description">{{ ad.description }}</p>
+      <button class="ad-button" (click)="onAdClick(ad.link)">
+        {{ ad.buttonText }}
+      </button>
+    </div>
+  </div>
+</div>

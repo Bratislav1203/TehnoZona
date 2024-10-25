@@ -1,0 +1,41 @@
+.product-row-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0; /* Bez razmaka između menija i kartica */
+  border: 1px solid #d1d3e2; /* Border oko celog reda */
+  border-radius: 5px; /* Zaobljeni uglovi */
+  margin: 0 20px; /* Udaljenost sa leve i desne strane */
+  background-color: #ffffff; /* Bela pozadina za bolje uklapanje */
+  padding-top: 20px;
+}
+
+.category-menu {
+  width: 200px; /* Fiksna širina menija */
+  background-color: #f7f8fa;
+  border-right: 1px solid #d1d3e2; /* Linija koja deli meni od kartica */
+  padding: 10px;
+}
+
+.product-row {
+  display: flex;
+  flex-wrap: wrap; /* Omogućava prelamanje kartica */
+  gap: 10px; /* Razmak između kartica */
+  justify-content: flex-start;
+  flex-grow: 1; /* Omogućava da zauzme preostali prostor */
+  margin-left: 10px; /* Razmak između kartica i desnog ruba menija */
+}
+
+.product-card {
+  flex: 1 1 200px; /* Kartica će imati minimalnu širinu od 200px */
+  max-width: 200px; /* Maksimalna širina kartice */
+  margin: 0; /* Uklonjen dodatni margin */
+}
+
+.product-row-title {
+  font-size: 20px; /* Smanjena veličina fonta */
+  font-weight: 600; /* Malo manje podebljan tekst */
+  color: #212121; /* Tamno crna boja teksta */
+  margin: 15px 0 10px 20px; /* Razmak iznad od 15px i ispod od 10px */
+  text-align: left; /* Levo poravnat tekst */
+}
+

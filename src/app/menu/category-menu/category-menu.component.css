@@ -1,0 +1,23 @@
+.category-menu {
+  width: 200px; /* Fiksna širina menija */
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.category-item {
+  padding: 10px 5px;
+  cursor: pointer;
+  color: #000;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.category-item:hover {
+  background-color: #4285f4;
+  color: white;
+}
+
+.category-item.active {
+  font-weight: bold;
+  color: #4285f4;
+}

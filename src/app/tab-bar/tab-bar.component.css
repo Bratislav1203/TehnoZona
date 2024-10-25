@@ -1,0 +1,59 @@
+.tab-bar {
+  display: flex;
+  background: linear-gradient(to right, #42a5f5, #1976d2); /* Gradijent plave boje */
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 70px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+  position: relative; /* Omogućava da dropdown meni bude apsolutno pozicioniran unutar ovog elementa */
+}
+
+.tab:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Svetliji efekat pri hover-u */
+}
+
+.tab i {
+  margin-right: 5px;
+}
+
+.bosch-text {
+  color: red; /* Crvena boja za tekst BOSCH */
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Prikazuje meni ispod taba */
+  left: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* Zaobljeni uglovi kao i kod tabova */
+  z-index: 1000;
+  width: 200px; /* Širina padajućeg menija */
+  overflow: hidden;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  color: #212121; /* Tamno siva boja za tekst */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f2f5; /* Svetlo siva pozadina pri hoveru */
+}

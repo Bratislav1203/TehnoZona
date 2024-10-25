@@ -1,0 +1,52 @@
+.ad-banner {
+  display: flex;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.ad-slide {
+  display: flex;
+  flex: 1;
+  background-color: #83adfc; /* Svetlo siva pozadina */
+  transition: transform 0.3s ease-in-out;
+  align-items: center;
+}
+
+.ad-image {
+  width: 50%;
+  object-fit: cover;
+  border-radius: 8px 0 0 8px;
+}
+
+.ad-content {
+  padding: 20px;
+  flex: 1;
+}
+
+.ad-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #4285f4; /* Plava boja za naslov */
+}
+
+.ad-description {
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: #212121; /* Tamno siva boja za opis */
+}
+
+.ad-button {
+  background-color: #ffa726; /* Narandžasta boja za dugme */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ad-button:hover {
+  background-color: #fb8c00; /* Tamnija narandžasta pri hoveru */
+}

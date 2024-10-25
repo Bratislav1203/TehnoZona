@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "TehnoZona"
+    }
+  },
+  "defaultProject": "TehnoZona",
+  "cli": {
+    "analytics": false
+  }
 }

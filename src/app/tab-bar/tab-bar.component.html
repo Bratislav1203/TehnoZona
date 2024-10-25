@@ -1,0 +1,22 @@
+<nav class="tab-bar">
+  <div class="tab" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
+    <i class="fas fa-bars"></i>
+    <span>Kategorije</span>
+    <div class="dropdown-menu" *ngIf="showMenu" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
+        <app-submenu></app-submenu>
+    </div>
+  </div>
+  <div class="tab" (click)="onTabClick('brendovi')">
+    <span>Brendovi</span>
+  </div>
+  <div class="tab" (click)="onTabClick('bosch')">
+    <span class="bosch-text">BOSCH</span>
+  </div>
+  <div class="tab" (click)="onTabClick('grejalice')">
+    <span>Grejalice</span>
+  </div>
+  <div class="tab" (click)="onTabClick('pomoc')">
+    <span>Treba ti pomoć?</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</nav>
