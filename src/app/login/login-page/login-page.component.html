@@ -1,0 +1,21 @@
+<div class="login-page">
+  <div class="form">
+    <form *ngIf="!showRegisterForm" [@formAnimation]="formState" class="login-form" method="post">
+      <h2><i class="fas fa-lock"></i> Prijava</h2>
+      <input type="text" placeholder="Korisničko ime" required />
+      <input type="password" placeholder="Lozinka" required />
+      <button type="submit" name="send2">Prijavi se</button>
+      <p class="message">Nemaš nalog? <a href="#" (click)="toggleForm($event)">Kreiraj nalog</a></p>
+    </form>
+
+    <form *ngIf="showRegisterForm" [@formAnimation]="formState" class="register-form" method="POST">
+      <h2><i class="fas fa-lock"></i> Registracija</h2>
+      <input type="text" placeholder="Ime i prezime *" required />
+      <input type="text" placeholder="Korisničko ime *" required />
+      <input type="email" placeholder="Email *" required />
+      <input type="password" placeholder="Lozinka *" required />
+      <button type="submit">Kreiraj</button>
+      <p class="message">Već imaš nalog? <a href="#" (click)="toggleForm($event)">Prijavi se</a></p>
+    </form>
+  </div>
+</div>

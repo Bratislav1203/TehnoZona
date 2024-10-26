@@ -1,5 +1,5 @@
 <header class="header" [class.hidden]="!isHeaderVisible">
-  <div class="logo">
+  <div class="logo" [routerLink]="['/']">
     <img src="assets/logoKum.jpeg" alt="Logo" />
   </div>
   <div class="search-bar">
@@ -9,7 +9,7 @@
     </span>
   </div>
   <div class="actions">
-    <div class="action-item">
+    <div class="action-item" [routerLink]="['/auth']">
       <i class="fas fa-user"></i>
       <span>Prijava</span>
     </div>

@@ -12,6 +12,10 @@ import { AdBannerComponent } from './ad-banner/ad-banner.component';
 import { HeaderBannerComponent } from './header/header-banner/header-banner.component';
 import { ContentComponent } from './content/content.component';
 import { SubmenuComponent } from './menu/submenu/submenu.component';
+import { ProductDetailsComponent } from './product/product-details/product-details.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { LoginPageComponent } from './login/login-page/login-page.component';
 
 @NgModule({
   declarations: [
@@ -25,10 +29,14 @@ import { SubmenuComponent } from './menu/submenu/submenu.component';
     AdBannerComponent,
     HeaderBannerComponent,
     ContentComponent,
-    SubmenuComponent
+    SubmenuComponent,
+    ProductDetailsComponent,
+    HomePageComponent,
+    LoginPageComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
