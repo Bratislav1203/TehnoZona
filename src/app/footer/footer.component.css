@@ -1,14 +1,22 @@
+:host {
+  display: block;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  margin-top: 120px;
+}
+
 .footer {
   background-color: #f7f8fa; /* Svetlo siva pozadina */
   color: #212121; /* Tamno siva boja teksta */
-  margin-top: 40px;
+  border-top: 4px solid #4285f4; /* Plava linija na vrhu */
+
 }
 
 .footer-container {
   display: flex;
   justify-content: space-around;
   padding: 20px 40px;
-  border-bottom: 4px solid #4285f4; /* Plava linija na vrhu */
 }
 
 .footer-section {

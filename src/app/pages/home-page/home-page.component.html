@@ -1,0 +1,11 @@
+<div>
+  <h3 class="brand-row-title">OVDE KAO STOJE BRANDOVI</h3>
+  <div class="brand-row">
+    <app-brand *ngFor="let brand of brands" [brand]="brand"></app-brand>
+  </div>
+</div>
+<app-productrow [products]="products"></app-productrow>
+<app-ad-banner></app-ad-banner>
+<app-productrow [products]="products"></app-productrow>
+<app-productrow [products]="products"></app-productrow>
+<app-ad-banner></app-ad-banner>

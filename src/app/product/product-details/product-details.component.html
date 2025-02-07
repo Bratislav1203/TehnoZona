@@ -3,11 +3,21 @@
   <div class="product-image-gallery">
     <div class="main-image">
       <img [src]="mainImage" alt="Product Image" />
-      <button class="arrow left" (click)="previousImage()">&#10094;</button>
-      <button class="arrow right" (click)="nextImage()">&#10095;</button>
+      <button
+        *ngIf="product.slike.length > 1"
+        class="arrow left"
+        (click)="previousImage()">&#10094;
+      </button>
+      <button
+        *ngIf="product.slike.length > 1"
+        class="arrow right"
+        (click)="nextImage()">&#10095;
+      </button>
     </div>
-    <div class="thumbnail-gallery">
-      <img *ngFor="let image of productImages; let i = index"
+    <div
+      class="thumbnail-gallery"
+      *ngIf="product.slike.length > 1">
+      <img *ngFor="let image of product.slike; let i = index"
            [src]="image"
            (click)="changeMainImage(image); currentImageIndex = i"
            [class.active]="mainImage === image"
@@ -15,36 +25,25 @@
     </div>
   </div>
 
+
   <!-- Desna kolona za detalje o proizvodu -->
   <div class="product-info">
-    <p class="product-code">Šifra artikla: {{ product.code }}</p>
-    <h1 class="product-title">{{ product.name }}</h1>
+    <p class="product-code">Šifra artikla: {{ product.sifra }}</p>
+    <h1 class="product-title">{{ product.naziv }}</h1>
     <a href="#" class="review-link">Budi prvi koji će napisati recenziju</a>
-    <div class="discount">
-      <span class="old-price">{{ product.oldPrice | currency:'RSD' }}</span>
-      <span class="discount-percentage">{{ product.discount }}%</span>
-      <span class="discount-amount">Ušteda {{ product.savings | currency:'RSD' }}</span>
+    <div class="discount" *ngIf="product.flagAkcijskaCena">
+      <span class="old-price">{{ product.mpcena | currency:'RSD' }}</span>
+      <span class="discount-percentage">-{{ ((product.mpcena - product.b2bcena) / product.mpcena * 100) | number:'1.0-0' }}%</span>
+      <span class="discount-amount">Ušteda {{ product.mpcena - product.b2bcena | currency:'RSD' }}</span>
     </div>
-    <div class="current-price">{{ product.price | currency:'RSD' }}</div>
-    <div class="action-timer">
-      <p>Akcija traje od: {{ product.saleStart }} do {{ product.saleEnd }}</p>
-      <p class="countdown">Još {{ countdownTime }}</p>
+    <div class="current-price">{{ product.b2bcena | currency:'RSD' }}</div>
+    <p class="sale-notice">
+      Cena sa popustom važi samo za online kupovinu i gotovinsko plaćanje.
+    </p>
+    <div class="product-description" [innerHTML]="sanitizedDescription"></div>
+    <div class="availability">
+      <p class="availability-text"><span class="dot"></span> {{ product.kolicina }}</p>
     </div>
     <button class="add-to-cart-button">Dodaj proizvod u korpu</button>
-    <div class="actions">
-      <button class="buy-now">Kupi odmah</button>
-      <button class="other-action">...</button>
-    </div>
-    <div class="product-specs">
-      <ul>
-        <li>Super AMOLED ekran dijagonale 6,5"</li>
-        <li>Trostruka zadnja kamera 50 MP + 5 MP + 2 MP</li>
-        <li>Maksimalna brzina osvežavanja glavnog ekrana od 90 Hz</li>
-        <li>Baterija velikog kapaciteta od 5000 mAh uz super brzo punjenje</li>
-      </ul>
-    </div>
-    <div class="availability">
-      <p>Dostupno odmah</p>
-    </div>
   </div>
 </div>

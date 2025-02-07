@@ -1,0 +1,21 @@
+.brand-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  border-radius: 5px;
+  margin: 0 20px;
+  padding-bottom: 10px;
+}
+
+.brands{
+  display: block;
+  padding: 20px;
+}
+
+.brand-row-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #212121;
+  margin: 15px 0 10px 20px;
+  text-align: left;
+}

@@ -90,7 +90,7 @@
 }
 
 .product-code {
-  font-size: 12px;
+  font-size: 14px;
   color: #757575;
 }
 
@@ -114,38 +114,36 @@
 }
 
 .old-price {
-  font-size: 14px;
+  font-size: 16px;
   color: #757575;
   text-decoration: line-through;
 }
 
 .discount-percentage {
-  font-size: 14px;
+  font-size: 16px;
   color: red;
 }
 
 .discount-amount {
-  font-size: 14px;
+  font-size: 16px;
   color: red;
 }
 
 .current-price {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
   color: #212121;
 }
 
-.action-timer {
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 5px;
-  border-radius: 5px;
-  font-size: 12px;
+.sale-notice,
+.installments {
+  font-size: 14px;
+  color: #424242;
 }
 
 .add-to-cart-button {
-  background-color: #fb8c00;
-  color: white;
+  background-color: #ffcc00;
+  color: #000;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -155,45 +153,77 @@
 }
 
 .add-to-cart-button:hover {
-  background-color: #ff9800;
+  background-color: #ffd633;
 }
 
 .actions {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .actions button {
   border: 1px solid #d1d3e2;
   background-color: white;
-  padding: 8px 12px;
+  padding: 10px 15px;
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: background-color 0.3s;
 }
 
-.actions button:hover {
-  background-color: #f0f2f5;
-}
-
-.product-specs ul {
+.product-specs {
   list-style: none;
   padding: 0;
   margin: 0;
-  color: #424242;
-  font-size: 14px;
 }
 
-.product-specs ul li {
+.product-specs li {
+  font-size: 14px;
+  color: #424242;
   margin-bottom: 5px;
 }
 
-.availability {
+.availability-text {
+  font-size: 14px;
+  font-weight: bold;
   color: #28a745;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: #28a745;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+::ng-deep .product-description table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+::ng-deep .product-description th,
+::ng-deep .product-description td {
+  border: 1px solid #d1d3e2; /* Svetlo siva ivica */
+  border-left: none;
+  border-right: none;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  color: #212121; /* Tamno siva boja teksta */
+}
+
+::ng-deep .product-description th {
+  background-color: #4285f4; /* Plava pozadina */
+  color: white; /* Bela boja teksta */
   font-weight: bold;
 }
+
+::ng-deep .product-description td:first-child {
+  font-weight: bold;
+  color: #333; /* Tamniji tekst za prvu kolonu */
+}
+
+
+

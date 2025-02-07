@@ -17,7 +17,13 @@
   height: 150px; /* Fiksna visina slike */
   object-fit: cover;
   margin-bottom: 10px;
+  transition: transform 0.3s ease; /* Dodaje tranziciju za glatki efekat */
 }
+
+.product-image:hover {
+  transform: scale(1.1); /* Zumira sliku za 10% */
+}
+
 
 .product-details {
   display: flex;
@@ -80,6 +86,7 @@
 }
 
 .add-to-cart {
+  margin-top: auto;
   background-color: #ffa726;
   border: none;
   padding: 10px;

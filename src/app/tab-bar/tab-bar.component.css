@@ -1,24 +1,30 @@
 .tab-bar {
-  display: flex;
-  background: linear-gradient(to right, #42a5f5, #1976d2); /* Gradijent plave boje */
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 70px;
+  display: flex; /* Sve stavke u jednom redu */
+  align-items: center; /* Vertikalno poravnanje */
+  justify-content: flex-start; /* Poravnanje na levo */
+  padding: 10px 0; /* Gornji i donji razmak */
+  font-size: 13px; /* Manja veličina slova */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Linija ispod bara */
 }
 
 .tab {
   display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  color: white;
+  align-items: center; /* Centriranje teksta */
+  padding: 0 15px; /* Horizontalni razmak */
+  color: inherit; /* Boja teksta ostaje iz glavnog stila */
   cursor: pointer;
+  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Linija između tabova */
   transition: background-color 0.3s;
-  border-radius: 5px;
-  position: relative; /* Omogućava da dropdown meni bude apsolutno pozicioniran unutar ovog elementa */
+  white-space: nowrap; /* Sprečava prelamanje teksta */
 }
 
-.tab:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Svetliji efekat pri hover-u */
+.tab:last-child {
+  border-right: none; /* Uklanja liniju sa poslednjeg taba */
+}
+
+.tab span {
+  text-transform: capitalize; /* Prvo slovo veliko, opcionalno */
+  font-size: 13px; /* Manja slova */
 }
 
 .tab i {

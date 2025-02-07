@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Product, ProductService } from "../../services/product.service";
 
 @Component({
   selector: 'app-productcard',
@@ -7,21 +8,15 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ProductcardComponent implements OnInit {
 
-  @Input() product: any; // Proizvod će biti prosleđen iz roditeljske komponente
-  quantity: number = 1;
+  @Input() product: Product;
 
+  constructor(private productService: ProductService) {
+  }
   ngOnInit() {
   }
 
-  increaseQuantity() {
-    this.quantity++;
-  }
-
-
-  decreaseQuantity() {
-    if (this.quantity > 1) {
-      this.quantity--;
-    }
+  setCurrentProduct(product: Product) {
+    this.productService.setCurrentProduct(product);
   }
 }
 

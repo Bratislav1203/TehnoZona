@@ -13,9 +13,14 @@ import { HeaderBannerComponent } from './header/header-banner/header-banner.comp
 import { ContentComponent } from './content/content.component';
 import { SubmenuComponent } from './menu/submenu/submenu.component';
 import { ProductDetailsComponent } from './product/product-details/product-details.component';
-import { HomePageComponent } from './home-page/home-page.component';
 import { AppRoutingModule } from "./app-routing.module";
-import { LoginPageComponent } from './login/login-page/login-page.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { HttpClientModule } from "@angular/common/http";
+import { BrandComponent } from './brand/brand.component';
+import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { HomePageComponent } from "./pages/home-page/home-page.component";
+import { CarouselModule } from "ngx-owl-carousel-o";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -32,11 +37,15 @@ import { LoginPageComponent } from './login/login-page/login-page.component';
     SubmenuComponent,
     ProductDetailsComponent,
     HomePageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    BrandComponent,
+    CategoryPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    CarouselModule
   ],
   providers: [],
   bootstrap: [AppComponent]

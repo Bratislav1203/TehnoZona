@@ -1,0 +1,7 @@
+.content{
+  top: 120px;
+  position: relative;
+  flex: 1; /* Ovaj deo rasteže sadržaj da popuni prostor iznad footer-a */
+  display: flex;
+  flex-direction: column;
+}
