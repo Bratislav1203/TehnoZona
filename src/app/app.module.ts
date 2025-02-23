@@ -21,6 +21,8 @@ import { CategoryPageComponent } from './pages/category-page/category-page.compo
 import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { CarouselModule } from "ngx-owl-carousel-o";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { FormsModule } from "@angular/forms";
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +41,15 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     HomePageComponent,
     LoginPageComponent,
     BrandComponent,
-    CategoryPageComponent
+    CategoryPageComponent,
+    LoadingOverlayComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CarouselModule
+    CarouselModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

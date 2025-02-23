@@ -1,33 +1,37 @@
-.vertical-menu {
-  width: 200px; /* Širina menija */
-  background-color: #e0e0e0; /* Tamnija siva pozadina */
-  border: 1px solid #bdbdbd; /* Tamnija siva ivica */
-  border-radius: 5px; /* Zaobljeni uglovi */
-  padding: 10px;
-  bottom: 100px;
-  margin-top: 10px;
+.submenu-container {
+  display: flex;
+  gap: 40px;
 }
 
-.vertical-menu ul {
+.submenu-column {
+  min-width: 200px;
+}
+
+.submenu-column h4:hover{
+  text-decoration: underline;
+}
+
+.submenu-column h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.submenu-column ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.vertical-menu li {
-  margin-bottom: 5px; /* Smanjen razmak između stavki */
+.submenu-column li {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
-.vertical-menu a {
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  color: #424242; /* Tamno siva boja teksta */
-  background-color: transparent; /* Bez pozadine za stavke */
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.vertical-menu a:hover {
-  background-color: rgba(255, 255, 255, 0.5); /* Svetliji efekat pri hover-u, vuče na belo */
-  color: #212121; /* Tamnija siva boja teksta pri hover-u */
+.submenu-column li:hover {
+  text-decoration: underline;
 }

@@ -1,15 +1,24 @@
-<nav class="tab-bar">
-  <div class="tab fd-popover" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
-      <i class="fas fa-bars"></i>
-      <a class="fd-popover__control">Kategorije</a>
-      <div class="fd-popover__body dropdown-menu" *ngIf="showMenu" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
-          <app-submenu></app-submenu>
-      </div>
-  </div>
+<nav >
   <div class="tab-bar">
-    <div *ngFor="let glavnaGrupa of glavneGrupe" class="tab" (click)="onTabClick('brendovi')">
+    <div class="tab" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
+      <i class="fas fa-bars"></i>
+      <span class="">Kategorije</span>
+      <div class="dropdown-menu" *ngIf="showMenu" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
+        <app-submenu></app-submenu>
+      </div>
+    </div>
+
+    <div *ngFor="let glavnaGrupa of glavneGrupe; let i = index"
+         class="tab"
+         (mouseover)="onMouseEnter(i)"
+         (mouseleave)="onMouseLeave()"
+         (click)="onTabClick(glavnaGrupa)">
       <span>{{ glavnaGrupa }}</span>
+
+      <!-- Prikaz SubmenuComponent samo za hoverovani tab -->
+      <div class="dropdown-menu" *ngIf="hoveredIndex === i">
+        <app-submenu [menuItems]="submenuData[glavnaGrupa]"></app-submenu>
+      </div>
     </div>
   </div>
-
 </nav>

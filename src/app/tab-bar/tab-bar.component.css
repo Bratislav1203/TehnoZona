@@ -2,18 +2,16 @@
   display: flex; /* Sve stavke u jednom redu */
   align-items: center; /* Vertikalno poravnanje */
   justify-content: flex-start; /* Poravnanje na levo */
-  padding: 10px 0; /* Gornji i donji razmak */
+  padding: 0px 10px; /* Gornji i donji razmak */
   font-size: 13px; /* Manja veličina slova */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Linija ispod bara */
 }
 
 .tab {
   display: flex;
   align-items: center; /* Centriranje teksta */
-  padding: 0 15px; /* Horizontalni razmak */
+  padding-block: 15px ; /* Horizontalni razmak */
   color: inherit; /* Boja teksta ostaje iz glavnog stila */
   cursor: pointer;
-  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Linija između tabova */
   transition: background-color 0.3s;
   white-space: nowrap; /* Sprečava prelamanje teksta */
 }
@@ -25,6 +23,8 @@
 .tab span {
   text-transform: capitalize; /* Prvo slovo veliko, opcionalno */
   font-size: 13px; /* Manja slova */
+  padding-inline: 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Linija između tabova */
 }
 
 .tab i {
@@ -37,13 +37,8 @@
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%; /* Prikazuje meni ispod taba */
-  left: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 5px; /* Zaobljeni uglovi kao i kod tabova */
+  top: 45px;
   z-index: 1000;
-  width: 200px; /* Širina padajućeg menija */
   overflow: hidden;
 }
 
@@ -63,3 +58,43 @@
 .dropdown-menu li:hover {
   background-color: #f0f2f5; /* Svetlo siva pozadina pri hoveru */
 }
+/* Glavni tab-bar */
+.tab-bar {
+  display: flex;
+  color: white;
+  position: relative;
+}
+
+/* Tabovi */
+.tab {
+  position: relative;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+
+.dropdown-menu {
+  position: fixed;
+  top: 116px;
+  left: 50%;
+  transform: translateX(-50%); /* Pomera dropdown za polovinu svoje širine u levo */
+  width: 90vw; /* Širina kao što si želeo */
+  max-width: 1600px; /* Dodaj max-width da ne bude previše širok na velikim ekranima */
+  max-height: 600px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 20px 50px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+

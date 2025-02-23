@@ -1,7 +1,8 @@
-<div class="vertical-menu">
-  <ul>
-    <li *ngFor="let item of menuItems">
-      <a>{{ item.title }}</a>
-    </li>
-  </ul>
+<div class="submenu-container" *ngIf="menuItems && menuItems.length">
+  <div *ngFor="let item of menuItems" class="submenu-column">
+    <h4>{{ item.name }}</h4>
+    <ul>
+      <li *ngFor="let subItem of item.items">{{ subItem }}</li>
+    </ul>
+  </div>
 </div>
