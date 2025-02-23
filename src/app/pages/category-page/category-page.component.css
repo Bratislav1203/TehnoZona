@@ -1,0 +1,228 @@
+.category-page-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f7f8fa;
+}
+
+.category-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #212121;
+  margin-bottom: 20px;
+}
+
+.sub-category-row {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 5px
+;
+}
+
+.sub-category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 150px; /* Širina kartice */
+  height: 180px; /* Visina kartice */
+  background-color: #fff;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  text-align: center;
+  margin-right: 15px; /* Razmak između kartica */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Blago senčenje za moderan izgled */
+  transition: transform 0.2s ease-in-out;
+}
+
+.sub-category-card:hover {
+  transform: scale(1.05); /* Efekat povećanja pri hoveru */
+}
+
+.sub-category-card:last-child {
+  margin-right: 0; /* Uklanja razmak za poslednju karticu */
+}
+
+.sub-category-card img {
+  width: 100px; /* Dimenzije slike */
+  height: 100px;
+  object-fit: contain; /* Zadržava proporcije slike */
+  margin-top: 15px; /* Razmak između vrha kartice i slike */
+}
+
+.sub-category-card p {
+  font-size: 14px; /* Veličina fonta za naziv */
+  font-weight: 500;
+  color: #212121;
+  margin: 10px 0; /* Razmak između slike i naziva */
+  text-align: center;
+}
+
+.slider-container {
+  width: 300px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.slider-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+input[type="range"] {
+  position: absolute;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: #ccc;
+  border-radius: 5px;
+  pointer-events: none; /* Sprečava preklapanje */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: gold;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto; /* Omogućava kontrolu */
+}
+
+
+.main-content {
+  display: flex;
+  margin-top: 20px; /* Razmak između podkategorija i glavnog sadržaja */
+}
+
+.sidebar {
+  flex: 0 0 250px;
+  background-color: #ffffff;
+  border: 1px solid #d1d3e2;
+  padding: 10px;
+  margin-right: 20px; /* Razmak između sidebar-a i glavnog dela */
+}
+
+.product-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-gap: 20px; /* Ostavljen razmak unutar mreže proizvoda */
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px; /* Razmak između redova proizvoda */
+}
+
+/* Sidebar */
+.sidebar {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  height: fit-content;
+}
+
+/* Filter kategorija */
+.filter-category {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.filter-category h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+  text-transform: uppercase;
+}
+
+/* Filter item */
+.filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-item:last-child {
+  border-bottom: none;
+}
+
+.filter-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin-right: 8px;
+  position: absolute;
+  left: 0;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+/* Labela i broj proizvoda */
+.filter-item label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  margin-left: 24px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-item label span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Checkbox stilizacija */
+input[type="checkbox"] {
+  appearance: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '✔';
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  line-height: 16px;
+  display: block;
+  background-color: #333;
+  border-radius: 3px;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

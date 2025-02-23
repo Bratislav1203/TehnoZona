@@ -1,0 +1,40 @@
+.brand-card {
+  display: flex;
+  flex-direction: column; /* Postavlja raspored elemenata vertikalno */
+  align-items: center; /* Centriranje elemenata horizontalno */
+  justify-content: space-between; /* Raspoređuje sadržaj tako da labela ostane dole */
+  width: 150px;
+  height: 175px;
+  background-color: #ffffff;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  margin: 0 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px; /* Dodaje malo prostora unutar kartice */
+  transition: box-shadow 0.3s ease-in-out; /* Efekat kada hoverujemo karticu */
+
+}
+
+.brand-logo {
+  max-width: 80%;
+  max-height: 80%;
+  margin: auto 0; /* Ovo osigurava da slika bude centrirana */
+  transition: transform 0.3s ease-in-out; /* Glatki efekat animacije */
+
+}
+
+.brand-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #212121;
+  text-align: center;
+}
+/* Hover efekat: logo se blago uveća */
+.brand-card:hover .brand-logo {
+  transform: scale(1.1); /* Povećava logo za 10% */
+}
+
+/* Opcioni hover efekat za samu karticu */
+.brand-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Dodaje jaču senku */
+}

@@ -1,0 +1,52 @@
+<div class="category-page-container">
+  <h1 class="category-title">{{ title }}</h1>
+
+  <div class="sub-category-row">
+    <div *ngFor="let subCategory of subCategories" class="sub-category-card">
+      <img [src]="subCategory.imgUrl" [alt]="subCategory.name" />
+      <p>{{ subCategory.name }}</p>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <app-loading-overlay [isLoading]="isLoading"></app-loading-overlay>
+
+    <div class="sidebar">
+      <div class="filters-container">
+        <div class="slider-container">
+          <label>Cena:</label>
+          <div class="slider-values">
+            <span>{{ minValue }} din.</span>
+            <span>{{ maxValue }} din.</span>
+          </div>
+
+          <div class="slider">
+            <input type="range" [min]="initialMinValue" [max]="initialMaxValue" step="1" [(ngModel)]="minValue" (input)="updateSlider()">
+            <input type="range" [min]="initialMinValue" [max]="initialMaxValue" step="1" [(ngModel)]="maxValue" (input)="updateSlider()">
+          </div>
+        </div>
+        <div class="filter-category" *ngFor="let category of filterCategories">
+          <h3>{{ category.category }}</h3>
+          <div class="filter-item" *ngFor="let type of category.types">
+            <label>
+              <input
+                type="checkbox"
+                [value]="type.name"
+                (change)="onTypeChange(category.category, type.name, $event.target.checked)"
+              >
+              {{ type.name }} <span>({{ type.quantity }})</span>
+            </label>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+    <div class="product-grid">
+      <app-productcard *ngFor="let product of products" [product]="product"></app-productcard>
+    </div>
+  </div>
+</div>
