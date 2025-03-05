@@ -1,8 +1,8 @@
-<div class="submenu-container" *ngIf="menuItems && menuItems.length">
-  <div *ngFor="let item of menuItems" class="submenu-column">
-    <h4>{{ item.name }}</h4>
+<div class="submenu-container" *ngIf="glavnaGrupa">
+  <div *ngFor="let nadgrupaKey of (glavnaGrupa.nadgrupe | keyvalue)" class="submenu-column">
+    <h4>{{ nadgrupaKey.key }}</h4>
     <ul>
-      <li *ngFor="let subItem of item.items">{{ subItem }}</li>
+      <li *ngFor="let grupa of nadgrupaKey.value">{{ grupa }}</li>
     </ul>
   </div>
 </div>

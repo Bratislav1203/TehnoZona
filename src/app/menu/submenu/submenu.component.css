@@ -1,33 +1,35 @@
 .submenu-container {
-  display: flex;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 kolone, prilagodi ako je potrebno */
+  gap: 0px 40px; /* Uklonjen vertikalni razmak, horizontalni ostaje 40px */
+  max-height: 600px; /* Ograničava visinu menija */
+  overflow-y: auto; /* Omogućava skrolovanje ako je potrebno */
+  align-content: start; /* Sprečava centriranje kod prelamanja */
+  padding: 10px 20px;
 }
 
 .submenu-column {
-  min-width: 200px;
-}
-
-.submenu-column h4:hover{
-  text-decoration: underline;
+  display: flex;
+  flex-direction: column;
 }
 
 .submenu-column h4 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 2px; /* Manji razmak između naslova i liste */
   color: #333;
 }
 
 .submenu-column ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 8px 0; /* Smanjen razmak između nadgrupa */
 }
 
 .submenu-column li {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
-  margin-bottom: 8px;
+  margin-bottom: 4px; /* Manji razmak između stavki */
   cursor: pointer;
   transition: color 0.3s;
 }

@@ -18,6 +18,14 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl, { params });
   }
 
+  getProductsFromCategory(vendorId: number, limit: number, category: string): Observable<Product[]> {
+    const params = new HttpParams()
+      .set('vendorId', vendorId.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get<Product[]>(this.apiUrl, { params });
+  }
+
   setCurrentProduct(product: Product) {
     this.currentProduct = product;
   }
@@ -70,10 +78,5 @@ export interface FilterCategory {
 export interface FilterType {
   name: string;
   quantity: number;
-}
-
-export interface MenuItem {
-  title: string;
-  subcategories: { name: string; items: string[] }[];
 }
 

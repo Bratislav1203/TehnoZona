@@ -8,16 +8,15 @@
       </div>
     </div>
 
-    <div *ngFor="let glavnaGrupa of glavneGrupe; let i = index"
+    <div *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupama; let i = index"
          class="tab"
          (mouseover)="onMouseEnter(i)"
          (mouseleave)="onMouseLeave()"
-         (click)="onTabClick(glavnaGrupa)">
-      <span>{{ glavnaGrupa }}</span>
+         (click)="onTabClick(glavnaGrupa.name)">
+      <span>{{ glavnaGrupa.name }}</span>
 
-      <!-- Prikaz SubmenuComponent samo za hoverovani tab -->
       <div class="dropdown-menu" *ngIf="hoveredIndex === i">
-        <app-submenu [menuItems]="submenuData[glavnaGrupa]"></app-submenu>
+        <app-submenu [glavnaGrupa]="glavnaGrupa"></app-submenu>
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { GlavnaGrupa } from "../../services/mock-glavna-grupa.service";
 
 @Component({
   selector: 'app-submenu',
@@ -6,5 +7,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./submenu.component.css']
 })
 export class SubmenuComponent {
-  @Input() menuItems: { name: string, items: string[] }[] = [];
+  @Input() glavnaGrupa: GlavnaGrupa;
+  constructor() {
+    console.log(this.glavnaGrupa);
+  }
 }
