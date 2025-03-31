@@ -6,5 +6,5 @@
       <p class="product-price">{{ product.b2bcena | currency: 'RSD' }}</p>
     </div>
   </div>
-    <button class="add-to-cart">Dodaj u korpu</button>
+    <button (click)="addToCart(product)" class="add-to-cart">Dodaj u korpu</button>
 </div>

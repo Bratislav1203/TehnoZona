@@ -1,4 +1,4 @@
-<div class="brand-card" [routerLink]="['/categoryPage']">
-    <img [src]="brand.imgUrl" [alt]="brand.name" class="brand-logo" />
-    <p class="brand-name">{{ brand.name }}</p>
+<div class="brand-card" [routerLink]="['/categoryPage', brand.name]">
+  <img [src]="brand.imgUrl" [alt]="brand.name" class="brand-logo" />
+  <p class="brand-name">{{ brand.name }}</p>
 </div>

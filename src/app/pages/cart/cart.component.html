@@ -1,0 +1,48 @@
+<div *ngIf="cartItems.length === 0; else cartContent" class="empty-cart">
+  <i class="fa fa-shopping-cart cart-icon"></i>
+  <h2>Vaša korpa je prazna</h2>
+  <p>Vratite se na <a routerLink="/">početnu stranicu</a></p>
+</div>
+
+<ng-template #cartContent>
+  <div class="cart-container">
+    <h2>Korpa</h2>
+
+    <table class="cart-table">
+      <thead>
+      <tr>
+        <th>Proizvod</th>
+        <th>Cena</th>
+        <th>Količina</th>
+        <th>Total</th>
+        <th>Akcija</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of cartItems">
+        <td class="product-info">
+          <img [src]="item.slike ? item.slike[0] : 'assets/placeholder.png'" alt="{{ item.naziv }}" class="product-image">
+          <span>{{ item.naziv }}</span>
+        </td>
+        <td><strong>{{ item.b2bcena | number: '1.2-2' }} {{ item.valuta }}</strong></td>
+        <td>
+          <input type="number" [(ngModel)]="item.kolicina" (change)="updateQuantity(item)" min="1">
+        </td>
+        <td><strong>{{ (item.b2bcena * item.kolicina) | number: '1.2-2' }} {{ item.valuta }}</strong></td>
+        <td>
+          <button (click)="removeFromCart(item)" class="remove-btn">
+            Ukloni <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="cart-actions">
+      <button class="continue-shopping-btn" routerLink="/">⟵ Nastavi sa kupovinom</button>
+      <button *ngIf="cartItems.length > 0" (click)="clearCart()" class="clear-cart-btn">
+        Isprazni korpu
+      </button>
+    </div>
+  </div>
+</ng-template>

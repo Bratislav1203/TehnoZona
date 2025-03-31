@@ -1,8 +1,12 @@
 <div class="submenu-container" *ngIf="glavnaGrupa">
   <div *ngFor="let nadgrupaKey of (glavnaGrupa.nadgrupe | keyvalue)" class="submenu-column">
-    <h4>{{ nadgrupaKey.key }}</h4>
+    <h4>
+      <a [routerLink]="[glavnaGrupa.name, nadgrupaKey.key]">{{ nadgrupaKey.key }}</a>
+    </h4>
     <ul>
-      <li *ngFor="let grupa of nadgrupaKey.value">{{ grupa }}</li>
+      <li *ngFor="let grupa of nadgrupaKey.value">
+        <a [routerLink]="[glavnaGrupa.name, nadgrupaKey.key, grupa]">{{ grupa }}</a>
+      </li>
     </ul>
   </div>
 </div>

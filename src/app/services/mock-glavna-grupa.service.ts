@@ -19,6 +19,7 @@ export interface GlavnaGrupa {
   providedIn: 'root'
 })
 export class MockGlavnaGrupaService {
+
   private allGlavneGrupe: GlavnaGrupa[] = [];
 
   constructor() {

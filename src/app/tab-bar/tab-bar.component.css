@@ -85,15 +85,11 @@
   left: 50%;
   transform: translateX(-50%); /* Pomera dropdown za polovinu svoje širine u levo */
   width: 90vw; /* Širina kao što si želeo */
-  max-width: 1600px; /* Dodaj max-width da ne bude previše širok na velikim ekranima */
   max-height: 600px;
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  padding: 20px 50px;
   box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
   border: 1px solid #ddd;
   border-radius: 8px;
 }

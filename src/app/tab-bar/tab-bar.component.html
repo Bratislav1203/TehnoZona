@@ -9,12 +9,12 @@
     </div>
 
     <div *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupama; let i = index"
-         class="tab"
-         (mouseover)="onMouseEnter(i)"
-         (mouseleave)="onMouseLeave()"
-         (click)="onTabClick(glavnaGrupa.name)">
-      <span>{{ glavnaGrupa.name }}</span>
-
+       (mouseover)="onMouseEnter(i)"
+       (mouseleave)="onMouseLeave()"
+       (click)="onTabClick(glavnaGrupa.name)">
+      <div class="tab" [routerLink]="[glavnaGrupa.name]">
+        <span>{{ glavnaGrupa.name }}</span>
+      </div>
       <div class="dropdown-menu" *ngIf="hoveredIndex === i">
         <app-submenu [glavnaGrupa]="glavnaGrupa"></app-submenu>
       </div>

@@ -1,5 +1,20 @@
 <div class="category-page-container">
   <h1 class="category-title">{{ title }}</h1>
+  <div class="breadcrumb">
+    <ng-container *ngIf="glavnaGrupa">
+      <a class="breadcrumb-link">{{ glavnaGrupa }}</a>
+    </ng-container>
+
+    <ng-container *ngIf="nadgrupa">
+      <span class="breadcrumb-separator"> &gt; </span>
+      <a [routerLink]="['/', glavnaGrupa, nadgrupa]" class="breadcrumb-link">{{ nadgrupa }}</a>
+    </ng-container>
+
+    <ng-container *ngIf="grupa">
+      <span class="breadcrumb-separator"> &gt; </span>
+      <span class="breadcrumb-current">{{ grupa }}</span>
+    </ng-container>
+  </div>
 
   <div class="sub-category-row">
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
@@ -25,9 +40,11 @@
             <input type="range" [min]="initialMinValue" [max]="initialMaxValue" step="1" [(ngModel)]="maxValue" (input)="updateSlider()">
           </div>
         </div>
+
         <div class="filter-category" *ngFor="let category of filterCategories">
           <h3>{{ category.category }}</h3>
-          <div class="filter-item" *ngFor="let type of category.types">
+
+          <div class="filter-item" *ngFor="let type of (isExpanded(category.category) ? category.types : category.types.slice(0, 10))">
             <label>
               <input
                 type="checkbox"
@@ -37,12 +54,12 @@
               {{ type.name }} <span>({{ type.quantity }})</span>
             </label>
           </div>
+
+          <button *ngIf="category.types.length > 10" (click)="toggleCategory(category.category)" class="show-more-btn">
+            {{ isExpanded(category.category) ? 'Prikaži manje' : 'Prikaži više (' + (category.types.length - 10) + ')' }}
+          </button>
         </div>
-
-
       </div>
-
-
     </div>
 
     <div class="product-grid">

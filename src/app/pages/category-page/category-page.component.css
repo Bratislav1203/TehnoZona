@@ -1,3 +1,8 @@
+:host(.category-page) {
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
 .category-page-container {
   display: flex;
   flex-direction: column;
@@ -118,7 +123,8 @@ input[type="range"]::-webkit-slider-thumb {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  grid-gap: 20px; /* Ostavljen razmak unutar mreže proizvoda */
+  grid-gap: 20px;
+  height: min-content;
 }
 
 .product-card {
@@ -225,4 +231,44 @@ input[type="checkbox"]:checked::before {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  color: #4285f4;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  margin: 0 5px;
+  color: #999;
+}
+
+.breadcrumb-current {
+  color: #999;
+  font-weight: normal;
+}
+
+.show-more-btn {
+  background: none;
+  border: none;
+  color: #34346f;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.show-more-btn:hover {
+  text-decoration: underline;
 }

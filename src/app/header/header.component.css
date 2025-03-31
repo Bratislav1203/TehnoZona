@@ -6,3 +6,8 @@
   background: linear-gradient(to bottom, black, #3097de);
   background-size: cover;
 }
+
+.inner-header {
+  max-width: 1600px;
+  margin-inline: auto;
+}

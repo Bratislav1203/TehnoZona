@@ -23,6 +23,7 @@ import { CarouselModule } from "ngx-owl-carousel-o";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
     LoginPageComponent,
     BrandComponent,
     CategoryPageComponent,
-    LoadingOverlayComponent
+    LoadingOverlayComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

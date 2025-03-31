@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FilterCategory, Product, ProductService } from "../../services/product.service";
+import { ActivatedRoute } from "@angular/router";
+import { CartService } from "../../services/cart.service";
 
 @Component({
   selector: 'app-category-page',
@@ -7,17 +9,21 @@ import { FilterCategory, Product, ProductService } from "../../services/product.
   styleUrls: ['./category-page.component.css']
 })
 export class CategoryPageComponent {
-  @Input() title: string = 'Philips';
+  title: string = 'Philips';
   products: Product[] = [];
   isLoading: boolean = false;
+  glavnaGrupa: string | null = null;
+  nadgrupa: string | null = null;
+  grupa: string | null = null;
+  filterCategories: FilterCategory[] = [];
+  expandedCategories: { [key: string]: boolean } = {};
 
+  timeoutId: any;
   minValue: number = 0;
   maxValue: number = 0;
   initialMinValue: number = 0;
   initialMaxValue: number = 0;
 
-
-  //Ovo cemo da ucitavamo sa beka
   subCategories = [
     { name: 'Desktop računari', imgUrl: 'assets/placeholder.png' },
     { name: 'Laptopovi', imgUrl: 'assets/placeholder.png' },
@@ -27,53 +33,73 @@ export class CategoryPageComponent {
     { name: 'Štampači i oprema', imgUrl: 'assets/placeholder.png' }
   ];
 
-  filterCategories: FilterCategory[] = [
-    {
-      category: 'Proizvođač',
-      types: [
-        { name: 'BEKO', quantity: 12 },
-        { name: 'BOSCH', quantity: 10 },
-        { name: 'CANDY', quantity: 20 },
-        { name: 'GORENJE', quantity: 7 },
-        { name: 'HAIER', quantity: 4 },
-        { name: 'HISENSE', quantity: 3 },
-        { name: 'INDESIT', quantity: 1 },
-        { name: 'SAMSUNG', quantity: 3 }
-      ]
-    },
-    {
-      category: 'Tip uređaja',
-      types: [
-        { name: 'Frižider', quantity: 8 },
-        { name: 'Veš mašina', quantity: 15 },
-        { name: 'Mašina za sudove', quantity: 5 },
-        { name: 'Mikrotalasna', quantity: 6 }
-      ]
-    }
-  ];
-
   selectedTypes: { [key: string]: string[] } = {};
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private route: ActivatedRoute, private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
+    this.route.paramMap.subscribe(params => {
+      this.title = params.get('brandName') || '';
+      this.glavnaGrupa = params.get('glavnaGrupa');
+      this.nadgrupa = params.get('nadgrupa');
+      this.grupa = params.get('grupa');
 
-    this.productService.getProducts(1, 20).subscribe(
-      (data) => {
-        this.products = data;
+      this.isLoading = true;
 
-        if (this.products.length > 0) {
-          this.setPriceRange();
-        }
-
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error("Greška prilikom učitavanja proizvoda:", error);
-        this.isLoading = false;
+      if (this.nadgrupa && !this.grupa) {
+        this.productService.getProductsFromNadgrupa(1, this.glavnaGrupa!, this.nadgrupa!, 20).subscribe(
+          (data) => {
+            this.products = data;
+            if (this.products.length > 0) {
+              this.setPriceRange();
+            }
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error("Greška prilikom učitavanja proizvoda:", error);
+            this.isLoading = false;
+          }
+        );
+      } else {
+        this.productService.getProducts(1, 20).subscribe(
+          (data) => {
+            this.products = data;
+            if (this.products.length > 0) {
+              this.setPriceRange();
+            }
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error("Greška prilikom učitavanja proizvoda:", error);
+            this.isLoading = false;
+          }
+        );
       }
-    );
+
+      if (this.glavnaGrupa) {
+        this.productService.getProizvodjaciCount(1, this.glavnaGrupa).subscribe(
+          (data) => {
+            this.filterCategories = [{
+              category: 'Proizvođač',
+              types: Object.entries(data).map(([name, quantity]) => ({ name, quantity }))
+            }];
+            console.log(this.filterCategories);
+          },
+          (error) => {
+            console.error("Greška prilikom učitavanja broja proizvoda po proizvođačima:", error);
+          }
+        );
+      }
+    });
+  }
+
+
+  toggleCategory(category: string) {
+    this.expandedCategories[category] = !this.expandedCategories[category];
+  }
+
+  isExpanded(category: string): boolean {
+    return this.expandedCategories[category] || false;
   }
 
   private setPriceRange(): void {
@@ -82,13 +108,41 @@ export class CategoryPageComponent {
     this.maxValue = Math.max(...prices);
     this.initialMinValue = this.minValue;
     this.initialMaxValue = this.maxValue;
+    console.log()
   }
+
 
   updateSlider(): void {
     if (this.minValue > this.maxValue) {
       [this.minValue, this.maxValue] = [this.maxValue, this.minValue];
     }
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+      this.productService.getProizvodjaciCountNadgrupaWithPrice(1, this.glavnaGrupa, this.minValue, this.maxValue).subscribe(
+        (data) => {
+          this.filterCategories = [{
+            category: 'Proizvođač',
+            types: Object.entries(data).map(([name, quantity]) => ({ name, quantity }))
+          }];
+          console.log('Broj proizvoda po proizvođačima:', data);
+        },
+        (error) => {
+          console.error('Greška pri učitavanju proizvođača:', error);
+        }
+      );
+      this.productService.getProductsFromNadgrupaWithPrice(1, this.glavnaGrupa, this.nadgrupa, this.minValue, this.maxValue).subscribe(
+        (data) => {
+          console.log('Filtrirani proizvodi:', data);
+          this.products = data;
+        },
+        (error) => {
+          console.error('Greška pri učitavanju proizvoda:', error);
+        }
+      );
+
+    }, 300);
   }
+
 
   onTypeChange(category: string, type: string, isChecked: boolean) {
     if (!this.selectedTypes[category]) {
