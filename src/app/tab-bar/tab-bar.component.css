@@ -73,11 +73,14 @@
   transition: background 0.3s;
 }
 
-.tab:hover {
+.tab:hover:not(.allCategories) {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
 }
-
+.dropdown-menu.kategorije-dropdown {
+  max-width: unset;
+  width: unset;
+}
 
 .dropdown-menu {
   position: fixed;
@@ -90,7 +93,48 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   box-sizing: border-box;
-  border: 1px solid #ddd;
   border-radius: 8px;
 }
 
+.allCategories {
+  position: relative;
+}
+
+.kategorije-dropdown {
+  display: none;
+}
+
+.allCategories:hover .kategorije-dropdown {
+  display: block;
+}
+
+.kategorije-dropdown {
+  position: absolute;
+  top: 30px;
+  left: 135px;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-height: 600px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.kategorije-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kategorije-dropdown li {
+  padding: 10px;
+  color: #212121;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.kategorije-dropdown li:hover {
+  background-color: #f0f2f5;
+}

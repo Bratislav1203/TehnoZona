@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { GlavnagrupaService } from "../services/glavnagrupa.service";
 import { GlavnaGrupa, MockGlavnaGrupaService } from "../services/mock-glavna-grupa.service";
 

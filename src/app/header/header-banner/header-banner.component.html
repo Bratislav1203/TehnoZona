@@ -9,13 +9,14 @@
     </span>
   </div>
   <div class="actions">
-    <div class="action-item" [routerLink]="['/auth']">
+    <div *ngIf="false" class="action-item" [routerLink]="['/auth']">
       <i class="fas fa-user"></i>
       <span>Prijava</span>
     </div>
-    <div class="action-item" [routerLink]="['/cart']">
+    <div class="action-item cart-icon" [routerLink]="['/cart']">
       <i class="fas fa-shopping-cart"></i>
       <span>Korpa</span>
+      <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
     </div>
   </div>
 </header>

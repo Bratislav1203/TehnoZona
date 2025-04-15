@@ -1,8 +1,22 @@
 <nav >
   <div class="tab-bar">
-    <div class="tab" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
+    <div class="tab allCategories" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
       <i class="fas fa-bars"></i>
-      <span class="">Kategorije</span>
+      <div class="allCategories">
+        <span class="kategorije-trigger">Kategorije</span>
+
+        <div class="dropdown-menu kategorije-dropdown">
+          <ul>
+            <li *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupama">
+              <div [routerLink]="[glavnaGrupa.name]">
+                <span>{{ glavnaGrupa.name }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
       <div class="dropdown-menu" *ngIf="showMenu" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
         <app-submenu></app-submenu>
       </div>

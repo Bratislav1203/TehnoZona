@@ -72,6 +72,14 @@ export class ProductService {
     console.log(params);
     return this.http.get<Product[]>(url, { params });
   }
+  getNadgrupeZaGrupu(glavnaGrupa: string) {
+    const encodedGrupa = encodeURIComponent(glavnaGrupa);
+    const url = `${this.apiUrl}/glavneGrupe/${encodedGrupa}/nadgrupe`;
+    return this.http.get<string[]>(url);
+  }
+  getGlavniProizvodjaci() {
+    return this.http.get<string[]>(`${this.apiUrl}/glavni-proizvodjaci`);
+  }
 
 
 }
@@ -99,6 +107,7 @@ export interface Product {
   opis: string;
   slike: string[];
   filteri: FilterGroup[];
+  cartKolicina?: number;
 }
 
 export interface FilterGroup {
@@ -119,4 +128,9 @@ export interface FilterCategory {
 export interface FilterType {
   name: string;
   quantity: number;
+}
+
+export interface nameAndImage {
+  name: string;
+  imgUrl: string;
 }

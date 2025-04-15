@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product, ProductService } from "../../services/product.service";
+import {Product, ProductService, nameAndImage} from "../../services/product.service";
 
 @Component({
   selector: 'app-home-page',
@@ -11,26 +11,27 @@ export class HomePageComponent implements OnInit {
 
   constructor(private productService: ProductService) {}
 
-  brands = [
-    { name: 'Beko', imgUrl: 'assets/brands/beko.png' },
-    { name: 'Bosch', imgUrl: 'assets/brands/bosch.png' },
-    { name: 'Gorenje', imgUrl: 'assets/brands/gorenje.png' },
-    { name: 'Haier', imgUrl: 'assets/brands/haier.png' },
-    { name: 'Hisense', imgUrl: 'assets/brands/hisense.png' },
-    { name: 'Huawei', imgUrl: 'assets/brands/huawei.png' },
-    { name: 'LG', imgUrl: 'assets/brands/lg.png' },
-    { name: 'Minea', imgUrl: 'assets/brands/minea.png' },
-    { name: 'Philips', imgUrl: 'assets/brands/philips.png' },
-    { name: 'Samsung', imgUrl: 'assets/brands/samsung.png' },
-    { name: 'Xiaomi', imgUrl: 'assets/brands/xiaomi.png' }
-  ];
-
+  brands: nameAndImage[] = [];
 
   ngOnInit(): void {
     this.productService.getProducts(1,20).subscribe((data) => {
       this.products = data;
       console.log(this.products);
     });
+    this.productService.getGlavniProizvodjaci().subscribe(
+      (podaci: string[]) => {
+        this.brands = podaci.map(naziv => ({
+          name: this.formatirajNaziv(naziv),
+          imgUrl: `assets/brands/${naziv.toLowerCase()}.png`
+        }));
+      },
+      (error) => {
+        console.error('Greška prilikom učitavanja proizvođača:', error);
+      }
+    );
+  }
+  formatirajNaziv(naziv: string): string {
+    return naziv.charAt(0).toUpperCase() + naziv.slice(1).toLowerCase();
   }
 
 }

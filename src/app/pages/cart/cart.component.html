@@ -26,9 +26,9 @@
         </td>
         <td><strong>{{ item.b2bcena | number: '1.2-2' }} {{ item.valuta }}</strong></td>
         <td>
-          <input type="number" [(ngModel)]="item.kolicina" (change)="updateQuantity(item)" min="1">
+          <input type="number" [(ngModel)]="item.cartKolicina" (change)="updateQuantity(item)" min="1">
         </td>
-        <td><strong>{{ (item.b2bcena * item.kolicina) | number: '1.2-2' }} {{ item.valuta }}</strong></td>
+        <td><strong>{{ (item.b2bcena * item.cartKolicina) | number: '1.2-2' }} {{ item.valuta }}</strong></td>
         <td>
           <button (click)="removeFromCart(item)" class="remove-btn">
             Ukloni <i class="fa fa-trash"></i>
@@ -39,10 +39,11 @@
     </table>
 
     <div class="cart-actions">
-      <button class="continue-shopping-btn" routerLink="/">⟵ Nastavi sa kupovinom</button>
-      <button *ngIf="cartItems.length > 0" (click)="clearCart()" class="clear-cart-btn">
-        Isprazni korpu
+      <button class="secondary-btn" routerLink="/">⟵ Nastavi sa kupovinom</button>
+      <button *ngIf="cartItems.length > 0" routerLink="/checkout" class="primary-btn">
+        Potvrdi kupovinu
       </button>
     </div>
+
   </div>
 </ng-template>

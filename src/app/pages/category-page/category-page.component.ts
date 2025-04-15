@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FilterCategory, Product, ProductService } from "../../services/product.service";
+import {FilterCategory, Product, ProductService, nameAndImage} from "../../services/product.service";
 import { ActivatedRoute } from "@angular/router";
 import { CartService } from "../../services/cart.service";
 
@@ -24,14 +24,7 @@ export class CategoryPageComponent {
   initialMinValue: number = 0;
   initialMaxValue: number = 0;
 
-  subCategories = [
-    { name: 'Desktop računari', imgUrl: 'assets/placeholder.png' },
-    { name: 'Laptopovi', imgUrl: 'assets/placeholder.png' },
-    { name: 'Monitori', imgUrl: 'assets/placeholder.png' },
-    { name: 'Računarske komponente', imgUrl: 'assets/placeholder.png' },
-    { name: 'Konzole i gaming', imgUrl: 'assets/placeholder.png' },
-    { name: 'Štampači i oprema', imgUrl: 'assets/placeholder.png' }
-  ];
+  subCategories: nameAndImage[];
 
   selectedTypes: { [key: string]: string[] } = {};
 
@@ -89,6 +82,18 @@ export class CategoryPageComponent {
             console.error("Greška prilikom učitavanja broja proizvoda po proizvođačima:", error);
           }
         );
+        this.productService.getNadgrupeZaGrupu(this.glavnaGrupa).subscribe(
+          (nadgrupe: string[]) => {
+            this.subCategories = nadgrupe.map(naziv => ({
+              name: this.formatirajNaziv(naziv),
+              imgUrl: `assets/subcategories/${naziv}.jpg`
+            }));
+          },
+          (error) => {
+            console.error("Greška prilikom učitavanja nadgrupa:", error);
+          }
+        );
+        console.log(this.subCategories);
       }
     });
   }
@@ -156,4 +161,24 @@ export class CategoryPageComponent {
     }
     console.log(this.selectedTypes);
   }
+
+  formatirajNaziv(naziv: string): string {
+    return naziv.charAt(0).toUpperCase() + naziv.slice(1).toLowerCase();
+  }
+  normalizeFileName(naziv: string): string {
+    const mapaZamene = {
+      'š': 's', 'Š': 'S',
+      'ć': 'c', 'Ć': 'C',
+      'č': 'c', 'Č': 'C',
+      'đ': 'dj', 'Đ': 'Dj',
+      'ž': 'z', 'Ž': 'Z'
+    };
+
+    const bezDijakritika = naziv.split('').map(char =>
+      mapaZamene[char] || char
+    ).join('');
+
+    return bezDijakritika.toUpperCase();
+  }
+
 }

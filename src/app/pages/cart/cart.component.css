@@ -43,6 +43,8 @@ input[type="number"] {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+  display: flex;
+  gap: 5px;
 }
 
 .cart-actions {
@@ -60,9 +62,7 @@ input[type="number"] {
   border-radius: 4px;
 }
 
-.clear-cart-btn {
-  background: red;
-}
+
 .empty-cart {
   display: flex;
   flex-direction: column;
@@ -77,4 +77,23 @@ input[type="number"] {
   font-size: 150px;
   color: #666;
   margin-bottom: 20px;
+}
+.primary-btn {
+  background: #4285f4; /* plava */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.secondary-btn {
+  background: #d5d5da; /* svetlosiva */
+  color: #4285f4;       /* plava slova */
+  border: 1px solid #d0d0d0;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
 }
