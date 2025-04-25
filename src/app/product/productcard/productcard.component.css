@@ -40,6 +40,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  width: -webkit-fill-available;
   -webkit-line-clamp: 2; /* Ograničava tekst na dva reda */
   -webkit-box-orient: vertical;
 }

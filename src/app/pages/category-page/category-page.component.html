@@ -1,18 +1,21 @@
 <div class="category-page-container">
   <h1 class="category-title">{{ title }}</h1>
+  <ng-container *ngIf="searchFilter">
+    <h1 class="category-title">Rezultat pretrage: "{{ searchFilter }}"</h1>
+  </ng-container>
   <div class="breadcrumb">
     <ng-container *ngIf="glavnaGrupa">
-      <a [routerLink]="['/', glavnaGrupa]" class="breadcrumb-link">{{ formatirajNaziv(glavnaGrupa) }}</a>
+      <a [routerLink]="['/', glavnaGrupa]" class="breadcrumb-link">{{ utilService.formatirajNaziv(glavnaGrupa) }}</a>
     </ng-container>
 
     <ng-container *ngIf="nadgrupa">
       <span class="breadcrumb-separator"> &gt; </span>
-      <a [routerLink]="['/', glavnaGrupa, nadgrupa]" class="breadcrumb-link">{{ formatirajNaziv(nadgrupa) }}</a>
+      <a [routerLink]="['/', glavnaGrupa, nadgrupa]" class="breadcrumb-link">{{ utilService.formatirajNaziv(nadgrupa) }}</a>
     </ng-container>
 
     <ng-container *ngIf="grupa">
       <span class="breadcrumb-separator"> &gt; </span>
-      <span class="breadcrumb-current">{{ formatirajNaziv(grupa) }}</span>
+      <span class="breadcrumb-current">{{ utilService.formatirajNaziv(grupa) }}</span>
     </ng-container>
   </div>
 

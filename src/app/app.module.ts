@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import { CartComponent } from './pages/cart/cart.component';
+import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { CartComponent } from './pages/cart/cart.component';
     BrandComponent,
     CategoryPageComponent,
     LoadingOverlayComponent,
-    CartComponent
+    CartComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,

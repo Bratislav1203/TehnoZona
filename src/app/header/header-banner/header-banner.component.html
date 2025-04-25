@@ -3,11 +3,17 @@
     <img src="assets/logocrni.png" alt="Logo" />
   </div>
   <div class="search-bar">
-    <input type="text" placeholder="Pretraga..." />
-    <span class="search-icon">
-      <i class="fas fa-search"></i>
-    </span>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Pretraga..."
+      (keydown)="onKeydown($event)"
+    />
+    <span class="search-icon" (click)="onSearch()">
+    <i class="fas fa-search"></i>
+  </span>
   </div>
+
   <div class="actions">
     <div *ngIf="false" class="action-item" [routerLink]="['/auth']">
       <i class="fas fa-user"></i>

@@ -5,7 +5,7 @@
     </h4>
     <ul>
       <li *ngFor="let grupa of nadgrupaKey.value">
-        <a [routerLink]="[glavnaGrupa.name, nadgrupaKey.key, grupa]">{{ grupa }}</a>
+        <a [routerLink]="[glavnaGrupa.name, nadgrupaKey.key, grupa]">{{ utilService.formatirajNaziv(grupa) }}</a>
       </li>
     </ul>
   </div>

@@ -81,6 +81,11 @@ export class ProductService {
     return this.http.get<string[]>(`${this.apiUrl}/glavni-proizvodjaci`);
   }
 
+  searchProducts(vendorId: number, query: string): Observable<Product[]> {
+    const params = new HttpParams()
+      .set('query', query);
+    return this.http.get<Product[]>(`${this.apiUrl}/${vendorId}/artikli/search`, { params });
+  }
 
 }
 

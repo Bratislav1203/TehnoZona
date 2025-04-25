@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {FilterCategory, Product, ProductService, nameAndImage} from "../../services/product.service";
-import { ActivatedRoute } from "@angular/router";
+import { FilterCategory, Product, ProductService, nameAndImage } from "../../services/product.service";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CartService } from "../../services/cart.service";
+import { UtilService } from "../../services/util.service";
 
 @Component({
   selector: 'app-category-page',
@@ -9,7 +10,7 @@ import { CartService } from "../../services/cart.service";
   styleUrls: ['./category-page.component.css']
 })
 export class CategoryPageComponent {
-  title: string = 'Philips';
+  title: string = '';
   products: Product[] = [];
   isLoading: boolean = false;
   glavnaGrupa: string | null = null;
@@ -25,13 +26,41 @@ export class CategoryPageComponent {
   initialMaxValue: number = 0;
 
   subCategories: nameAndImage[];
-
   selectedTypes: { [key: string]: string[] } = {};
 
-  constructor(private productService: ProductService, private route: ActivatedRoute, private cartService: CartService) {}
+  searchFilter: string = '';
+
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private cartService: CartService,
+    public utilService: UtilService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
+      const query = params.get('query');
+
+      if (query) {
+        this.searchFilter = query;
+        this.isLoading = true;
+
+        this.productService.searchProducts(1, this.searchFilter).subscribe(
+          (data) => {
+            this.products = data;
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error('Greška prilikom pretrage proizvoda:', error);
+            this.isLoading = false;
+          }
+        );
+
+        return;
+      }
+
+      // nastavak za prikaz proizvoda po brandu/grupi
       this.title = params.get('brandName') || '';
       this.glavnaGrupa = params.get('glavnaGrupa');
       this.nadgrupa = params.get('nadgrupa');
@@ -76,16 +105,16 @@ export class CategoryPageComponent {
               category: 'Proizvođač',
               types: Object.entries(data).map(([name, quantity]) => ({ name, quantity }))
             }];
-            console.log(this.filterCategories);
           },
           (error) => {
             console.error("Greška prilikom učitavanja broja proizvoda po proizvođačima:", error);
           }
         );
+
         this.productService.getNadgrupeZaGrupu(this.glavnaGrupa).subscribe(
           (nadgrupe: string[]) => {
             this.subCategories = nadgrupe.map(naziv => ({
-              name: this.formatirajNaziv(naziv),
+              name: this.utilService.formatirajNaziv(naziv),
               imgUrl: `assets/subcategories/${naziv}.jpg`
             }));
           },
@@ -93,7 +122,6 @@ export class CategoryPageComponent {
             console.error("Greška prilikom učitavanja nadgrupa:", error);
           }
         );
-        console.log(this.subCategories);
       }
     });
   }
@@ -113,9 +141,7 @@ export class CategoryPageComponent {
     this.maxValue = Math.max(...prices);
     this.initialMinValue = this.minValue;
     this.initialMaxValue = this.maxValue;
-    console.log()
   }
-
 
   updateSlider(): void {
     if (this.minValue > this.maxValue) {
@@ -129,7 +155,6 @@ export class CategoryPageComponent {
             category: 'Proizvođač',
             types: Object.entries(data).map(([name, quantity]) => ({ name, quantity }))
           }];
-          console.log('Broj proizvoda po proizvođačima:', data);
         },
         (error) => {
           console.error('Greška pri učitavanju proizvođača:', error);
@@ -137,17 +162,14 @@ export class CategoryPageComponent {
       );
       this.productService.getProductsFromNadgrupaWithPrice(1, this.glavnaGrupa, this.nadgrupa, this.minValue, this.maxValue).subscribe(
         (data) => {
-          console.log('Filtrirani proizvodi:', data);
           this.products = data;
         },
         (error) => {
           console.error('Greška pri učitavanju proizvoda:', error);
         }
       );
-
     }, 300);
   }
-
 
   onTypeChange(category: string, type: string, isChecked: boolean) {
     if (!this.selectedTypes[category]) {
@@ -159,12 +181,8 @@ export class CategoryPageComponent {
     } else {
       this.selectedTypes[category] = this.selectedTypes[category].filter(t => t !== type);
     }
-    console.log(this.selectedTypes);
   }
 
-  formatirajNaziv(naziv: string): string {
-    return naziv.charAt(0).toUpperCase() + naziv.slice(1).toLowerCase();
-  }
   normalizeFileName(naziv: string): string {
     const mapaZamene = {
       'š': 's', 'Š': 'S',
@@ -180,5 +198,4 @@ export class CategoryPageComponent {
 
     return bezDijakritika.toUpperCase();
   }
-
 }

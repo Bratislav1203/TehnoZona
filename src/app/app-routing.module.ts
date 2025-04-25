@@ -5,16 +5,20 @@ import { LoginPageComponent } from "./pages/login-page/login-page.component";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { CategoryPageComponent } from "./pages/category-page/category-page.component";
 import { CartComponent } from "./pages/cart/cart.component";
+import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'product/:id', component: ProductDetailsComponent },
   { path: 'auth', component: LoginPageComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'categoryPage/:brandName', component: CategoryPageComponent },
+  { path: 'search/:query', component: CategoryPageComponent },
   { path: ':glavnaGrupa', component: CategoryPageComponent },
   { path: ':glavnaGrupa/:nadgrupa', component: CategoryPageComponent },
   { path: ':glavnaGrupa/:nadgrupa/:grupa', component: CategoryPageComponent },
+  { path: 'search=:query', component: CategoryPageComponent },
 ];
 
 

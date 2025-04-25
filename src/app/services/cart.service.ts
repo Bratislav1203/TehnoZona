@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { Product } from './product.service';
+import {HttpClient} from "@angular/common/http";
 
 const CART_KEY = 'cart';
 
@@ -13,7 +14,7 @@ export class CartService {
 
   cart$ = this.cartSubject.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.cart = this.loadCartFromLocalStorage();
   }
 
@@ -62,4 +63,31 @@ export class CartService {
     this.saveCartToLocalStorage();
     this.cartSubject.next(this.cart);
   }
+
+  submitOrder(customerData: {
+    ime: string;
+    prezime: string;
+    email: string;
+    adresa: string;
+    postanskiBroj: string;
+    artikli: Product[];
+  }): Observable<any> {
+    const payload = {
+      ime: customerData.ime,
+      prezime: customerData.prezime,
+      email: customerData.email,
+      adresa: customerData.adresa,
+      postanskiBroj: customerData.postanskiBroj,
+      artikli: customerData.artikli.map(artikal => ({
+        sifra: artikal.sifra,
+        naziv: artikal.naziv,
+        proizvodjac: artikal.proizvodjac,
+        b2bcena: artikal.b2bcena,
+        //cartKolicina: artikal.cartKolicina ?? 1
+      }))
+    };
+
+    return this.http.post('http://localhost:8080/api/order', payload);
+  }
+
 }

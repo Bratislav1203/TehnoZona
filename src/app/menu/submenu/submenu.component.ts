@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GlavnaGrupa } from "../../services/mock-glavna-grupa.service";
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-submenu',
@@ -8,7 +9,7 @@ import { GlavnaGrupa } from "../../services/mock-glavna-grupa.service";
 })
 export class SubmenuComponent {
   @Input() glavnaGrupa: GlavnaGrupa;
-  constructor() {
+  constructor(public utilService: UtilService) {
     console.log(this.glavnaGrupa);
   }
 }
