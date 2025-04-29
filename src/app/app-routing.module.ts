@@ -6,6 +6,7 @@ import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { CategoryPageComponent } from "./pages/category-page/category-page.component";
 import { CartComponent } from "./pages/cart/cart.component";
 import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
+import {AboutUsPageComponent} from "./pages/about-us-page/about-us-page.component";
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'auth', component: LoginPageComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'aboutTehnoZona', component: AboutUsPageComponent },
   { path: 'categoryPage/:brandName', component: CategoryPageComponent },
   { path: 'search/:query', component: CategoryPageComponent },
   { path: ':glavnaGrupa', component: CategoryPageComponent },

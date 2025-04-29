@@ -1,0 +1,32 @@
+<div class="checkout-form">
+  <h2>Podaci o naručiocu</h2>
+
+  <form (ngSubmit)="submitOrder()">
+    <div>
+      <label>Ime:</label>
+      <input type="text" [(ngModel)]="firstName" name="firstName" required>
+    </div>
+
+    <div>
+      <label>Prezime:</label>
+      <input type="text" [(ngModel)]="lastName" name="lastName" required>
+    </div>
+
+    <div>
+      <label>Adresa:</label>
+      <input type="text" [(ngModel)]="address" name="address" required>
+    </div>
+
+    <div>
+      <label>Poštanski broj:</label>
+      <input type="text" [(ngModel)]="postalCode" name="postalCode" required>
+    </div>
+
+    <div>
+      <label>Email:</label>
+      <input type="email" [(ngModel)]="email" name="email" required>
+    </div>
+
+    <button type="submit">Pošalji porudžbinu</button>
+  </form>
+</div>

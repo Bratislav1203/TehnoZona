@@ -25,6 +25,7 @@ import { FormsModule } from "@angular/forms";
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 import { CartComponent } from './pages/cart/cart.component';
 import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
+import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
     CategoryPageComponent,
     LoadingOverlayComponent,
     CartComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    AboutUsPageComponent
   ],
   imports: [
     BrowserModule,
