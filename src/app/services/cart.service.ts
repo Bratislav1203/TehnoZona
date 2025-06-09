@@ -83,7 +83,7 @@ export class CartService {
         naziv: artikal.naziv,
         proizvodjac: artikal.proizvodjac,
         b2bcena: artikal.b2bcena,
-        //cartKolicina: artikal.cartKolicina ?? 1
+        cartKolicina: artikal.cartKolicina ?? 1
       }))
     };
 

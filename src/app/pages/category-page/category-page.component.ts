@@ -39,16 +39,27 @@ export class CategoryPageComponent {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const query = params.get('query');
+    const fullUrlSegments = this.route.snapshot.url.map(segment => segment.path);
+    const isSearchRoute = this.route.snapshot.paramMap.has('query');
+    const isBrandRoute = fullUrlSegments.length >= 3 && fullUrlSegments[0] === 'categoryPage' && fullUrlSegments[1] === 'brand';
+    const brandNameFromBrandRoute = isBrandRoute ? fullUrlSegments[2] : null;
+    const searchQuery = this.route.snapshot.paramMap.get('query');
 
-      if (query) {
-        this.searchFilter = query;
-        this.isLoading = true;
+    this.route.paramMap.subscribe(params => {
+      this.title = params.get('brandName') || '';
+      this.glavnaGrupa = params.get('glavnaGrupa');
+      this.nadgrupa = params.get('nadgrupa');
+      this.grupa = params.get('grupa');
+
+      this.isLoading = true;
+
+      if (isSearchRoute && searchQuery) {
+        this.searchFilter = searchQuery;
 
         this.productService.searchProducts(1, this.searchFilter).subscribe(
           (data) => {
             this.products = data;
+            this.setPriceRange();
             this.isLoading = false;
           },
           (error) => {
@@ -60,21 +71,27 @@ export class CategoryPageComponent {
         return;
       }
 
-      // nastavak za prikaz proizvoda po brandu/grupi
-      this.title = params.get('brandName') || '';
-      this.glavnaGrupa = params.get('glavnaGrupa');
-      this.nadgrupa = params.get('nadgrupa');
-      this.grupa = params.get('grupa');
+      if (isBrandRoute && brandNameFromBrandRoute) {
+        this.productService.getProductsByProizvodjac(brandNameFromBrandRoute).subscribe(
+          (data) => {
+            this.products = data;
+            this.setPriceRange();
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error('Greška prilikom učitavanja proizvoda po proizvođaču:', error);
+            this.isLoading = false;
+          }
+        );
 
-      this.isLoading = true;
+        return;
+      }
 
       if (this.nadgrupa && !this.grupa) {
         this.productService.getProductsFromNadgrupa(1, this.glavnaGrupa!, this.nadgrupa!, 20).subscribe(
           (data) => {
             this.products = data;
-            if (this.products.length > 0) {
-              this.setPriceRange();
-            }
+            this.setPriceRange();
             this.isLoading = false;
           },
           (error) => {
@@ -86,9 +103,7 @@ export class CategoryPageComponent {
         this.productService.getProducts(1, 20).subscribe(
           (data) => {
             this.products = data;
-            if (this.products.length > 0) {
-              this.setPriceRange();
-            }
+            this.setPriceRange();
             this.isLoading = false;
           },
           (error) => {
@@ -125,6 +140,7 @@ export class CategoryPageComponent {
       }
     });
   }
+
 
 
   toggleCategory(category: string) {
@@ -198,4 +214,10 @@ export class CategoryPageComponent {
 
     return bezDijakritika.toUpperCase();
   }
+
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = 'assets/noImageAvailable.jpg';
+  }
+
 }

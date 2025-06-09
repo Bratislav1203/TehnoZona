@@ -10,6 +10,7 @@ import { CartService } from "../../services/cart.service";
 export class ProductcardComponent implements OnInit {
 
   @Input() product: Product;
+  showPopup = false;
 
   constructor(private productService: ProductService, private cartService: CartService) {
   }
@@ -19,9 +20,21 @@ export class ProductcardComponent implements OnInit {
   setCurrentProduct(product: Product) {
     this.productService.setCurrentProduct(product);
   }
-  addToCart(product: Product) {
+
+  addToCart(product: Product): void {
     this.cartService.addToCart(product);
-    console.log('Dodato u korpu:', product);
+    this.showPopup = true;
+
+    setTimeout(() => {
+      this.showPopup = false;
+    }, 2000);
   }
+
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = 'assets/noImageAvailable.jpg';
+  }
+
+
 }
 

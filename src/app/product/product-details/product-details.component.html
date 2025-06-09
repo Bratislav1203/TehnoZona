@@ -30,7 +30,6 @@
   <div class="product-info">
     <p class="product-code">Šifra artikla: {{ product.sifra }}</p>
     <h1 class="product-title">{{ product.naziv }}</h1>
-    <a href="#" class="review-link">Budi prvi koji će napisati recenziju</a>
     <div class="discount" *ngIf="product.flagAkcijskaCena">
       <span class="old-price">{{ product.mpcena | currency:'RSD' }}</span>
       <span class="discount-percentage">-{{ ((product.mpcena - product.b2bcena) / product.mpcena * 100) | number:'1.0-0' }}%</span>

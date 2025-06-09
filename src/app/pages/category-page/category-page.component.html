@@ -22,7 +22,11 @@
   <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row">
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
       <div [routerLink]="['/', glavnaGrupa, subCategory.name]">
-        <img [src]="subCategory.imgUrl" [alt]="subCategory.name" />
+        <img
+          [src]="subCategory.imgUrl"
+          [alt]="subCategory.name"
+          (error)="onImageError($event)"
+        />
         <p>{{ subCategory.name }}</p>
       </div>
     </div>
