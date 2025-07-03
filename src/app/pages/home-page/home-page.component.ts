@@ -34,11 +34,11 @@ export class HomePageComponent implements OnInit {
   }
 
   ucitajProizvode(): void {
-    this.productService.getProductsFromCategory(this.vendorId, this.glavnaGrupa, this.page, this.size)
-      .subscribe((data) => {
-        this.products = data;
-        console.log(this.products);
-      });
+    // this.productService.getProductsFromCategory(this.vendorId, this.glavnaGrupa, this.page, this.size)
+    //   .subscribe((data) => {
+    //     this.products = data;
+    //     console.log(this.products);
+    //   });
   }
 
   formatirajNaziv(naziv: string): string {

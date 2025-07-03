@@ -273,3 +273,45 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
   pointer-events: auto;
 }
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 30px;
+  user-select: none;
+}
+
+.pagination-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  color: #333;
+  background-color: transparent;
+  transition: background-color 0.2s, color 0.2s;
+  font-weight: 500;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination-btn.active {
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+  background-color: transparent;
+}
+.page-container{
+  display: block;
+  width: 100%;
+}
