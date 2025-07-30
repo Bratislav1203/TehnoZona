@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "npx ng",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && npx ng serve",
-    "build": "npx ng build",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx ng build",
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e"
@@ -33,6 +33,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
+    "cross-env": "^10.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.0.0",
