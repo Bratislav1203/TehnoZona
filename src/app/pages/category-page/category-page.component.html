@@ -22,7 +22,11 @@
   <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row">
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
       <div [routerLink]="['/', glavnaGrupa, subCategory.name]">
-        <img [src]="subCategory.imgUrl" [alt]="subCategory.name" />
+        <img
+          [src]="subCategory.imgUrl"
+          [alt]="subCategory.name"
+          (error)="onImageError($event)"
+        />
         <p>{{ subCategory.name }}</p>
       </div>
     </div>
@@ -36,15 +40,28 @@
         <div class="slider-container">
           <label>Cena:</label>
           <div class="slider-values">
-            <span>{{ minValue }} din.</span>
-            <span>{{ maxValue }} din.</span>
+            <span>{{ minValue || 0 }} din.</span>
+            <span>{{ maxValue || 0 }} din.</span>
           </div>
 
           <div class="slider">
-            <input type="range" [min]="initialMinValue" [max]="initialMaxValue" step="1" [(ngModel)]="minValue" (input)="updateSlider()">
-            <input type="range" [min]="initialMinValue" [max]="initialMaxValue" step="1" [(ngModel)]="maxValue" (input)="updateSlider()">
+            <input
+              type="range"
+              [min]="initialMinValue"
+              [max]="initialMaxValue"
+              [value]="minValue"
+              (input)="minValue = +$event.target.value; updateSlider()"
+            />
+            <input
+              type="range"
+              [min]="initialMinValue"
+              [max]="initialMaxValue"
+              [value]="maxValue"
+              (input)="maxValue = +$event.target.value; updateSlider()"
+            />
           </div>
         </div>
+
 
         <div class="filter-category" *ngFor="let category of filterCategories">
           <h3>{{ category.category }}</h3>
@@ -66,9 +83,27 @@
         </div>
       </div>
     </div>
+    <div class="page-container">
+      <div class="product-grid">
+        <app-productcard *ngFor="let product of products" [product]="product"></app-productcard>
+      </div>
+      <div class="pagination-container" *ngIf="products.length > 0 && totalPages > 0">
+        <button (click)="goToPage(0)" [disabled]="currentPage === 0" class="pagination-btn">&laquo;</button>
+        <button (click)="goToPrevious()" [disabled]="currentPage === 0" class="pagination-btn">&lsaquo;</button>
 
-    <div class="product-grid">
-      <app-productcard *ngFor="let product of products" [product]="product"></app-productcard>
+        <ng-container *ngFor="let page of visiblePages">
+          <button
+            (click)="goToPage(page)"
+            [ngClass]="{'active': page === currentPage}"
+            class="pagination-btn page-number"
+          >
+            {{ page + 1 }}
+          </button>
+        </ng-container>
+
+        <button (click)="goToNext()" [disabled]="currentPage === totalPages - 1" class="pagination-btn">&rsaquo;</button>
+        <button (click)="goToPage(totalPages - 1)" [disabled]="currentPage === totalPages - 1" class="pagination-btn">&raquo;</button>
+      </div>
     </div>
   </div>
 </div>

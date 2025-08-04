@@ -10,6 +10,5 @@ import {UtilService} from "../../services/util.service";
 export class SubmenuComponent {
   @Input() glavnaGrupa: GlavnaGrupa;
   constructor(public utilService: UtilService) {
-    console.log(this.glavnaGrupa);
   }
 }

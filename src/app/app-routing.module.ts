@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'aboutTehnoZona', component: AboutUsPageComponent },
-  { path: 'categoryPage/:brandName', component: CategoryPageComponent },
+  { path: 'categoryPage/brand/:brandName', component: CategoryPageComponent },
   { path: 'search/:query', component: CategoryPageComponent },
   { path: ':glavnaGrupa', component: CategoryPageComponent },
   { path: ':glavnaGrupa/:nadgrupa', component: CategoryPageComponent },

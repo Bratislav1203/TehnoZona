@@ -10,6 +10,13 @@ import { UtilService } from "../../services/util.service";
   styleUrls: ['./category-page.component.css']
 })
 export class CategoryPageComponent {
+  totalPages: number = 15;
+  visiblePages: number[] = [];
+
+  totalProducts: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 20;
+
   title: string = '';
   products: Product[] = [];
   isLoading: boolean = false;
@@ -20,12 +27,12 @@ export class CategoryPageComponent {
   expandedCategories: { [key: string]: boolean } = {};
 
   timeoutId: any;
-  minValue: number = 0;
-  maxValue: number = 0;
+  minValue: number = undefined;
+  maxValue: number = undefined;
   initialMinValue: number = 0;
   initialMaxValue: number = 0;
 
-  subCategories: nameAndImage[];
+  subCategories: nameAndImage[] = [];
   selectedTypes: { [key: string]: string[] } = {};
 
   searchFilter: string = '';
@@ -39,63 +46,28 @@ export class CategoryPageComponent {
   ) {}
 
   ngOnInit(): void {
+    const fullUrlSegments = this.route.snapshot.url.map(segment => segment.path);
+    const isSearchRoute = this.route.snapshot.paramMap.has('query');
+    const isBrandRoute = fullUrlSegments.length >= 3 && fullUrlSegments[0] === 'categoryPage' && fullUrlSegments[1] === 'brand';
+    const brandNameFromBrandRoute = isBrandRoute ? fullUrlSegments[2] : null;
+    const searchQuery = this.route.snapshot.paramMap.get('query');
+
+    // Prvo pretplata na parametre rute
     this.route.paramMap.subscribe(params => {
-      const query = params.get('query');
-
-      if (query) {
-        this.searchFilter = query;
-        this.isLoading = true;
-
-        this.productService.searchProducts(1, this.searchFilter).subscribe(
-          (data) => {
-            this.products = data;
-            this.isLoading = false;
-          },
-          (error) => {
-            console.error('Greška prilikom pretrage proizvoda:', error);
-            this.isLoading = false;
-          }
-        );
-
-        return;
-      }
-
-      // nastavak za prikaz proizvoda po brandu/grupi
       this.title = params.get('brandName') || '';
       this.glavnaGrupa = params.get('glavnaGrupa');
       this.nadgrupa = params.get('nadgrupa');
       this.grupa = params.get('grupa');
 
-      this.isLoading = true;
+      if (isSearchRoute && searchQuery) {
+        this.searchFilter = searchQuery;
+        // this.ucitajPretragu();
+        return;
+      }
 
-      if (this.nadgrupa && !this.grupa) {
-        this.productService.getProductsFromNadgrupa(1, this.glavnaGrupa!, this.nadgrupa!, 20).subscribe(
-          (data) => {
-            this.products = data;
-            if (this.products.length > 0) {
-              this.setPriceRange();
-            }
-            this.isLoading = false;
-          },
-          (error) => {
-            console.error("Greška prilikom učitavanja proizvoda:", error);
-            this.isLoading = false;
-          }
-        );
-      } else {
-        this.productService.getProducts(1, 20).subscribe(
-          (data) => {
-            this.products = data;
-            if (this.products.length > 0) {
-              this.setPriceRange();
-            }
-            this.isLoading = false;
-          },
-          (error) => {
-            console.error("Greška prilikom učitavanja proizvoda:", error);
-            this.isLoading = false;
-          }
-        );
+      if (isBrandRoute && brandNameFromBrandRoute) {
+        this.ucitajBrend(brandNameFromBrandRoute);
+        return;
       }
 
       if (this.glavnaGrupa) {
@@ -124,6 +96,112 @@ export class CategoryPageComponent {
         );
       }
     });
+
+    // Posebna pretplata na query parametre
+    this.route.queryParams.subscribe(queryParams => {
+      const hasPage = 'page' in queryParams;
+      const hasMaxCena = 'maxCena' in queryParams;
+      if (!hasPage && !hasMaxCena) {
+        this.currentPage = 0;
+        this.pageSize = 20;
+      }
+
+      this.currentPage = +queryParams['page'] || this.currentPage || 0;
+      this.minValue = +queryParams['minCena'] || 0;
+      this.maxValue = +queryParams['maxCena'] || 0;
+
+      const proizvodjaciParam = queryParams['proizvodjaci'];
+      if (proizvodjaciParam) {
+        this.selectedTypes['Proizvođač'] = proizvodjaciParam.split(',');
+      } else {
+        this.selectedTypes['Proizvođač'] = [];
+      }
+
+      console.log(this.nadgrupa + this.grupa);
+      if (this.nadgrupa && this.grupa == null) {
+        console.log(this.nadgrupa + this.grupa);
+        this.ucitajStranicuZaNadgrupu();
+      } else if (this.glavnaGrupa) {
+        this.ucitajStranicu();
+      }
+    });
+  }
+
+
+
+  ucitajStranicu(): void {
+    if (!this.glavnaGrupa) return;
+
+    this.isLoading = true;
+
+    this.productService.getProductsFromCategory(
+      1,
+      this.glavnaGrupa,
+      this.currentPage,
+      this.pageSize,
+      this.minValue,
+      this.maxValue,
+      this.selectedTypes['Proizvođač']
+    ).subscribe((response) => {
+      this.products = response.products;
+      this.totalProducts = response.totalCount;
+      this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+
+      // Loguj minimalnu i maksimalnu cenu svih proizvoda
+      console.log('MIN CENA:', response.minCena);
+      console.log('MAX CENA:', response.maxCena);
+
+      this.initialMinValue = response.minCena;
+      this.initialMaxValue = response.maxCena;
+
+      if (this.minValue === undefined || this.minValue === null || this.minValue === 0) {
+        this.minValue = response.minCena;
+      }
+      if (this.maxValue === undefined || this.maxValue === null || this.maxValue === 0) {
+        this.maxValue = response.maxCena;
+      }
+
+
+      this.updateVisiblePages();
+      this.isLoading = false;
+    }, (error) => {
+      console.error('Greška prilikom učitavanja proizvoda iz glavne grupe:', error);
+      this.isLoading = false;
+    });
+  }
+
+
+
+  ucitajStranicuZaNadgrupu(): void {
+    if (!this.glavnaGrupa || !this.nadgrupa) return;
+
+    this.isLoading = true;
+
+    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
+
+    this.productService.getProductsFromNadgrupa(
+      1,
+      this.glavnaGrupa,
+      this.nadgrupa,
+      this.currentPage,
+      this.pageSize,
+      this.minValue,
+      this.maxValue,
+      selektovaniProizvodjaci
+    ).subscribe(
+      (data) => {
+        this.products = data;
+        this.setPriceRange();
+        this.totalPages = Math.ceil(300 / this.pageSize); // TODO: zameni sa backend vrednošću kada bude dostupna
+        this.updateVisiblePages();
+        this.isLoading = false;
+        console.log(data);
+      },
+      (error) => {
+        console.error("Greška prilikom učitavanja proizvoda iz nadgrupe:", error);
+        this.isLoading = false;
+      }
+    );
   }
 
 
@@ -136,11 +214,50 @@ export class CategoryPageComponent {
   }
 
   private setPriceRange(): void {
+    if (!this.products || this.products.length === 0) return;
+
     const prices = this.products.map(p => p.b2bcena);
     this.minValue = Math.min(...prices);
     this.maxValue = Math.max(...prices);
     this.initialMinValue = this.minValue;
     this.initialMaxValue = this.maxValue;
+  }
+
+  updateVisiblePages(): void {
+    const maxVisible = 5;
+    const pages = [];
+
+    let start = Math.max(0, this.currentPage - 2);
+    let end = Math.min(this.totalPages, start + maxVisible);
+
+    if (end - start < maxVisible) {
+      start = Math.max(0, end - maxVisible);
+    }
+
+    for (let i = start; i < end; i++) {
+      pages.push(i);
+    }
+
+    this.visiblePages = pages;
+  }
+
+  goToPage(page: number): void {
+    this.currentPage = page;
+    this.navigateWithFilters();
+  }
+
+  goToPrevious(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.navigateWithFilters();
+    }
+  }
+
+  goToNext(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+      this.navigateWithFilters();
+    }
   }
 
   updateSlider(): void {
@@ -149,25 +266,7 @@ export class CategoryPageComponent {
     }
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
-      this.productService.getProizvodjaciCountNadgrupaWithPrice(1, this.glavnaGrupa, this.minValue, this.maxValue).subscribe(
-        (data) => {
-          this.filterCategories = [{
-            category: 'Proizvođač',
-            types: Object.entries(data).map(([name, quantity]) => ({ name, quantity }))
-          }];
-        },
-        (error) => {
-          console.error('Greška pri učitavanju proizvođača:', error);
-        }
-      );
-      this.productService.getProductsFromNadgrupaWithPrice(1, this.glavnaGrupa, this.nadgrupa, this.minValue, this.maxValue).subscribe(
-        (data) => {
-          this.products = data;
-        },
-        (error) => {
-          console.error('Greška pri učitavanju proizvoda:', error);
-        }
-      );
+      this.navigateWithFilters();
     }, 300);
   }
 
@@ -181,6 +280,26 @@ export class CategoryPageComponent {
     } else {
       this.selectedTypes[category] = this.selectedTypes[category].filter(t => t !== type);
     }
+    this.navigateWithFilters();
+  }
+
+  navigateWithFilters() {
+    const queryParams: any = {
+      page: this.currentPage !== undefined ? this.currentPage : 0,
+      size: this.pageSize !== undefined ? this.pageSize : 20,
+      minCena: this.minValue,
+      maxCena: this.maxValue
+    };
+    console.log(this.selectedTypes);
+    if (this.selectedTypes['Proizvođač']) {
+      console.log("uso");
+      queryParams['proizvodjaci'] = this.selectedTypes['Proizvođač'].join(',');
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge'
+    });
   }
 
   normalizeFileName(naziv: string): string {
@@ -198,4 +317,35 @@ export class CategoryPageComponent {
 
     return bezDijakritika.toUpperCase();
   }
+
+  onImageError(event: Event) {
+    const element = event.target as HTMLImageElement;
+    element.src = 'assets/noImageAvailable.jpg';
+  }
+
+  ucitajBrend(brandName: string): void {
+    // this.isLoading = true;
+    //
+    // this.productService.getProductsByBrand(
+    //   1, // vendorId, možeš da zameniš ako je dinamički
+    //   brandName,
+    //   this.currentPage,
+    //   this.pageSize,
+    //   this.minValue,
+    //   this.maxValue
+    // ).subscribe(
+    //   data => {
+    //     this.products = data;
+    //     this.setPriceRange();
+    //     this.totalPages = Math.ceil(300 / this.pageSize); // zameni kada backend vrati ukupan broj
+    //     this.updateVisiblePages();
+    //     this.isLoading = false;
+    //   },
+    //   error => {
+    //     console.error('Greška prilikom učitavanja proizvoda po brendu:', error);
+    //     this.isLoading = false;
+    //   }
+    // );
+  }
+
 }
