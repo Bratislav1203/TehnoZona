@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "npx ng",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && npx ng serve",
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx ng build",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider npx ng build --configuration production",
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e"
