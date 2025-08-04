@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl  = `${environment.apiBaseUrl}api/vendors`;
-  private apiUrlArtikli = `${environment.apiBaseUrl}api/vendors/artikli`;
+  private apiUrlArtikli = 'http://localhost:8080/api/vendors/artikli';
+  private apiUrl = 'http://localhost:8080/api/vendors';
 
   currentProduct: Product;
   constructor(private http: HttpClient) {}
@@ -30,7 +29,7 @@ export class ProductService {
   }
 
   getProductsFromNadgrupa(vendorId: number, glavnaGrupa: string, nadgrupa: string, limit: number): Observable<Product[]> {
-    const url = `${environment.apiBaseUrl}api/vendors/${vendorId}/glavnaGrupa/${glavnaGrupa}/nadgrupa/${nadgrupa}/artikli`;
+    const url = `http://localhost:8080/api/vendors/${vendorId}/glavnaGrupa/${glavnaGrupa}/nadgrupa/${nadgrupa}/artikli`;
     const params = new HttpParams().set('limit', limit.toString());
 
     return this.http.get<Product[]>(url, { params });
@@ -49,7 +48,7 @@ export class ProductService {
   }
   getProizvodjaciCountNadgrupaWithPrice(vendorId: number, glavnaGrupa: string, minCena: number, maxCena: number): Observable<{ [key: string]: number }> {
     //
-    // OVO TRENUTNO RADI ZA GLAVNU GRUPU!!!!!!
+    //OVO TRENUTNO RADI ZA GLAVNU GRUPU!!!!!!
     //
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
     let params = new HttpParams()

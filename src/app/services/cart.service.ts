@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { Product } from './product.service';
 import {HttpClient} from "@angular/common/http";
-import { environment } from '../../environments/environment';
 
 const CART_KEY = 'cart';
 
@@ -88,7 +87,7 @@ export class CartService {
       }))
     };
 
-    return this.http.post(`${environment.apiBaseUrl}api/order`, payload);
+    return this.http.post('http://localhost:8080/api/order', payload);
   }
 
 }
