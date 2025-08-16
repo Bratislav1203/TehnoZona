@@ -101,7 +101,7 @@ export class ProductService {
   }
 
   getProizvodjaciCount(vendorId: number, glavnaGrupa: string): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(`${this.apiUrl}/${vendorId}/glavnaGrupa/${glavnaGrupa}/proizvodjaci-count`);
+    return this.http.get<{ [key: string]: number }>(`${this.apiUrl}/2/glavnaGrupa/${glavnaGrupa}/proizvodjaci-count`);
   }
   getProizvodjaciCountNadgrupaWithPrice(vendorId: number, glavnaGrupa: string, minCena: number, maxCena: number): Observable<{ [key: string]: number }> {
     //
