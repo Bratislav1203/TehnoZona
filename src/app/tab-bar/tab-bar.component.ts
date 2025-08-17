@@ -12,11 +12,18 @@ export class TabBarComponent implements OnInit {
   showMenu = false;
   hoveredIndex: number | null = null;
   glavneGrupeSaNadgrupamaIGrupama: GlavnaGrupa[] = [];
+  glavneGrupeSaNadgrupamaIGrupamaUziSkup: GlavnaGrupa[] = [];
 
   constructor(private glavnaGrupaService: GlavnagrupaService, private mockGlavnaGrupaService: MockGlavnaGrupaService) { }
 
   ngOnInit(): void {
     this.glavneGrupeSaNadgrupamaIGrupama = this.mockGlavnaGrupaService.getAllGlavneGrupe();
+    this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = this.glavneGrupeSaNadgrupamaIGrupama
+      .filter(grupa =>
+        grupa.name !== 'SIGURNOSNI I ALARMNI SISTEMI' &&
+        grupa.name !== 'KANCELARIJSKI I ŠKOLSKI MATERIJAL' &&
+        grupa.name !== 'OSTALO I OUTLET'
+      );
     console.log(this.glavneGrupeSaNadgrupamaIGrupama);
   }
 

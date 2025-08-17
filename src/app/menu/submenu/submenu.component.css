@@ -1,50 +1,67 @@
-.submenu-container {
+/* KONTEJNER: auto-fit + minmax -> nema „rezervisanih“ praznih kolona */
+.submenu-container{
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 4 kolone, prilagodi ako je potrebno */
-  gap: 0px 40px; /* Uklonjen vertikalni razmak, horizontalni ostaje 40px */
-  max-height: 600px; /* Ograničava visinu menija */
-  overflow-y: auto; /* Omogućava skrolovanje ako je potrebno */
-  align-content: start; /* Sprečava centriranje kod prelamanja */
-  padding: 10px 20px;
-  cursor: default;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  /* prilagodljiv razmak: manji na užim ekranima */
+  gap: clamp(6px, 1vw, 14px);
+  /* manji unutrašnji padding, ali da ne „lepi“ ivice */
+  padding: clamp(6px, 1vw, 12px) clamp(8px, 2vw, 16px);
+  align-content: start;
+  justify-items: start;   /* poravnanje ulevo u svakoj ćeliji */
+  /* ukloni visinska ograničenja da ne „guta“ prostor */
+  max-height: none;
+  overflow: visible;
 }
 
-.submenu-column {
-  display: flex;
-  flex-direction: column;
-  cursor: default;
-}
-
-.submenu-column h4 a {
-  text-decoration: unset;
-  color: #333;
-}
-.submenu-column h4 {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 2px; /* Manji razmak između naslova i liste */
-  color: #333;
-}
-
-.submenu-column ul {
-  list-style: none;
+/* KOLONA = jedna nadgrupa (naslov + lista) */
+.submenu-column{
+  display: grid;
+  grid-auto-rows: min-content; /* kompaktnije slaganje */
+  row-gap: 4px;
+  margin: 0;
   padding: 0;
-  margin: 0 0 8px 0; /* Smanjen razmak između nadgrupa */
 }
 
-.submenu-column li {
+/* Naslov nadgrupe */
+.submenu-column h4{
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.submenu-column h4 a{
+  text-decoration: none;
+  color: #333;
+}
+
+/* Lista grupa */
+.submenu-column ul{
+  list-style: none;
+  margin: 2px 0 0 0;   /* minimalni razmak ispod naslova */
+  padding: 0;
+}
+.submenu-column li{
+  margin: 0;
+  line-height: 1.2;     /* zbijenije od default ~1.4 */
   font-size: 13px;
-  color: #555;
-  margin-bottom: 4px; /* Manji razmak između stavki */
-  cursor: pointer;
-  transition: color 0.3s;
 }
-
-.submenu-column li a {
+.submenu-column li a{
   color: #555;
-  text-decoration: unset;
+  text-decoration: none;
 }
-
-.submenu-column li:hover {
+.submenu-column li a:hover{
   text-decoration: underline;
 }
+
+/* Malo kompaktniji raspored na užim širinama */
+@media (max-width: 1200px){
+  .submenu-container{
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+@media (max-width: 900px){
+  .submenu-container{
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
+

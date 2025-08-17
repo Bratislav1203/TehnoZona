@@ -35,12 +35,12 @@ export class ProductService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    if (minCena !== undefined && minCena !== null) {
-      params = params.set('minCena', minCena.toString());
-    }
-    if (maxCena !== undefined && maxCena !== null) {
-      params = params.set('maxCena', maxCena.toString());
-    }
+    // if (minCena !== undefined && minCena !== null) {
+    //   params = params.set('minCena', minCena.toString());
+    // }
+    // if (maxCena !== undefined && maxCena !== null) {
+    //   params = params.set('maxCena', maxCena.toString());
+    // }
 
     if (proizvodjaci && proizvodjaci.length > 0) {
       proizvodjaci.forEach(p => {
