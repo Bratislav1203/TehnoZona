@@ -315,3 +315,46 @@ input[type="range"]::-webkit-slider-thumb {
   display: block;
   width: 100%;
 }
+
+
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr;  /* mobilni */
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .products-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1280px) {
+  .products-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* app-productcard kao "kartica" */
+.products-grid app-productcard {
+  display: block;
+  width: 100%;
+}
+
+/* Mobilna verzija - sidebar se skriva, proizvodi se šire */
+@media (max-width: 767px) {
+  .main-content {
+    flex-direction: column;   /* da ne gura sidebar sa leve strane */
+  }
+
+  .sidebar {
+    display: none;            /* sakrij filtere na mobilnom */
+  }
+
+  .page-container {
+    width: 100%;              /* koristi celu širinu */
+    margin: 0;
+    padding: 0 8px;           /* mali unutrašnji razmak da ne lepi uz ivicu */
+  }
+}
+
+
+

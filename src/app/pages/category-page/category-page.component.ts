@@ -56,7 +56,7 @@ export class CategoryPageComponent {
     this.route.paramMap.subscribe(params => {
       this.title = params.get('brandName') || '';
       this.glavnaGrupa = params.get('glavnaGrupa');
-      this.nadgrupa = params.get('nadgrupa');
+      this.nadgrupa = params.get('nadgrupa')?.toUpperCase();
       this.grupa = params.get('grupa');
 
       if (isSearchRoute && searchQuery) {
@@ -71,7 +71,7 @@ export class CategoryPageComponent {
       }
 
       if (this.glavnaGrupa) {
-        this.productService.getProizvodjaciCount(1, this.glavnaGrupa).subscribe(
+        this.productService.getProizvodjaciCount(2, this.glavnaGrupa, this.nadgrupa ? [this.nadgrupa] : []).subscribe(
           (data) => {
             this.filterCategories = [{
               category: 'Proizvođač',
@@ -94,6 +94,11 @@ export class CategoryPageComponent {
             console.error("Greška prilikom učitavanja nadgrupa:", error);
           }
         );
+      }
+      if (this.nadgrupa && this.grupa == null) {
+        this.ucitajStranicuZaNadgrupu();
+      } else if (this.glavnaGrupa) {
+        this.ucitajStranicu();
       }
     });
 
@@ -135,7 +140,7 @@ export class CategoryPageComponent {
     this.isLoading = true;
 
     this.productService.getProductsFromCategory(
-      1,
+      2,
       this.glavnaGrupa,
       this.currentPage,
       this.pageSize,
@@ -180,7 +185,7 @@ export class CategoryPageComponent {
     const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
 
     this.productService.getProductsFromNadgrupa(
-      1,
+      2,
       this.glavnaGrupa,
       this.nadgrupa,
       this.currentPage,

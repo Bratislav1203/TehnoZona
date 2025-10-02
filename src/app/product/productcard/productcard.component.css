@@ -1,121 +1,65 @@
 .product-card {
-  width: 200px; /* Fiksna širina kartice */
-  height: 350px; /* Fiksna visina kartice */
+  width: 100%;
+  min-height: 320px;       /* normalna visina */
   border: 1px solid #d1d3e2;
-  border-radius: 5px;
-  padding: 15px;
+  border-radius: 8px;
+  padding: 12px;
   text-align: center;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
+/* Slika proizvoda */
 .product-image {
   width: 100%;
-  height: 150px; /* Fiksna visina slike */
-  object-fit: cover;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease; /* Dodaje tranziciju za glatki efekat */
+  height: 180px;           /* optimalna visina slike */
+  object-fit: contain;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease;
 }
 
 .product-image:hover {
-  transform: scale(1.1); /* Zumira sliku za 10% */
+  transform: scale(1.05);
 }
 
-
-.product-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  flex-grow: 1; /* Omogućava detaljima da popune prostor */
-}
-
+/* Naziv proizvoda */
 .product-name {
-  font-size: 14px; /* Manja veličina fonta za naslov */
+  font-size: 14px;
   font-weight: 500;
-  margin: 10px 0;
+  margin: 8px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  width: -webkit-fill-available;
-  -webkit-line-clamp: 2; /* Ograničava tekst na dva reda */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
+/* Cena */
 .product-price {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
-  margin-top: auto;
+  margin: 8px 0;
+  color: #000;
 }
 
-.divider {
-  width: 100%;
-  margin: 10px 0;
-  border: none;
-  border-top: 1px solid #d1d3e2;
-}
-
-.bottom-section {
-  margin-top: auto; /* Osigurava da donji deo uvek bude na dnu */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.quantity-control {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.quantity-control button {
-  background-color: #ffa726;
-  border: none;
-  padding: 5px 10px;
-  margin: 0 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-}
-
-.quantity-control span {
-  font-size: 16px;
-}
-
+/* Dugme */
 .add-to-cart {
   margin-top: auto;
+  width: 100%;
   background-color: #ffa726;
   border: none;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   color: white;
+  font-weight: 600;
   transition: background-color 0.3s;
 }
 
 .add-to-cart:hover {
   background-color: #fb8c00;
-}
-
-.popup-toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #4285f4;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  z-index: 1000;
-  animation: fadeOut 2s forwards;
-}
-
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; display: none; }
 }

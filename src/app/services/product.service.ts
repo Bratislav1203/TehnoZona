@@ -71,14 +71,16 @@ export class ProductService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    if (minCena !== undefined) {
-      params = params.set('minCena', minCena.toString());
-    }
-    if (maxCena !== undefined) {
-      params = params.set('maxCena', maxCena.toString());
-    }
+    // if (minCena !== undefined) {
+    //   params = params.set('minCena', minCena.toString());
+    // }
+    // if (maxCena !== undefined) {
+    //   params = params.set('maxCena', maxCena.toString());
+    // }
     if (proizvodjaci && proizvodjaci.length > 0) {
-      params = params.set('proizvodjaci', proizvodjaci.join(',')); // očekujemo comma-separated na backendu
+      proizvodjaci.forEach(p => {
+        params = params.append('proizvodjaci', p);
+      });
     }
     return this.http.get<Product[]>(url, { params });
   }
@@ -100,9 +102,25 @@ export class ProductService {
     return this.currentProduct;
   }
 
-  getProizvodjaciCount(vendorId: number, glavnaGrupa: string): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(`${this.apiUrl}/2/glavnaGrupa/${glavnaGrupa}/proizvodjaci-count`);
+  getProizvodjaciCount(
+    vendorId: number,
+    glavnaGrupa: string,
+    nadgrupe?: string[]
+  ): Observable<{ [key: string]: number }> {
+    let params = new HttpParams();
+
+    if (nadgrupe && nadgrupe.length > 0) {
+      nadgrupe.forEach(n => {
+        params = params.append('nadgrupe', n);
+      });
+    }
+
+    return this.http.get<{ [key: string]: number }>(
+      `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodeURIComponent(glavnaGrupa)}/proizvodjaci-count`,
+      { params }
+    );
   }
+
   getProizvodjaciCountNadgrupaWithPrice(vendorId: number, glavnaGrupa: string, minCena: number, maxCena: number): Observable<{ [key: string]: number }> {
     //
     // OVO TRENUTNO RADI ZA GLAVNU GRUPU!!!!!!
