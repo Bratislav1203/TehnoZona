@@ -1,0 +1,50 @@
+<div class="allcat-wrapper" (mouseleave)="onLeaveMenu()">
+
+  <!-- Gornja traka za mobilni prikaz -->
+  <div class="allcat-mobile-header" *ngIf="isMobile">
+    <span class="header-title">Sve kategorije</span>
+    <button class="close-btn" (click)="closeMobileMenu()">✕</button>
+  </div>
+
+  <!-- Levi panel / lista glavnih grupa -->
+  <div class="allcat-left">
+    <ul>
+      <li
+        *ngFor="let g of glavneGrupe"
+        (mouseenter)="onHoverGroup(g)"
+        (click)="toggleGroup(g)"
+        [class.active]="hoveredGroup?.name === g.name || openedGroup?.name === g.name"
+      >
+        {{ utilService.formatirajNaziv(g.name) }}
+
+        <!-- Mobilni prikaz: accordion -->
+        <div *ngIf="isMobile && openedGroup?.name === g.name" class="mobile-nadgrupe">
+          <div *ngFor="let nadgrupa of (g.nadgrupe | keyvalue)" class="nadgrupa-block">
+            <h4>{{ utilService.formatirajNaziv(nadgrupa.key) }}</h4>
+            <ul>
+              <li *ngFor="let grupa of nadgrupa.value">
+                <a [routerLink]="[g.name, nadgrupa.key, grupa]">
+                  {{ utilService.formatirajNaziv(grupa) }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Desni panel za desktop -->
+  <div class="allcat-right" *ngIf="!isMobile && hoveredGroup">
+    <div *ngFor="let nadgrupa of (hoveredGroup.nadgrupe | keyvalue)" class="nadgrupa-column">
+      <h4>{{ utilService.formatirajNaziv(nadgrupa.key) }}</h4>
+      <ul>
+        <li *ngFor="let grupa of nadgrupa.value">
+          <a [routerLink]="[hoveredGroup.name, nadgrupa.key, grupa]">
+            {{ utilService.formatirajNaziv(grupa) }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

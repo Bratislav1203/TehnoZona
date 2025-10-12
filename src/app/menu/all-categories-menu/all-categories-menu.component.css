@@ -1,0 +1,268 @@
+/* =============== OSNOVA (DESKTOP) =============== */
+
+.tab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #2f2f2f;
+  color: #f7f7f7;
+  padding: 0 16px;
+  height: 46px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+body, main, .page-content {
+  padding-top: 70px !important;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+/* === SVE KATEGORIJE === */
+.allCategories {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 20px;
+}
+
+.kategorije-trigger {
+  font-weight: 600;
+  cursor: pointer;
+  color: #f7f7f7;
+  transition: color 0.2s;
+}
+
+.kategorije-trigger:hover {
+  color: #ffa726;
+}
+
+/* === Meni pozicija - desktop === */
+.allCategories app-all-categories-menu {
+  position: absolute;
+  left: 0;
+  top: 39px; /* ispod tab bara */
+  z-index: 1000;
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeDown 0.25s ease-out forwards;
+}
+
+/* === Mega meni (desktop) === */
+.allcat-wrapper {
+  display: flex;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Levi panel */
+.allcat-left {
+  width: 240px;
+  border-right: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.allcat-left ul {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.allcat-left li {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #333;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.allcat-left li:hover,
+.allcat-left li.active {
+  background: #f0f2f5;
+  color: #000;
+}
+
+/* Desni panel */
+.allcat-right {
+  width: 800px;
+  max-height: 600px;
+  overflow-y: auto;
+  background: #fff;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px 24px;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.allcat-right h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #183c5c;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.allcat-right li {
+  list-style: none;
+  padding: 3px 0;
+}
+
+.allcat-right li a {
+  text-decoration: none;
+  color: #444;
+  font-size: 13px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
+  transition: color 0.2s;
+}
+
+.allcat-right li a:hover {
+  color: #183c5c;
+}
+
+/* Scrollbar */
+.allcat-right::-webkit-scrollbar {
+  width: 6px;
+}
+.allcat-right::-webkit-scrollbar-thumb {
+  background-color: rgba(24, 60, 92, 0.5);
+  border-radius: 3px;
+}
+
+/* Efekat ulaska */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============== MOBILNI (OSTAJE TVOJ KOD) =============== */
+@media (max-width: 992px) {
+  .tab-wrapper {
+    display: none;
+  }
+
+  .tab-bar {
+    justify-content: center;
+    background: #444;
+  }
+
+  .allCategories {
+    justify-content: center;
+    flex: 1;
+  }
+
+  .allCategories app-all-categories-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 46px);
+    background: #f9f9f9;
+    overflow-y: auto;
+    z-index: 9999;
+    border-top: 1px solid #dcdcdc;
+  }
+
+  .allcat-wrapper {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 46px);
+    overflow-y: auto;
+    display: block;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 9999;
+  }
+
+  .allcat-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2f2f2f;
+    color: #fff;
+    padding: 12px 16px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .close-btn:hover {
+    color: #ffa726;
+  }
+
+  .allcat-left {
+    width: 100%;
+    border-right: none;
+  }
+
+  .allcat-left li {
+    font-size: 15px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mobile-nadgrupe {
+    background: #fff;
+    padding: 8px 16px 12px 16px;
+  }
+
+  .nadgrupa-block h4 {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .nadgrupa-block li a {
+    color: #333;
+  }
+}
