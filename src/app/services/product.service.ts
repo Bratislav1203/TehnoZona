@@ -48,7 +48,7 @@ export class ProductService {
       });
     }
 
-    const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGrupa}/artikli`;
+    const url = `${this.apiUrl}/1/glavnaGrupa/${encodedGrupa}/artikli`;
     return this.http.get<{ products: Product[], totalCount: number, minCena: number, maxCena: number }>(url, { params });
   }
 
@@ -65,7 +65,7 @@ export class ProductService {
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
     const encodedNadgrupa = encodeURIComponent(nadgrupa);
 
-    const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGlavnaGrupa}/nadgrupa/${encodedNadgrupa}/artikli`;
+    const url = `${this.apiUrl}/1/glavnaGrupa/${encodedGlavnaGrupa}/nadgrupa/${encodedNadgrupa}/artikli`;
 
     let params = new HttpParams()
       .set('page', page.toString())
@@ -116,7 +116,7 @@ export class ProductService {
     }
 
     return this.http.get<{ [key: string]: number }>(
-      `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodeURIComponent(glavnaGrupa)}/proizvodjaci-count`,
+      `${this.apiUrl}/1/glavnaGrupa/${encodeURIComponent(glavnaGrupa)}/proizvodjaci-count`,
       { params }
     );
   }

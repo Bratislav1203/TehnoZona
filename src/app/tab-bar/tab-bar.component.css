@@ -1,140 +1,92 @@
-.tab-bar {
-  display: flex; /* Sve stavke u jednom redu */
-  align-items: center; /* Vertikalno poravnanje */
-  justify-content: flex-start; /* Poravnanje na levo */
-  padding: 0px 10px; /* Gornji i donji razmak */
-  font-size: 13px; /* Manja veličina slova */
-}
-
-.tab {
-  display: flex;
-  align-items: center; /* Centriranje teksta */
-  padding-block: 15px ; /* Horizontalni razmak */
-  color: inherit; /* Boja teksta ostaje iz glavnog stila */
-  cursor: pointer;
-  transition: background-color 0.3s;
-  white-space: nowrap; /* Sprečava prelamanje teksta */
-}
-
-.tab:last-child {
-  border-right: none; /* Uklanja liniju sa poslednjeg taba */
-}
-
-.tab span {
-  text-transform: capitalize; /* Prvo slovo veliko, opcionalno */
-  font-size: 13px; /* Manja slova */
-  padding-inline: 10px;
-  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Linija između tabova */
-}
-
-.tab i {
-  margin-right: 5px;
-}
-
-.bosch-text {
-  color: red; /* Crvena boja za tekst BOSCH */
-  font-weight: bold;
-}
-
-.dropdown-menu {
-  top: 45px;
-  z-index: 1000;
-  overflow: hidden;
-}
-
-.dropdown-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dropdown-menu li {
-  padding: 10px;
-  color: #212121; /* Tamno siva boja za tekst */
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.dropdown-menu li:hover {
-  background-color: #f0f2f5; /* Svetlo siva pozadina pri hoveru */
-}
-/* Glavni tab-bar */
+/* Glavna traka */
 .tab-bar {
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
   color: white;
+  padding: 0 16px;
   position: relative;
+  height: 46px;
+  z-index: 500;
 }
 
-/* Tabovi */
+/* Tab */
 .tab {
-  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.tab:hover:not(.allCategories) {
-  background: rgba(255, 255, 255, 0.2);
+.tab:hover {
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 5px;
 }
-.dropdown-menu.kategorije-dropdown {
-  max-width: unset;
-  width: unset;
-}
 
-.dropdown-menu {
-  position: fixed;
-  top: 116px;
-  left: 50%;
-  transform: translateX(-50%); /* Pomera dropdown za polovinu svoje širine u levo */
-  width: 90vw; /* Širina kao što si želeo */
-  max-height: 600px;
-  background: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  box-sizing: border-box;
-  border-radius: 8px;
-}
-
+/* SVE KATEGORIJE */
 .allCategories {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 20px;
 }
 
-.kategorije-dropdown {
-  display: none;
-}
-
-.allCategories:hover .kategorije-dropdown {
-  display: block;
-}
-
-.kategorije-dropdown {
-  position: absolute;
-  top: 30px;
-  left: 135px;
-  transform: translateX(-50%);
-  width: 90vw;
-  max-height: 600px;
-  background: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  box-sizing: border-box;
-  border-radius: 8px;
-}
-
-.kategorije-dropdown ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.kategorije-dropdown li {
-  padding: 10px;
-  color: #212121;
+.kategorije-trigger {
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.kategorije-dropdown li:hover {
-  background-color: #f0f2f5;
+/* Meni ispod taba */
+.allCategories app-all-categories-menu {
+  position: absolute;
+  left: 0;
+  z-index: 1000;
+  top: 39px
+}
+
+/* Mega meni ispod glavnih grupa */
+.dropdown-menu {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 0 0 4px 4px;
+  z-index: 1000;
+  padding: 16px 24px;
+}
+
+/* Mobile */
+@media (max-width: 992px) {
+  .tab-wrapper {
+    display: none;
+  }
+
+  .tab-bar {
+    justify-content: center;
+    background: #183c5c;
+  }
+
+  .allCategories {
+    justify-content: center;
+    flex: 1;
+  }
+
+  .allCategories app-all-categories-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 46px);
+    background: #fff;
+    overflow-y: auto;
+    z-index: 9999;
+  }
 }

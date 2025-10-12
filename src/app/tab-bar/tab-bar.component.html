@@ -1,37 +1,43 @@
-<nav >
+<nav>
   <div class="tab-bar">
-    <div class="tab allCategories" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
+
+    <!-- SVE KATEGORIJE -->
+    <div
+      class="tab allCategories"
+      (mouseenter)="openMenu()"
+      (mouseleave)="closeMenu()"
+    >
       <i class="fas fa-bars"></i>
-      <div class="allCategories">
-        <span class="kategorije-trigger">SVE KATEGORIJE</span>
+      <span class="kategorije-trigger">SVE KATEGORIJE</span>
 
-        <div class="dropdown-menu kategorije-dropdown">
-          <ul>
-            <li *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupama">
-              <div [routerLink]="[glavnaGrupa.name]">
-                <span>{{ glavnaGrupa.name }}</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-
-      <div class="dropdown-menu" *ngIf="showMenu" (mouseover)="showMenu = true" (mouseleave)="showMenu = false">
-        <app-submenu></app-submenu>
-      </div>
+      <!-- vertikalni meni -->
+      <app-all-categories-menu
+        *ngIf="showMenu"
+        (closeMenu)="forceCloseMenu()"
+      ></app-all-categories-menu>
     </div>
 
-    <div *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupamaUziSkup; let i = index"
-       (mouseover)="onMouseEnter(i)"
-       (mouseleave)="onMouseLeave()"
-       (click)="onTabClick(glavnaGrupa.name)">
+    <!-- Glavne kategorije (tabovi) -->
+    <div
+      *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupamaUziSkup; let i = index"
+      class="tab-wrapper"
+      (mouseenter)="onMouseEnter(i)"
+      (mouseleave)="onMouseLeave()"
+    >
       <div class="tab" [routerLink]="[glavnaGrupa.name]">
-        <span>{{ glavnaGrupa.name }}</span>
+        <span>{{ utilService.formatirajNaziv(glavnaGrupa.name) }}</span>
       </div>
-      <div class="dropdown-menu" *ngIf="hoveredIndex === i">
+
+      <!-- Mega meni za hover glavne grupe -->
+      <div
+        class="dropdown-menu"
+        *ngIf="hoveredIndex === i"
+        (mouseenter)="onMouseEnter(i)"
+        (mouseleave)="onMouseLeave()"
+      >
         <app-submenu [glavnaGrupa]="glavnaGrupa"></app-submenu>
       </div>
     </div>
+
   </div>
 </nav>

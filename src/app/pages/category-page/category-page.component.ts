@@ -12,6 +12,7 @@ import { UtilService } from "../../services/util.service";
 export class CategoryPageComponent {
   totalPages: number = 15;
   visiblePages: number[] = [];
+  showMobileFilters = false;
 
   totalProducts: number = 0;
   currentPage: number = 0;

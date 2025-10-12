@@ -26,6 +26,7 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
 import { CartComponent } from './pages/cart/cart.component';
 import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
 import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
+import { AllCategoriesMenuComponent } from './menu/all-categories-menu/all-categories-menu.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.compon
     LoadingOverlayComponent,
     CartComponent,
     CheckoutComponent,
-    AboutUsPageComponent
+    AboutUsPageComponent,
+    AllCategoriesMenuComponent
   ],
   imports: [
     BrowserModule,

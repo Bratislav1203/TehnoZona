@@ -10,7 +10,7 @@ export class HomePageComponent implements OnInit {
   products: Product[] = [];
   brands: nameAndImage[] = [];
 
-  vendorId: number = 1;
+  vendorId: number = 2;
   glavnaGrupa: string = 'TV, FOTO, AUDIO I VIDEO'; // možeš promeniti po potrebi
   page: number = 0;
   size: number = 20;

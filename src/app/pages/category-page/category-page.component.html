@@ -1,24 +1,26 @@
 <div class="category-page-container">
   <h1 class="category-title">{{ title }}</h1>
+
   <ng-container *ngIf="searchFilter">
     <h1 class="category-title">Rezultat pretrage: "{{ searchFilter }}"</h1>
   </ng-container>
+
+  <!-- Breadcrumb -->
   <div class="breadcrumb">
     <ng-container *ngIf="glavnaGrupa">
       <a [routerLink]="['/', glavnaGrupa]" class="breadcrumb-link">{{ utilService.formatirajNaziv(glavnaGrupa) }}</a>
     </ng-container>
-
     <ng-container *ngIf="nadgrupa">
       <span class="breadcrumb-separator"> &gt; </span>
       <a [routerLink]="['/', glavnaGrupa, nadgrupa]" class="breadcrumb-link">{{ utilService.formatirajNaziv(nadgrupa) }}</a>
     </ng-container>
-
     <ng-container *ngIf="grupa">
       <span class="breadcrumb-separator"> &gt; </span>
       <span class="breadcrumb-current">{{ utilService.formatirajNaziv(grupa) }}</span>
     </ng-container>
   </div>
 
+  <!-- Podkategorije -->
   <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row">
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
       <div [routerLink]="['/', glavnaGrupa, subCategory.name]">
@@ -32,9 +34,77 @@
     </div>
   </div>
 
+  <!-- Dugme za otvaranje filtera - samo mobilni -->
+  <button class="filter-toggle-btn" (click)="showMobileFilters = true"> Filtriraj</button>
+
+  <!-- Overlay i mobilni panel filtera -->
+  <div class="filter-overlay" *ngIf="showMobileFilters" (click)="showMobileFilters = false"></div>
+  <div class="mobile-filter-panel" *ngIf="showMobileFilters">
+    <button class="close-mobile-filters" (click)="showMobileFilters = false">✖</button>
+    <div class="filters-container">
+      <!-- isti sadržaj filtera kao sidebar -->
+      <div class="slider-container">
+        <label>Cena:</label>
+        <div class="slider-values">
+          <span>{{ minValue || 0 }} din.</span>
+          <span>{{ maxValue || 0 }} din.</span>
+        </div>
+
+        <div class="slider">
+          <input
+            type="range"
+            [min]="initialMinValue"
+            [max]="initialMaxValue"
+            [value]="minValue"
+            (input)="minValue = +$event.target.value; updateSlider()"
+          />
+          <input
+            type="range"
+            [min]="initialMinValue"
+            [max]="initialMaxValue"
+            [value]="maxValue"
+            (input)="maxValue = +$event.target.value; updateSlider()"
+          />
+        </div>
+      </div>
+
+      <div class="filter-category" *ngFor="let category of filterCategories">
+        <h3>{{ category.category }}</h3>
+
+        <div
+          class="filter-item"
+          *ngFor="let type of (isExpanded(category.category)
+            ? category.types
+            : category.types.slice(0, 10))"
+        >
+          <label>
+            <input
+              type="checkbox"
+              [value]="type.name"
+              (change)="onTypeChange(category.category, type.name, $event.target.checked)"
+            />
+            {{ type.name }} <span>({{ type.quantity }})</span>
+          </label>
+        </div>
+
+        <button
+          *ngIf="category.types.length > 10"
+          (click)="toggleCategory(category.category)"
+          class="show-more-btn"
+        >
+          {{ isExpanded(category.category)
+          ? 'Prikaži manje'
+          : 'Prikaži više (' + (category.types.length - 10) + ')' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glavni sadržaj -->
   <div class="main-content">
     <app-loading-overlay [isLoading]="isLoading"></app-loading-overlay>
 
+    <!-- Stari sidebar (desktop verzija) -->
     <div class="sidebar">
       <div class="filters-container">
         <div class="slider-container">
@@ -62,11 +132,12 @@
           </div>
         </div>
 
-
         <div class="filter-category" *ngFor="let category of filterCategories">
           <h3>{{ category.category }}</h3>
 
-          <div class="filter-item" *ngFor="let type of (isExpanded(category.category) ? category.types : category.types.slice(0, 10))">
+          <div class="filter-item" *ngFor="let type of (isExpanded(category.category)
+            ? category.types
+            : category.types.slice(0, 10))">
             <label>
               <input
                 type="checkbox"
@@ -83,10 +154,12 @@
         </div>
       </div>
     </div>
+
     <div class="page-container">
       <div class="products-grid">
         <app-productcard *ngFor="let product of products" [product]="product"></app-productcard>
       </div>
+
       <div class="pagination-container" *ngIf="products.length > 0 && totalPages > 0">
         <button (click)="goToPage(0)" [disabled]="currentPage === 0" class="pagination-btn">&laquo;</button>
         <button (click)="goToPrevious()" [disabled]="currentPage === 0" class="pagination-btn">&lsaquo;</button>
