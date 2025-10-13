@@ -10,7 +10,6 @@
   background-color: #f7f8fa; /* Svetlo siva pozadina */
   color: #212121; /* Tamno siva boja teksta */
   border-top: 4px solid #4285f4; /* Plava linija na vrhu */
-
 }
 
 .footer-container {
@@ -25,7 +24,7 @@
 }
 
 .footer-section h3 {
-  color: #4285f4; /* Plava boja naslova */
+  color: #4285f4;
   margin-bottom: 15px;
   font-size: 16px;
 }
@@ -40,20 +39,65 @@
 }
 
 .footer-section ul li a {
-  color: #212121; /* Tamno siva boja linkova */
+  color: #212121;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .footer-section ul li a:hover {
-  color: #4285f4; /* Plava boja na hover */
+  color: #4285f4;
 }
 
 .footer-bottom {
   text-align: center;
   padding: 15px 40px;
-  background-color: #e0e0e0; /* Svetlija siva za donji deo */
-  color: #212121; /* Tamno siva boja za tekst */
+  background-color: #e0e0e0;
+  color: #212121;
   font-size: 12px;
   line-height: 1.5;
 }
+
+/* ===================== MOBILNI PRIKAZ ===================== */
+@media (max-width: 768px) {
+  :host {
+    margin-top: 40px;
+  }
+
+  .footer {
+    text-align: center;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    padding: 15px 10px;
+    gap: 20px;
+  }
+
+  .footer-section {
+    margin: 0;
+  }
+
+  .footer-section h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 6px;
+  }
+
+  .footer-section ul li a {
+    font-size: 13px;
+  }
+
+  .footer-bottom {
+    font-size: 11px;
+    padding: 10px 15px;
+  }
+
+  .footer-bottom p {
+    text-align: justify;
+    hyphens: auto;
+  }
+}
+

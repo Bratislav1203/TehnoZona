@@ -1,6 +1,6 @@
-.content{
+.content {
   background-color: #f7f8fa;
-  top: 120px;
+  top: 159px;
   position: relative;
   flex: 1; /* Ovaj deo rasteže sadržaj da popuni prostor iznad footer-a */
   display: flex;
@@ -14,3 +14,16 @@
     margin-inline: auto;
 }
 
+/* ===================== MOBILNI PRIKAZ ===================== */
+@media (max-width: 768px) {
+  .full-height {
+    min-height: 100vh;
+    margin-inline: 0;
+    width: 100%;
+  }
+
+  .content {
+    top: 109px;
+    padding: 0 10px;
+  }
+}

@@ -1,4 +1,42 @@
-<div class="brand-card" [routerLink]="['/categoryPage/brand', brand.name]">
-  <img [src]="brand.imgUrl" [alt]="brand.name" class="brand-logo" />
-  <p class="brand-name">{{ brand.name }}</p>
+<div class="slider">
+  <!-- Gornja traka -->
+  <div class="slide-track top">
+    <div
+      class="slide"
+      *ngFor="let brand of brands"
+      [routerLink]="['/categoryPage/brand', brand.name]"
+    >
+      <img [src]="brand.imgUrl" [alt]="brand.name" />
+    </div>
+
+    <!-- duplikat za loop -->
+    <div
+      class="slide"
+      *ngFor="let brand of brands"
+      [routerLink]="['/categoryPage/brand', brand.name]"
+    >
+      <img [src]="brand.imgUrl" [alt]="brand.name" />
+    </div>
+  </div>
+
+  <!-- Donja traka -->
+  <div class="slide-track bottom">
+    <div
+      class="slide"
+      *ngFor="let brand of shuffledBrands"
+      [routerLink]="['/categoryPage/brand', brand.name]"
+    >
+      <img [src]="brand.imgUrl" [alt]="brand.name" />
+    </div>
+
+    <div
+      class="slide"
+      *ngFor="let brand of shuffledBrands"
+      [routerLink]="['/categoryPage/brand', brand.name]"
+    >
+      <img [src]="brand.imgUrl" [alt]="brand.name" />
+    </div>
+  </div>
+
 </div>
+
