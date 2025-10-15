@@ -1,2 +1,58 @@
+<!-- 🧩 Najpopularniji brendovi -->
 <h3 class="brand-row-title">Najpopularniji brendovi</h3>
 <app-brand [brands]="brands"></app-brand>
+
+<!-- 🛒 Top proizvodi -->
+<section class="top-products-section">
+  <h3 class="section-title">Top proizvodi</h3>
+
+  <div class="top-products-container">
+    <div class="product-card" *ngFor="let product of topProducts">
+      <img [src]="product.imageUrl" [alt]="product.name" />
+      <div class="product-info">
+        <h4>{{ product.name }}</h4>
+        <p class="price">{{ product.price | currency:'EUR':'symbol':'1.0-0' }}</p>
+        <button class="details-btn">Detaljnije</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🧭 Preporučene kategorije -->
+<section class="recommended-section">
+  <h3 class="section-title">Popularne kategorije</h3>
+
+  <div class="recommended-container">
+    <div
+      class="category-card diamond-style"
+      *ngFor="let category of recommendedCategories"
+      [routerLink]="['/categoryPage', category.name]"
+    >
+      <div class="diamond-wrapper">
+        <div class="diamond-shape">
+          <img [src]="category.imgUrl" [alt]="category.name" />
+        </div>
+      </div>
+      <span class="category-label">{{ category.name }}</span>
+    </div>
+  </div>
+</section>
+<!-- 💥 Akcije i popusti -->
+<section class="sale-section">
+  <h3 class="section-title">Akcije i popusti</h3>
+
+  <div class="sale-container">
+    <div class="sale-card" *ngFor="let item of saleItems">
+      <div class="discount-badge">-{{ item.discount || 20 }}%</div>
+      <img [src]="item.imgUrl" [alt]="item.name" />
+      <div class="sale-info">
+        <h4>{{ item.name }}</h4>
+        <div class="prices">
+          <span class="old-price">{{ item.oldPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+          <span class="new-price">{{ item.newPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+        </div>
+        <button class="buy-btn">Kupi sada</button>
+      </div>
+    </div>
+  </div>
+</section>

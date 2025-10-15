@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { GlavnagrupaService } from '../services/glavnagrupa.service';
 import { GlavnaGrupa, MockGlavnaGrupaService } from '../services/mock-glavna-grupa.service';
 import { UtilService } from '../services/util.service';
@@ -10,8 +10,8 @@ import { UtilService } from '../services/util.service';
 })
 export class TabBarComponent implements OnInit {
 
-  showMenu = false;                      // za "SVE KATEGORIJE"
-  hoveredIndex: number | null = null;    // za hover glavnih grupa
+  showMenu = false;
+  hoveredIndex: number | null = null;
   glavneGrupeSaNadgrupamaIGrupama: GlavnaGrupa[] = [];
   glavneGrupeSaNadgrupamaIGrupamaUziSkup: GlavnaGrupa[] = [];
 
@@ -22,20 +22,42 @@ export class TabBarComponent implements OnInit {
     private glavnaGrupaService: GlavnagrupaService,
     private mockGlavnaGrupaService: MockGlavnaGrupaService,
     public utilService: UtilService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.glavneGrupeSaNadgrupamaIGrupama = this.mockGlavnaGrupaService.getAllGlavneGrupe();
+    this.glavneGrupeSaNadgrupamaIGrupama = this.mockGlavnaGrupaService.getAllGlavneGrupe().filter(grupa =>
+      grupa.name !== 'SIGURNOSNI I ALARMNI SISTEMI' &&
+      grupa.name !== 'KANCELARIJSKI I ŠKOLSKI MATERIJAL' &&
+      grupa.name !== 'OSTALO I OUTLET'
+    );
 
-    this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = this.glavneGrupeSaNadgrupamaIGrupama
-      .filter(grupa =>
-        grupa.name !== 'SIGURNOSNI I ALARMNI SISTEMI' &&
-        grupa.name !== 'KANCELARIJSKI I ŠKOLSKI MATERIJAL' &&
-        grupa.name !== 'OSTALO I OUTLET'
-      );
+    this.updateVisibleTabs();
   }
 
-  /* Hover logika za glavne tabove */
+  /** 👇 sluša promenu širine prozora i automatski menja broj tabova */
+  @HostListener('window:resize')
+  onResize() {
+    this.updateVisibleTabs();
+  }
+
+  /** određuje koliko glavnih grupa prikazati na osnovu širine ekrana */
+  private updateVisibleTabs(): void {
+    const width = window.innerWidth;
+
+    if (width >= 1400) {
+      this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = this.glavneGrupeSaNadgrupamaIGrupama.slice(0, 8);
+    } else if (width >= 1200) {
+      this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = this.glavneGrupeSaNadgrupamaIGrupama.slice(0, 6);
+    } else if (width >= 992) {
+      this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = this.glavneGrupeSaNadgrupamaIGrupama.slice(0, 5);
+    } else if (width >= 768) {
+      this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = this.glavneGrupeSaNadgrupamaIGrupama.slice(0, 3);
+    } else {
+      this.glavneGrupeSaNadgrupamaIGrupamaUziSkup = []; // mobilni prikaz – ne prikazuj glavne tabove
+    }
+  }
+
+  // hover logika
   onMouseEnter(index: number): void {
     clearTimeout(this.hoverTimeout);
     this.hoveredIndex = index;
@@ -44,10 +66,10 @@ export class TabBarComponent implements OnInit {
   onMouseLeave(): void {
     this.hoverTimeout = setTimeout(() => {
       this.hoveredIndex = null;
-    }, 250); // delay 250ms
+    }, 250);
   }
 
-  /* Hover/klik logika za "SVE KATEGORIJE" */
+  // "Sve kategorije" meni
   openMenu(): void {
     clearTimeout(this.menuTimeout);
     this.showMenu = true;
@@ -56,7 +78,7 @@ export class TabBarComponent implements OnInit {
   closeMenu(): void {
     this.menuTimeout = setTimeout(() => {
       this.showMenu = false;
-    }, 250); // delay 250ms
+    }, 250);
   }
 
   forceCloseMenu(): void {
