@@ -1,29 +1,55 @@
-.content {
-  background-color: #f7f8fa;
-  top: 159px;
-  position: relative;
-  flex: 1; /* Ovaj deo rasteže sadržaj da popuni prostor iznad footer-a */
+/* ===================== GLAVNI KONTEJNER ===================== */
+.full-height {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f7f8fa;
 }
-.full-height{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    max-width: -webkit-fill-available;
-    margin-inline: auto;
+
+/* ===================== HEADER ===================== */
+.full-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: linear-gradient(to bottom, black, #3097de);
+  background-size: cover;
+}
+
+.inner-header {
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+/* ===================== SADRŽAJ STRANICE ===================== */
+.content {
+  flex: 1;
+  background-color: #f7f8fa;
+  display: flex;
+  flex-direction: column;
+  padding-top: 159px; /* 🧩 visina fiksnog headera */
+  padding-bottom: 40px; /* 💡 razmak iznad footera */
+  z-index: 1;
+}
+
+/* ===================== FOOTER ===================== */
+app-footer {
+  flex-shrink: 0;
+  z-index: 2;
 }
 
 /* ===================== MOBILNI PRIKAZ ===================== */
 @media (max-width: 768px) {
-  .full-height {
-    min-height: 100vh;
-    margin-inline: 0;
-    width: 100%;
+  .content {
+    padding-top: 109px; /* niži header na mobilnom */
+    padding-bottom: 30px;
   }
 
-  .content {
-    top: 109px;
-    padding: 0 10px;
+  .full-height {
+    min-height: 100vh;
+    margin: 0;
+    width: 100%;
   }
 }

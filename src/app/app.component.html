@@ -1,7 +1,14 @@
-<app-header></app-header>
 <div class="full-height">
+  <div class="full-header">
+    <div class="inner-header">
+      <app-header-banner></app-header-banner>
+      <app-tab-bar></app-tab-bar>
+    </div>
+  </div>
+
   <div class="content">
     <router-outlet></router-outlet>
   </div>
+
   <app-footer></app-footer>
 </div>
