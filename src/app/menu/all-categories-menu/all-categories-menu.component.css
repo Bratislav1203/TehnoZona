@@ -204,7 +204,7 @@ body, main, .page-content {
 
   .allcat-wrapper {
     position: fixed;
-    top: 70px;
+    top: 110px;
     left: 0;
     width: 100%;
     height: calc(100vh - 46px);
@@ -226,6 +226,7 @@ body, main, .page-content {
     position: sticky;
     top: 0;
     z-index: 2;
+    height: 22px;
   }
 
   .close-btn {
@@ -266,3 +267,60 @@ body, main, .page-content {
     color: #333;
   }
 }
+/* ===== Strelica indikator za mobilni prikaz ===== */
+.mobile-indicator {
+  display: none;
+  font-size: 14px;
+  color: #777;
+  transition: transform 0.25s ease;
+}
+
+.mobile-indicator.expanded {
+  transform: rotate(90deg); /* Rotira nadole */
+  color: #183c5c;
+}
+
+/* Na mobilnom se prikazuje */
+@media (max-width: 992px) {
+  .mobile-indicator {
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;         /* veličina same strelice */
+    padding: 8px;            /* proširuje klikabilno polje oko nje */
+    margin-top: -8px;        /* centrira je vertikalno ponovo */
+    margin-bottom: -8px;     /* da ne “proširi” red vizuelno */
+    border-radius: 50%;      /* opcionalno – ako želiš “okruglo” klik polje */
+  }
+
+  .mobile-indicator:hover {
+    background: rgba(0, 0, 0, 0.05); /* blagi vizuelni feedback */
+  }
+}
+/* Stilizacija linkova u meniju — uklanja plavu boju i underline */
+.allcat-left a,
+.allcat-right a {
+  color: #212121;
+  text-decoration: none;
+}
+
+.allcat-left a:hover,
+.allcat-right a:hover {
+  color: #183c5c; /* tvoja plava iz dizajna */
+}
+
+.allcat-left a:visited,
+.allcat-right a:visited {
+  color: #212121; /* ista boja kao normalni link */
+  text-decoration: none;
+}
+
+.allcat-left a:active,
+.allcat-right a:active {
+  color: #183c5c;
+  text-decoration: none;
+}
+
+

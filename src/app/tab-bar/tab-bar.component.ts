@@ -88,4 +88,5 @@ export class TabBarComponent implements OnInit {
   onTabClick(tab: string): void {
     console.log('Kliknut tab:', tab);
   }
+
 }

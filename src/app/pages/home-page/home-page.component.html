@@ -26,7 +26,7 @@
     <div
       class="category-card diamond-style"
       *ngFor="let category of recommendedCategories"
-      [routerLink]="['/categoryPage', category.name]"
+      [routerLink]="[category.glavnaGrupa, category.nadgrupa, category.name]"
     >
       <div class="diamond-wrapper">
         <div class="diamond-shape">

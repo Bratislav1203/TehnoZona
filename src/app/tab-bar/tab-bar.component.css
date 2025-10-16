@@ -81,7 +81,7 @@
 
   .allCategories app-all-categories-menu {
     position: fixed;
-    top: 108px;
+    top: 112px;
     left: 0;
     width: 100%;
     height: calc(100vh - 46px);

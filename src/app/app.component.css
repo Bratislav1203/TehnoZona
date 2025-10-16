@@ -43,7 +43,7 @@ app-footer {
 /* ===================== MOBILNI PRIKAZ ===================== */
 @media (max-width: 768px) {
   .content {
-    padding-top: 205px; /* niži header na mobilnom */
+    padding-top: 183px; /* niži header na mobilnom */
     padding-bottom: 30px;
   }
 

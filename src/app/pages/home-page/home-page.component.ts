@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService, nameAndImage } from '../../services/product.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home-page',
@@ -12,13 +13,13 @@ export class HomePageComponent implements OnInit {
 
   // nove sekcije
   topProducts: { name: string; imageUrl: string; price: number }[] = [];
-  recommendedCategories: { name: string; imgUrl: string }[] = [];
+  recommendedCategories: {glavnaGrupa: string; nadgrupa: string; name: string; imgUrl: string }[] = [];
   saleItems: { name: string; imgUrl: string; oldPrice: number; newPrice: number }[] = [];
 
-  vendorId: number = 2;
+  vendorId = 2;
   glavnaGrupa: string = 'TV, FOTO, AUDIO I VIDEO';
-  page: number = 0;
-  size: number = 20;
+  page = 0;
+  size = 20;
 
   constructor(private productService: ProductService) {}
 
@@ -47,10 +48,14 @@ export class HomePageComponent implements OnInit {
     ];
 
     this.recommendedCategories = [
-      { name: 'Televizori', imgUrl: 'assets/subcategories/AUDIO.jpg' },
-      { name: 'Laptopovi', imgUrl: 'assets/tv.jpg' },
-      { name: 'Frižideri', imgUrl: 'assets/frizider.jpg' },
-      { name: 'Mobilni telefoni', imgUrl: 'assets/frizider.jpg' },
+      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Televizori', imgUrl: 'assets/subcategories/AUDIO.jpg' },
+      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Laptopovi', imgUrl: 'assets/tv.jpg' },
+      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Frižideri', imgUrl: 'assets/frizider.jpg' },
+      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Mobilni telefoni', imgUrl: 'assets/frizider.jpg' },
     ];
 
     this.saleItems = [

@@ -5,8 +5,8 @@ import { LoginPageComponent } from "./pages/login-page/login-page.component";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { CategoryPageComponent } from "./pages/category-page/category-page.component";
 import { CartComponent } from "./pages/cart/cart.component";
-import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
-import {AboutUsPageComponent} from "./pages/about-us-page/about-us-page.component";
+import { CheckoutComponent } from "./pages/cart/checkout/checkout.component";
+import { AboutUsPageComponent } from "./pages/about-us-page/about-us-page.component";
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -23,10 +23,14 @@ const routes: Routes = [
   { path: 'search=:query', component: CategoryPageComponent },
 ];
 
-
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled',
+      scrollOffset: [0, 0],
+    }),
+  ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

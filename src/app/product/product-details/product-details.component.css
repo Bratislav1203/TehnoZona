@@ -224,6 +224,107 @@
   font-weight: bold;
   color: #333; /* Tamniji tekst za prvu kolonu */
 }
+/* ===== MOBILNI PRIKAZ ===== */
+@media (max-width: 768px) {
+  .product-details-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+  }
 
+  .product-image-gallery {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+  }
 
+  .main-image {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+  }
 
+  .main-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+
+  .arrow {
+    font-size: 32px;
+    padding: 12px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+  }
+
+  .thumbnail-gallery {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .thumbnail-gallery img {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 auto;
+  }
+
+  .product-info {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .product-title {
+    font-size: 20px;
+  }
+
+  .current-price {
+    font-size: 26px;
+  }
+
+  .add-to-cart-button {
+    width: 100%;
+    font-size: 18px;
+    padding: 12px 0;
+  }
+}
+.product-description {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto; /* ako ipak neko ubaci preširoku tabelu, pojaviće se horizontalni scroll */
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+::ng-deep .product-description * {
+  max-width: 100% !important; /* sprečava da neki unutrašnji element “probije” okvir */
+  box-sizing: border-box;
+}
+
+::ng-deep .product-description table {
+  width: 100% !important;
+  table-layout: fixed; /* sprečava rastezanje kolona */
+}
+
+::ng-deep .product-description td,
+::ng-deep .product-description th {
+  word-break: break-word;
+  white-space: normal;
+  max-width: 100%;
+}
+::ng-deep .product-description table td,
+::ng-deep .product-description table th,
+::ng-deep .product-description .td1,
+::ng-deep .product-description .td2,
+::ng-deep .product-description [class*="td"] {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  padding: 6px 8px !important;
+  background: unset !important;
+  border: 1px solid #d1d3e2 !important;
+  box-sizing: border-box;
+  word-break: break-word;
+}

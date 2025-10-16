@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./loading-overlay.component.css']
 })
 export class LoadingOverlayComponent {
-  @Input() isLoading: boolean = false; // Kontrola prikaza
+  @Input() isLoading = false; // Kontrola prikaza
 }

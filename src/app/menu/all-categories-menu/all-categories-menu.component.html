@@ -12,18 +12,35 @@
       <li
         *ngFor="let g of glavneGrupe"
         (mouseenter)="onHoverGroup(g)"
-        (click)="toggleGroup(g)"
         [class.active]="hoveredGroup?.name === g.name || openedGroup?.name === g.name"
+        [routerLink]="[g.name]"
+        (click)="closeMobileMenu()"
       >
-        {{ utilService.formatirajNaziv(g.name) }}
+        <!-- Glavna grupa kao link -->
+        <a
+          class="group-title-link"
+        >
+          {{ utilService.formatirajNaziv(g.name) }}
+        </a>
 
-        <!-- Mobilni prikaz: accordion -->
+        <!-- Samo na mobilnom: strelica koja otvara -->
+        <i
+          *ngIf="isMobile"
+          class="fas fa-chevron-right mobile-indicator"
+          [class.expanded]="openedGroup?.name === g.name"
+          (click)="toggleGroup(g, $event)"
+        ></i>
+
+        <!-- Accordion sadrzaj -->
         <div *ngIf="isMobile && openedGroup?.name === g.name" class="mobile-nadgrupe">
           <div *ngFor="let nadgrupa of (g.nadgrupe | keyvalue)" class="nadgrupa-block">
             <h4>{{ utilService.formatirajNaziv(nadgrupa.key) }}</h4>
             <ul>
               <li *ngFor="let grupa of nadgrupa.value">
-                <a [routerLink]="[g.name, nadgrupa.key, grupa]">
+                <a
+                  [routerLink]="[g.name, nadgrupa.key, grupa]"
+                  (click)="closeMobileMenu()"
+                >
                   {{ utilService.formatirajNaziv(grupa) }}
                 </a>
               </li>
@@ -40,7 +57,9 @@
       <h4>{{ utilService.formatirajNaziv(nadgrupa.key) }}</h4>
       <ul>
         <li *ngFor="let grupa of nadgrupa.value">
-          <a [routerLink]="[hoveredGroup.name, nadgrupa.key, grupa]">
+          <a
+            [routerLink]="[hoveredGroup.name, nadgrupa.key, grupa]"
+          >
             {{ utilService.formatirajNaziv(grupa) }}
           </a>
         </li>
