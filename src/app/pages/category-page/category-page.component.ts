@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FilterCategory, Product, ProductService, nameAndImage } from "../../services/product.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { combineLatest } from 'rxjs';
+import { FilterCategory, Product, ProductService, nameAndImage } from "../../services/product.service";
 import { CartService } from "../../services/cart.service";
 import { UtilService } from "../../services/util.service";
+import { MockGlavnaGrupaService } from "../../services/mock-glavna-grupa.service"; // 👈 dodato
 
 @Component({
   selector: 'app-category-page',
@@ -10,206 +12,230 @@ import { UtilService } from "../../services/util.service";
   styleUrls: ['./category-page.component.css']
 })
 export class CategoryPageComponent {
-  totalPages: number = 15;
-  visiblePages: number[] = [];
-  showMobileFilters = false;
+  totalPages = 0;
+  visiblePages: (number | string)[] = [];
+  totalProducts = 0;
+  currentPage = 0;
+  pageSize = 20;
 
-  totalProducts: number = 0;
-  currentPage: number = 0;
-  pageSize: number = 20;
-
-  title: string = '';
+  title = '';
   products: Product[] = [];
-  isLoading: boolean = false;
+  isLoading = false;
   glavnaGrupa: string | null = null;
   nadgrupa: string | null = null;
   grupa: string | null = null;
   filterCategories: FilterCategory[] = [];
   expandedCategories: { [key: string]: boolean } = {};
-
-  timeoutId: any;
-  minValue: number = undefined;
-  maxValue: number = undefined;
-  initialMinValue: number = 0;
-  initialMaxValue: number = 0;
-
-  subCategories: nameAndImage[] = [];
   selectedTypes: { [key: string]: string[] } = {};
 
-  searchFilter: string = '';
+  minValue = 0;
+  maxValue = 0;
+  initialMinValue = 0;
+  initialMaxValue = 0;
+  timeoutId: any;
+
+  subCategories: nameAndImage[] = [];
+  groups: { name: string }[] = []; // 👈 grupe unutar nadgrupe
+  searchFilter = '';
+  showMobileFilters = false;
 
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
     private cartService: CartService,
-    public utilService: UtilService
+    public utilService: UtilService,
+    private mockService: MockGlavnaGrupaService // 👈 novi servis
   ) {}
 
   ngOnInit(): void {
     const fullUrlSegments = this.route.snapshot.url.map(segment => segment.path);
     const isSearchRoute = this.route.snapshot.paramMap.has('query');
-    const isBrandRoute = fullUrlSegments.length >= 3 && fullUrlSegments[0] === 'categoryPage' && fullUrlSegments[1] === 'brand';
+    const isBrandRoute =
+      fullUrlSegments.length >= 3 &&
+      fullUrlSegments[0] === 'categoryPage' &&
+      fullUrlSegments[1] === 'brand';
     const brandNameFromBrandRoute = isBrandRoute ? fullUrlSegments[2] : null;
     const searchQuery = this.route.snapshot.paramMap.get('query');
 
-    // Prvo pretplata na parametre rute
-    this.route.paramMap.subscribe(params => {
-      this.title = params.get('brandName') || '';
-      this.glavnaGrupa = params.get('glavnaGrupa');
-      this.nadgrupa = params.get('nadgrupa')?.toUpperCase();
-      this.grupa = params.get('grupa');
+    combineLatest([this.route.paramMap, this.route.queryParams]).subscribe(
+      ([params, queryParams]) => {
+        this.title = params.get('brandName') || '';
+        this.glavnaGrupa = params.get('glavnaGrupa');
+        this.nadgrupa = params.get('nadgrupa')?.toUpperCase() || null;
+        this.grupa = params.get('grupa');
 
-      if (isSearchRoute && searchQuery) {
-        this.searchFilter = searchQuery;
-        // this.ucitajPretragu();
-        return;
-      }
+        // Query parametri
+        this.currentPage = (+queryParams['page'] || 1) - 1;
+        this.pageSize = +queryParams['size'] || 20;
+        this.minValue = +queryParams['minCena'] || 0;
+        this.maxValue = +queryParams['maxCena'] || 0;
 
-      if (isBrandRoute && brandNameFromBrandRoute) {
-        this.ucitajBrend(brandNameFromBrandRoute);
-        return;
-      }
+        const proizvodjaciParam = queryParams['proizvodjaci'];
+        this.selectedTypes['Proizvođač'] = proizvodjaciParam
+          ? Array.from(new Set(proizvodjaciParam.split(',')))
+          : [];
 
-      if (this.glavnaGrupa) {
-        this.productService.getProizvodjaciCount(2, this.glavnaGrupa, this.nadgrupa ? [this.nadgrupa] : []).subscribe(
-          (data) => {
-            this.filterCategories = [{
-              category: 'Proizvođač',
-              types: Object.entries(data).map(([name, quantity]) => ({ name, quantity }))
-            }];
-          },
-          (error) => {
-            console.error("Greška prilikom učitavanja broja proizvoda po proizvođačima:", error);
+        if (isSearchRoute && searchQuery) {
+          this.searchFilter = searchQuery;
+          return;
+        }
+
+        if (isBrandRoute && brandNameFromBrandRoute) {
+          this.ucitajBrend(brandNameFromBrandRoute);
+          return;
+        }
+
+        // učitaj filtere
+        if (this.glavnaGrupa) {
+          this.productService
+            .getProizvodjaciCount(
+              2,
+              this.glavnaGrupa,
+              this.nadgrupa ? [this.nadgrupa] : []
+            )
+            .subscribe((data) => {
+              this.filterCategories = [
+                {
+                  category: 'Proizvođač',
+                  types: Object.entries(data).map(([name, quantity]) => ({
+                    name,
+                    quantity,
+                  })),
+                },
+              ];
+            });
+
+          // učitaj nadgrupe ako je glavna grupa
+          this.productService
+            .getNadgrupeZaGrupu(this.glavnaGrupa)
+            .subscribe((nadgrupe: string[]) => {
+              this.subCategories = nadgrupe.map((naziv) => ({
+                name: this.utilService.formatirajNaziv(naziv),
+                imgUrl: `assets/subcategories/${naziv}.jpg`,
+              }));
+            });
+
+          // učitaj grupe ako si u nadgrupi
+          if (this.nadgrupa && !this.grupa) {
+            this.groups = this.getGrupeIzMockServisa(this.glavnaGrupa, this.nadgrupa);
           }
-        );
+        }
 
-        this.productService.getNadgrupeZaGrupu(this.glavnaGrupa).subscribe(
-          (nadgrupe: string[]) => {
-            this.subCategories = nadgrupe.map(naziv => ({
-              name: this.utilService.formatirajNaziv(naziv),
-              imgUrl: `assets/subcategories/${naziv}.jpg`
-            }));
-          },
-          (error) => {
-            console.error("Greška prilikom učitavanja nadgrupa:", error);
-          }
-        );
-      }
-      if (this.nadgrupa && this.grupa == null) {
-        this.ucitajStranicuZaNadgrupu();
-      } else if (this.glavnaGrupa) {
-        this.ucitajStranicu();
-      }
-    });
+        // učitaj proizvode
+        if (this.grupa) {
+          this.ucitajStranicuZaGrupu();
+        } else if (this.nadgrupa && !this.grupa) {
+          this.ucitajStranicuZaNadgrupu();
+        } else if (this.glavnaGrupa) {
+          this.ucitajStranicu();
+        }
 
-    // Posebna pretplata na query parametre
-    this.route.queryParams.subscribe(queryParams => {
-      const hasPage = 'page' in queryParams;
-      const hasMaxCena = 'maxCena' in queryParams;
-      if (!hasPage && !hasMaxCena) {
-        this.currentPage = 0;
-        this.pageSize = 20;
-      }
-
-      this.currentPage = +queryParams['page'] || this.currentPage || 0;
-      this.minValue = +queryParams['minCena'] || 0;
-      this.maxValue = +queryParams['maxCena'] || 0;
-
-      const proizvodjaciParam = queryParams['proizvodjaci'];
-      if (proizvodjaciParam) {
-        this.selectedTypes['Proizvođač'] = proizvodjaciParam.split(',');
-      } else {
-        this.selectedTypes['Proizvođač'] = [];
-      }
-
-      console.log(this.nadgrupa + this.grupa);
-      if (this.nadgrupa && this.grupa == null) {
-        console.log(this.nadgrupa + this.grupa);
-        this.ucitajStranicuZaNadgrupu();
-      } else if (this.glavnaGrupa) {
-        this.ucitajStranicu();
-      }
-    });
-  }
-
-
-
-  ucitajStranicu(): void {
-    if (!this.glavnaGrupa) return;
-
-    this.isLoading = true;
-
-    this.productService.getProductsFromCategory(
-      2,
-      this.glavnaGrupa,
-      this.currentPage,
-      this.pageSize,
-      this.minValue,
-      this.maxValue,
-      this.selectedTypes['Proizvođač']
-    ).subscribe((response) => {
-      this.products = response.products;
-      this.totalProducts = response.totalCount;
-      this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
-
-      // Loguj minimalnu i maksimalnu cenu svih proizvoda
-      console.log('MIN CENA:', response.minCena);
-      console.log('MAX CENA:', response.maxCena);
-
-      this.initialMinValue = response.minCena;
-      this.initialMaxValue = response.maxCena;
-
-      if (this.minValue === undefined || this.minValue === null || this.minValue === 0) {
-        this.minValue = response.minCena;
-      }
-      if (this.maxValue === undefined || this.maxValue === null || this.maxValue === 0) {
-        this.maxValue = response.maxCena;
-      }
-
-
-      this.updateVisiblePages();
-      this.isLoading = false;
-    }, (error) => {
-      console.error('Greška prilikom učitavanja proizvoda iz glavne grupe:', error);
-      this.isLoading = false;
-    });
-  }
-
-
-
-  ucitajStranicuZaNadgrupu(): void {
-    if (!this.glavnaGrupa || !this.nadgrupa) return;
-
-    this.isLoading = true;
-
-    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
-
-    this.productService.getProductsFromNadgrupa(
-      2,
-      this.glavnaGrupa,
-      this.nadgrupa,
-      this.currentPage,
-      this.pageSize,
-      this.minValue,
-      this.maxValue,
-      selektovaniProizvodjaci
-    ).subscribe(
-      (data) => {
-        this.products = data;
-        this.setPriceRange();
-        this.totalPages = Math.ceil(300 / this.pageSize); // TODO: zameni sa backend vrednošću kada bude dostupna
-        this.updateVisiblePages();
-        this.isLoading = false;
-        console.log(data);
-      },
-      (error) => {
-        console.error("Greška prilikom učitavanja proizvoda iz nadgrupe:", error);
-        this.isLoading = false;
       }
     );
   }
 
+  // 👇 NOVA METODA: dobavlja grupe iz mock servisa
+  private getGrupeIzMockServisa(glavnaGrupa: string, nadgrupa: string): { name: string }[] {
+    const all = this.mockService.getAllGlavneGrupe();
+    const match = all.find(g => g.name.toUpperCase() === glavnaGrupa.toUpperCase());
+    if (!match) return [];
+    const groups = match.nadgrupe[nadgrupa.toUpperCase()] || [];
+    return groups.map(name => ({ name: this.utilService.formatirajNaziv(name.trim()) }));
+  }
+
+  ucitajStranicu(): void {
+    if (!this.glavnaGrupa) return;
+    this.isLoading = true;
+
+    this.productService
+      .getProductsFromCategory(
+        2,
+        this.glavnaGrupa,
+        this.currentPage,
+        this.pageSize,
+        this.minValue,
+        this.maxValue,
+        this.selectedTypes['Proizvođač']
+      )
+      .subscribe(
+        (response) => {
+          this.products = response.products;
+          this.totalProducts = response.totalCount;
+          this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+
+          this.initialMinValue = response.minCena;
+          this.initialMaxValue = response.maxCena;
+
+          if (!this.minValue) this.minValue = response.minCena;
+          if (!this.maxValue) this.maxValue = response.maxCena;
+
+          this.updateVisiblePages();
+          this.isLoading = false;
+        },
+        () => (this.isLoading = false)
+      );
+  }
+
+  ucitajStranicuZaGrupu(): void {
+    if (!this.glavnaGrupa || !this.nadgrupa || !this.grupa) return;
+    this.isLoading = true;
+
+    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
+
+    this.productService
+      .getProductsFromGrupa(
+        2,
+        this.glavnaGrupa,
+        this.nadgrupa,
+        this.grupa,
+        this.currentPage,
+        this.pageSize,
+        this.minValue,
+        this.maxValue,
+        selektovaniProizvodjaci
+      )
+      .subscribe(
+        (data) => {
+          this.products = data;
+          this.setPriceRange();
+          this.totalPages = Math.ceil(300 / this.pageSize);
+          this.updateVisiblePages();
+          this.isLoading = false;
+        },
+        () => (this.isLoading = false)
+      );
+  }
+
+
+  ucitajStranicuZaNadgrupu(): void {
+    if (!this.glavnaGrupa || !this.nadgrupa) return;
+    this.isLoading = true;
+
+    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
+
+    this.productService
+      .getProductsFromNadgrupa(
+        2,
+        this.glavnaGrupa,
+        this.nadgrupa,
+        this.currentPage,
+        this.pageSize,
+        this.minValue,
+        this.maxValue,
+        selektovaniProizvodjaci
+      )
+      .subscribe(
+        (data) => {
+          this.products = data;
+          this.setPriceRange();
+          this.totalPages = Math.ceil(300 / this.pageSize);
+          this.updateVisiblePages();
+          this.isLoading = false;
+        },
+        () => (this.isLoading = false)
+      );
+  }
 
   toggleCategory(category: string) {
     this.expandedCategories[category] = !this.expandedCategories[category];
@@ -221,8 +247,7 @@ export class CategoryPageComponent {
 
   private setPriceRange(): void {
     if (!this.products || this.products.length === 0) return;
-
-    const prices = this.products.map(p => p.b2bcena);
+    const prices = this.products.map((p) => p.b2bcena);
     this.minValue = Math.min(...prices);
     this.maxValue = Math.max(...prices);
     this.initialMinValue = this.minValue;
@@ -230,24 +255,33 @@ export class CategoryPageComponent {
   }
 
   updateVisiblePages(): void {
-    const maxVisible = 5;
-    const pages = [];
-
-    let start = Math.max(0, this.currentPage - 2);
-    let end = Math.min(this.totalPages, start + maxVisible);
-
-    if (end - start < maxVisible) {
-      start = Math.max(0, end - maxVisible);
+    const pages: (number | string)[] = [];
+    if (this.totalPages <= 6) {
+      for (let i = 0; i < this.totalPages; i++) pages.push(i);
+    } else {
+      const lastPage = this.totalPages - 1;
+      if (this.currentPage <= 2) {
+        for (let i = 0; i <= 3; i++) pages.push(i);
+        pages.push('...');
+        pages.push(lastPage);
+      } else if (this.currentPage >= lastPage - 2) {
+        pages.push(0);
+        pages.push('...');
+        for (let i = lastPage - 3; i <= lastPage; i++) pages.push(i);
+      } else {
+        pages.push(0);
+        pages.push('...');
+        for (let i = this.currentPage - 1; i <= this.currentPage + 1; i++)
+          pages.push(i);
+        pages.push('...');
+        pages.push(lastPage);
+      }
     }
-
-    for (let i = start; i < end; i++) {
-      pages.push(i);
-    }
-
     this.visiblePages = pages;
   }
 
   goToPage(page: number): void {
+    if (typeof page === 'string') return;
     this.currentPage = page;
     this.navigateWithFilters();
   }
@@ -267,61 +301,61 @@ export class CategoryPageComponent {
   }
 
   updateSlider(): void {
-    if (this.minValue > this.maxValue) {
+    if (this.minValue > this.maxValue)
       [this.minValue, this.maxValue] = [this.maxValue, this.minValue];
-    }
     clearTimeout(this.timeoutId);
-    this.timeoutId = setTimeout(() => {
-      this.navigateWithFilters();
-    }, 300);
+    this.timeoutId = setTimeout(() => this.navigateWithFilters(), 300);
   }
 
   onTypeChange(category: string, type: string, isChecked: boolean) {
-    if (!this.selectedTypes[category]) {
-      this.selectedTypes[category] = [];
-    }
+    if (!this.selectedTypes[category]) this.selectedTypes[category] = [];
 
     if (isChecked) {
-      this.selectedTypes[category].push(type);
+      if (!this.selectedTypes[category].includes(type)) {
+        this.selectedTypes[category].push(type);
+      }
     } else {
-      this.selectedTypes[category] = this.selectedTypes[category].filter(t => t !== type);
+      this.selectedTypes[category] = this.selectedTypes[category].filter(
+        (t) => t !== type
+      );
     }
+
+    this.selectedTypes[category] = Array.from(new Set(this.selectedTypes[category]));
     this.navigateWithFilters();
   }
 
   navigateWithFilters() {
     const queryParams: any = {
-      page: this.currentPage !== undefined ? this.currentPage : 0,
-      size: this.pageSize !== undefined ? this.pageSize : 20,
+      page: this.currentPage + 1,
+      size: this.pageSize,
       minCena: this.minValue,
-      maxCena: this.maxValue
+      maxCena: this.maxValue,
     };
-    console.log(this.selectedTypes);
-    if (this.selectedTypes['Proizvođač']) {
-      console.log("uso");
-      queryParams['proizvodjaci'] = this.selectedTypes['Proizvođač'].join(',');
+
+    const proizvodjaci = this.selectedTypes['Proizvođač'];
+    if (proizvodjaci && proizvodjaci.length > 0) {
+      queryParams['proizvodjaci'] = proizvodjaci.join(',');
+    } else {
+      queryParams['proizvodjaci'] = null;
     }
+
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: queryParams,
-      queryParamsHandling: 'merge'
+      queryParams,
+      queryParamsHandling: 'merge',
     });
   }
 
   normalizeFileName(naziv: string): string {
-    const mapaZamene = {
-      'š': 's', 'Š': 'S',
-      'ć': 'c', 'Ć': 'C',
-      'č': 'c', 'Č': 'C',
-      'đ': 'dj', 'Đ': 'Dj',
-      'ž': 'z', 'Ž': 'Z'
+    const mapaZamene: any = {
+      š: 's', Š: 'S', ć: 'c', Ć: 'C', č: 'c', Č: 'C',
+      đ: 'dj', Đ: 'Dj', ž: 'z', Ž: 'Z',
     };
-
-    const bezDijakritika = naziv.split('').map(char =>
-      mapaZamene[char] || char
-    ).join('');
-
-    return bezDijakritika.toUpperCase();
+    return naziv
+      .split('')
+      .map((char) => mapaZamene[char] || char)
+      .join('')
+      .toUpperCase();
   }
 
   onImageError(event: Event) {
@@ -330,28 +364,6 @@ export class CategoryPageComponent {
   }
 
   ucitajBrend(brandName: string): void {
-    // this.isLoading = true;
-    //
-    // this.productService.getProductsByBrand(
-    //   1, // vendorId, možeš da zameniš ako je dinamički
-    //   brandName,
-    //   this.currentPage,
-    //   this.pageSize,
-    //   this.minValue,
-    //   this.maxValue
-    // ).subscribe(
-    //   data => {
-    //     this.products = data;
-    //     this.setPriceRange();
-    //     this.totalPages = Math.ceil(300 / this.pageSize); // zameni kada backend vrati ukupan broj
-    //     this.updateVisiblePages();
-    //     this.isLoading = false;
-    //   },
-    //   error => {
-    //     console.error('Greška prilikom učitavanja proizvoda po brendu:', error);
-    //     this.isLoading = false;
-    //   }
-    // );
+    // future use
   }
-
 }

@@ -8,19 +8,23 @@
   <!-- Breadcrumb -->
   <div class="breadcrumb">
     <ng-container *ngIf="glavnaGrupa">
-      <a [routerLink]="['/', glavnaGrupa]" class="breadcrumb-link">{{ utilService.formatirajNaziv(glavnaGrupa) }}</a>
+      <div [routerLink]="['/', glavnaGrupa]" class="breadcrumb-link">
+        {{ utilService.formatirajNaziv(glavnaGrupa) }}
+      </div>
     </ng-container>
     <ng-container *ngIf="nadgrupa">
-      <span class="breadcrumb-separator"> &gt; </span>
-      <a [routerLink]="['/', glavnaGrupa, nadgrupa]" class="breadcrumb-link">{{ utilService.formatirajNaziv(nadgrupa) }}</a>
+      <span class="breadcrumb-separator">&gt;</span>
+      <div [routerLink]="['/', glavnaGrupa, nadgrupa]" class="breadcrumb-link">
+        {{ utilService.formatirajNaziv(nadgrupa) }}
+      </div>
     </ng-container>
     <ng-container *ngIf="grupa">
-      <span class="breadcrumb-separator"> &gt; </span>
+      <span class="breadcrumb-separator">&gt;</span>
       <span class="breadcrumb-current">{{ utilService.formatirajNaziv(grupa) }}</span>
     </ng-container>
   </div>
 
-  <!-- Podkategorije -->
+  <!-- Podkategorije (nadgrupe) -->
   <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row">
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
       <div [routerLink]="['/', glavnaGrupa, subCategory.name]">
@@ -34,15 +38,40 @@
     </div>
   </div>
 
+  <!-- Grupe unutar nadgrupe (bez slike) -->
+  <div *ngIf="glavnaGrupa && nadgrupa && !grupa" class="sub-category-row">
+    <div
+      *ngFor="let group of groups"
+      class="sub-category-card no-image group-card"
+      [routerLink]="['/', glavnaGrupa, nadgrupa, group.name]"
+    >
+      <div class="no-image-box">
+        <span>{{ group.name }}</span>
+      </div>
+    </div>
+  </div>
+
+
+
   <!-- Dugme za otvaranje filtera - samo mobilni -->
-  <button class="filter-toggle-btn" (click)="showMobileFilters = true"> Filtriraj</button>
+  <button class="filter-toggle-btn" (click)="showMobileFilters = true">
+    Filtriraj
+  </button>
 
   <!-- Overlay i mobilni panel filtera -->
-  <div class="filter-overlay" *ngIf="showMobileFilters" (click)="showMobileFilters = false"></div>
+  <div
+    class="filter-overlay"
+    *ngIf="showMobileFilters"
+    (click)="showMobileFilters = false"
+  ></div>
+
   <div class="mobile-filter-panel" *ngIf="showMobileFilters">
-    <button class="close-mobile-filters" (click)="showMobileFilters = false">✖</button>
+    <button class="close-mobile-filters" (click)="showMobileFilters = false">
+      ✖
+    </button>
+
     <div class="filters-container">
-      <!-- isti sadržaj filtera kao sidebar -->
+      <!-- Cena -->
       <div class="slider-container">
         <label>Cena:</label>
         <div class="slider-values">
@@ -68,6 +97,7 @@
         </div>
       </div>
 
+      <!-- Filteri -->
       <div class="filter-category" *ngFor="let category of filterCategories">
         <h3>{{ category.category }}</h3>
 
@@ -77,12 +107,13 @@
             ? category.types
             : category.types.slice(0, 10))"
         >
-          <label>
-            <input
-              type="checkbox"
-              [value]="type.name"
-              (change)="onTypeChange(category.category, type.name, $event.target.checked)"
-            />
+          <input
+            type="checkbox"
+            [checked]="selectedTypes[category.category]?.includes(type.name)"
+            (change)="onTypeChange(category.category, type.name, $event.target.checked)"
+            id="{{ category.category }}-{{ type.name }}"
+          />
+          <label [for]="category.category + '-' + type.name">
             {{ type.name }} <span>({{ type.quantity }})</span>
           </label>
         </div>
@@ -104,7 +135,7 @@
   <div class="main-content">
     <app-loading-overlay [isLoading]="isLoading"></app-loading-overlay>
 
-    <!-- Stari sidebar (desktop verzija) -->
+    <!-- Sidebar (desktop filteri) -->
     <div class="sidebar">
       <div class="filters-container">
         <div class="slider-container">
@@ -135,47 +166,75 @@
         <div class="filter-category" *ngFor="let category of filterCategories">
           <h3>{{ category.category }}</h3>
 
-          <div class="filter-item" *ngFor="let type of (isExpanded(category.category)
-            ? category.types
-            : category.types.slice(0, 10))">
-            <label>
-              <input
-                type="checkbox"
-                [value]="type.name"
-                (change)="onTypeChange(category.category, type.name, $event.target.checked)"
-              >
+          <div
+            class="filter-item"
+            *ngFor="let type of (isExpanded(category.category)
+              ? category.types
+              : category.types.slice(0, 10))"
+          >
+            <input
+              type="checkbox"
+              [checked]="selectedTypes[category.category]?.includes(type.name)"
+              (change)="onTypeChange(category.category, type.name, $event.target.checked)"
+              id="{{ category.category }}-{{ type.name }}"
+            />
+            <label [for]="category.category + '-' + type.name">
               {{ type.name }} <span>({{ type.quantity }})</span>
             </label>
           </div>
 
-          <button *ngIf="category.types.length > 10" (click)="toggleCategory(category.category)" class="show-more-btn">
-            {{ isExpanded(category.category) ? 'Prikaži manje' : 'Prikaži više (' + (category.types.length - 10) + ')' }}
+          <button
+            *ngIf="category.types.length > 10"
+            (click)="toggleCategory(category.category)"
+            class="show-more-btn"
+          >
+            {{ isExpanded(category.category)
+            ? 'Prikaži manje'
+            : 'Prikaži više (' + (category.types.length - 10) + ')' }}
           </button>
         </div>
       </div>
     </div>
 
+    <!-- Proizvodi i paginacija -->
     <div class="page-container">
       <div class="products-grid">
-        <app-productcard *ngFor="let product of products" [product]="product"></app-productcard>
+        <app-productcard
+          *ngFor="let product of products"
+          [product]="product"
+        ></app-productcard>
       </div>
 
-      <div class="pagination-container" *ngIf="products.length > 0 && totalPages > 0">
-        <button (click)="goToPage(0)" [disabled]="currentPage === 0" class="pagination-btn">&laquo;</button>
-        <button (click)="goToPrevious()" [disabled]="currentPage === 0" class="pagination-btn">&lsaquo;</button>
+      <div class="pagination-container">
+        <button
+          class="pagination-btn"
+          (click)="goToPrevious()"
+          [disabled]="currentPage === 0"
+        >
+          ‹
+        </button>
 
         <ng-container *ngFor="let page of visiblePages">
           <button
+            *ngIf="page !== '...'; else dots"
+            class="pagination-btn"
+            [class.active]="page === currentPage"
             (click)="goToPage(page)"
-            [ngClass]="{'active': page === currentPage}"
-            class="pagination-btn page-number"
           >
             {{ page + 1 }}
           </button>
+          <ng-template #dots>
+            <span class="pagination-btn disabled dots">…</span>
+          </ng-template>
         </ng-container>
 
-        <button (click)="goToNext()" [disabled]="currentPage === totalPages - 1" class="pagination-btn">&rsaquo;</button>
-        <button (click)="goToPage(totalPages - 1)" [disabled]="currentPage === totalPages - 1" class="pagination-btn">&raquo;</button>
+        <button
+          class="pagination-btn"
+          (click)="goToNext()"
+          [disabled]="currentPage === totalPages - 1"
+        >
+          ›
+        </button>
       </div>
     </div>
   </div>

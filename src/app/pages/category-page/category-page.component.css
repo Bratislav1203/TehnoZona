@@ -17,6 +17,7 @@
   color: #212121;
   margin-bottom: 20px;
 }
+
 .sub-category-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -26,7 +27,6 @@
   padding-bottom: 16px;
   border-bottom: 1px solid #d7d5d5;
 }
-
 
 /* Kartica podkategorije */
 .sub-category-card {
@@ -64,7 +64,7 @@
   margin: 10px 0;
 }
 
-/* Sadržaj stranice */
+/* Glavni sadržaj */
 .main-content {
   display: flex;
   margin-top: 20px;
@@ -165,6 +165,7 @@ input[type="checkbox"]:checked::before {
   left: 0;
 }
 
+/* Mreža proizvoda */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -172,7 +173,7 @@ input[type="checkbox"]:checked::before {
   width: 100%;
 }
 
-/* Pojedinačna kartica proizvoda */
+/* Kartica proizvoda */
 .product-card {
   display: flex;
   flex-direction: column;
@@ -195,7 +196,6 @@ input[type="checkbox"]:checked::before {
 }
 
 .breadcrumb-link {
-  color: #4285f4;
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;
@@ -215,7 +215,7 @@ input[type="checkbox"]:checked::before {
   font-weight: normal;
 }
 
-/* Dugme za prikaz više filtera */
+/* Dugme "Prikaži više" */
 .show-more-btn {
   background: none;
   border: none;
@@ -229,7 +229,7 @@ input[type="checkbox"]:checked::before {
   text-decoration: underline;
 }
 
-/* Range slider */
+/* Slider cene */
 .slider-container {
   width: 300px;
   margin: 20px auto;
@@ -272,6 +272,7 @@ input[type="range"]::-webkit-slider-thumb {
   pointer-events: auto;
 }
 
+/* PAGINACIJA */
 .pagination-container {
   display: flex;
   justify-content: center;
@@ -305,12 +306,17 @@ input[type="range"]::-webkit-slider-thumb {
   font-weight: bold;
 }
 
-.pagination-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.3;
-  background-color: transparent;
+.pagination-btn.disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Raspored proizvoda */
 .page-container {
   display: block;
   width: 100%;
@@ -323,13 +329,21 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 @media (min-width: 768px) {
-  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
+
 @media (min-width: 1024px) {
-  .products-grid { grid-template-columns: repeat(3, 1fr); }
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
+
 @media (min-width: 1280px) {
-  .products-grid { grid-template-columns: repeat(4, 1fr); }
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .products-grid app-productcard {
@@ -337,7 +351,12 @@ input[type="range"]::-webkit-slider-thumb {
   width: 100%;
 }
 
-/* Mobilna verzija - unapređeno */
+/* Dugme "Filtriraj" — po difoltu skriveno */
+.filter-toggle-btn {
+  display: none;
+}
+
+/* Mobilni prikaz */
 @media (max-width: 767px) {
   .main-content {
     flex-direction: column;
@@ -375,11 +394,11 @@ input[type="range"]::-webkit-slider-thumb {
   .sub-category-card {
     width: 100%;
     height: auto;
-    padding: 0; /* uklonjen padding */
+    padding: 0;
   }
 
   .sub-category-card img {
-    width: 60px; /* manja slika */
+    width: 60px;
     height: 60px;
     margin-top: 6px;
   }
@@ -390,7 +409,7 @@ input[type="range"]::-webkit-slider-thumb {
   }
 
   .products-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
@@ -421,14 +440,7 @@ input[type="range"]::-webkit-slider-thumb {
     height: 32px;
     font-size: 13px;
   }
-}
-/* Dugme "Filtriraj" — po difoltu skriveno */
-.filter-toggle-btn {
-  display: none;
-}
 
-/* Mobilni prikaz */
-@media (max-width: 767px) {
   /* Dugme "Filtriraj" vidljivo samo na mobilnim */
   .filter-toggle-btn {
     display: block;
@@ -459,7 +471,7 @@ input[type="range"]::-webkit-slider-thumb {
     z-index: 1000;
   }
 
-  /* Centralno pozicioniran panel filtera */
+  /* Panel filtera na mobilnom */
   .mobile-filter-panel {
     position: fixed;
     top: 50%;
@@ -486,15 +498,28 @@ input[type="range"]::-webkit-slider-thumb {
     color: #555;
     cursor: pointer;
   }
-
-  /* Na mobilnim — 2 proizvoda po redu */
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  /* Sidebar se ne prikazuje */
-  .sidebar {
-    display: none;
-  }
 }
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #888;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+  background-color: transparent;
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+}
+
+.sub-category-card.no-image.group-card {
+  height: 35px !important;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-around;
+}
+

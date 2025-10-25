@@ -29,7 +29,7 @@
   background-color: #f7f8fa;
   display: flex;
   flex-direction: column;
-  padding-top: 159px; /* 🧩 visina fiksnog headera */
+  padding-top: 115px; /* 🧩 visina fiksnog headera */
   padding-bottom: 40px; /* 💡 razmak iznad footera */
   z-index: 1;
 }
@@ -43,7 +43,7 @@ app-footer {
 /* ===================== MOBILNI PRIKAZ ===================== */
 @media (max-width: 768px) {
   .content {
-    padding-top: 183px; /* niži header na mobilnom */
+    padding-top: 160px; /* niži header na mobilnom */
     padding-bottom: 30px;
   }
 
