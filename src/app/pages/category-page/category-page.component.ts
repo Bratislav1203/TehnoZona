@@ -92,7 +92,9 @@ export class CategoryPageComponent {
             .getProizvodjaciCount(
               2,
               this.glavnaGrupa,
-              this.nadgrupa ? [this.nadgrupa] : []
+              this.nadgrupa ? [this.nadgrupa] : [],
+              this.minValue,
+              this.maxValue
             )
             .subscribe((data) => {
               this.filterCategories = [
@@ -227,9 +229,10 @@ export class CategoryPageComponent {
       )
       .subscribe(
         (data) => {
-          this.products = data;
+          this.products = data.products;
           this.setPriceRange();
-          this.totalPages = Math.ceil(300 / this.pageSize);
+          this.totalProducts = data.totalCount;
+          this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
           this.updateVisiblePages();
           this.isLoading = false;
         },

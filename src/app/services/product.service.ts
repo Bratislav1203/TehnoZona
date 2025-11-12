@@ -35,12 +35,12 @@ export class ProductService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    // if (minCena !== undefined && minCena !== null) {
-    //   params = params.set('minCena', minCena.toString());
-    // }
-    // if (maxCena !== undefined && maxCena !== null) {
-    //   params = params.set('maxCena', maxCena.toString());
-    // }
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
+    }
 
     if (proizvodjaci && proizvodjaci.length > 0) {
       proizvodjaci.forEach(p => {
@@ -61,7 +61,7 @@ export class ProductService {
     minCena?: number,
     maxCena?: number,
     proizvodjaci?: string[] // dodatni parametar
-  ): Observable<Product[]> {
+  ): Observable<any> {
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
     const encodedNadgrupa = encodeURIComponent(nadgrupa);
 
@@ -142,7 +142,9 @@ export class ProductService {
   getProizvodjaciCount(
     vendorId: number,
     glavnaGrupa: string,
-    nadgrupe?: string[]
+    nadgrupe?: string[],
+    minCena?: number,
+    maxCena?: number
   ): Observable<{ [key: string]: number }> {
     let params = new HttpParams();
 
@@ -150,6 +152,13 @@ export class ProductService {
       nadgrupe.forEach(n => {
         params = params.append('nadgrupe', n);
       });
+    }
+
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
     }
 
     return this.http.get<{ [key: string]: number }>(
