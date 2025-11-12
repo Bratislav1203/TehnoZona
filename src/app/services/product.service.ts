@@ -71,12 +71,12 @@ export class ProductService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    // if (minCena !== undefined) {
-    //   params = params.set('minCena', minCena.toString());
-    // }
-    // if (maxCena !== undefined) {
-    //   params = params.set('maxCena', maxCena.toString());
-    // }
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
+    }
     if (proizvodjaci && proizvodjaci.length > 0) {
       proizvodjaci.forEach(p => {
         params = params.append('proizvodjaci', p);
@@ -95,7 +95,7 @@ export class ProductService {
     minCena?: number,
     maxCena?: number,
     proizvodjaci?: string[]
-  ): Observable<Product[]> {
+  ): Observable<any> {
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
     const encodedNadgrupa = encodeURIComponent(nadgrupa);
     const encodedGrupa = encodeURIComponent(grupa);
@@ -144,7 +144,8 @@ export class ProductService {
     glavnaGrupa: string,
     nadgrupe?: string[],
     minCena?: number,
-    maxCena?: number
+    maxCena?: number,
+    grupa?: string
   ): Observable<{ [key: string]: number }> {
     let params = new HttpParams();
 
@@ -161,6 +162,8 @@ export class ProductService {
       params = params.set('maxCena', maxCena.toString());
     }
 
+    params = params.append('grupa', grupa);
+
     return this.http.get<{ [key: string]: number }>(
       `${this.apiUrl}/1/glavnaGrupa/${encodeURIComponent(glavnaGrupa)}/proizvodjaci-count`,
       { params }
@@ -172,9 +175,14 @@ export class ProductService {
     // OVO TRENUTNO RADI ZA GLAVNU GRUPU!!!!!!
     //
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
-    let params = new HttpParams()
-      .set('minCena', minCena.toString())
-      .set('maxCena', maxCena.toString());
+    let params = new HttpParams();
+
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
+    }
 
     const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGlavnaGrupa}/proizvodjaci-count`;
 
@@ -187,9 +195,14 @@ export class ProductService {
 
     const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGlavnaGrupa}/nadgrupa/${encodedNadgrupa}/artikli`;
 
-    const params = new HttpParams()
-      .set('minCena', minCena.toString())
-      .set('maxCena', maxCena.toString());
+    let params = new HttpParams();
+
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
+    }
     console.log(params);
     return this.http.get<Product[]>(url, { params });
   }
