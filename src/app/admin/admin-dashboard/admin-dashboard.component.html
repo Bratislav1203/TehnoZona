@@ -1,0 +1,148 @@
+<div class="admin-dashboard-page">
+  <div class="admin-dashboard-container">
+    <h1 class="admin-title">Admin portal – featured proizvodi</h1>
+
+    <!-- TABOVI -->
+    <div class="tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'add'"
+        (click)="setTab('add')">
+        Dodaj featured proizvod
+      </button>
+
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'list'"
+        (click)="setTab('list')">
+        Pregled postojećih
+      </button>
+    </div>
+
+    <!-- KARTICA SADRŽAJA -->
+    <div class="tab-content-card">
+      <!-- TAB: DODAVANJE -->
+      <div *ngIf="activeTab === 'add'" class="tab-panel tab-panel-add">
+        <h2 class="section-title">Dodavanje novog featured proizvoda</h2>
+        <p class="section-subtitle">
+          Obeleži proizvod kao <strong>Top</strong>, <strong>Akcija</strong>, <strong>Novo</strong> ili
+          <strong>Preporučeno</strong>, sa prioritetom i važenjem u vremenskom periodu.
+        </p>
+
+        <!-- ALERTI -->
+        <div *ngIf="submitSuccess" class="alert alert-success">
+          Proizvod je uspešno sačuvan (dummy za sada – posle vezujemo backend).
+        </div>
+
+        <div *ngIf="submitError" class="alert alert-error">
+          {{ submitError }}
+        </div>
+
+        <!-- FORMA -->
+        <form class="featured-form" (ngSubmit)="submitNew()">
+          <!-- PRVI RED: featureType + barcode -->
+          <div class="form-row">
+            <div class="form-field">
+              <label for="featureType">Feature tip</label>
+              <select
+                id="featureType"
+                [(ngModel)]="newFeatured.featureType"
+                name="featureType"
+                required>
+                <option *ngFor="let ft of featureTypes" [value]="ft.value">
+                  {{ ft.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="barcode">Barcode</label>
+              <input
+                id="barcode"
+                type="text"
+                [(ngModel)]="newFeatured.barcode"
+                name="barcode"
+                placeholder="Unesi barcode proizvoda"
+                required />
+            </div>
+          </div>
+
+          <!-- DRUGI RED: priority -->
+          <div class="form-row">
+            <div class="form-field">
+              <label for="priority">Prioritet</label>
+              <select
+                id="priority"
+                [(ngModel)]="newFeatured.priority"
+                name="priority"
+                required>
+                <option *ngFor="let p of priorities" [value]="p">
+                  {{ p }}
+                </option>
+              </select>
+              <small class="field-hint">
+                1 = najviši prioritet (prikaz na vrhu).
+              </small>
+            </div>
+          </div>
+
+          <!-- TREĆI RED: validFrom + validTo -->
+          <div class="form-row">
+            <div class="form-field">
+              <label for="validFrom">Važi od</label>
+              <input
+                id="validFrom"
+                type="datetime-local"
+                [(ngModel)]="newFeatured.validFrom"
+                name="validFrom"
+                required />
+            </div>
+
+            <div class="form-field">
+              <label for="validTo">Važi do</label>
+              <input
+                id="validTo"
+                type="datetime-local"
+                [(ngModel)]="newFeatured.validTo"
+                name="validTo"
+                required />
+            </div>
+          </div>
+
+          <!-- DUGME -->
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="primary-btn"
+              [disabled]="isSubmitting || !newFeatured.barcode || !newFeatured.validFrom || !newFeatured.validTo">
+              <span *ngIf="!isSubmitting">Sačuvaj featured proizvod</span>
+              <span *ngIf="isSubmitting">Čuvanje...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB: LISTA – za sada placeholder -->
+      <div *ngIf="activeTab === 'list'" class="tab-panel tab-panel-list">
+        <h2 class="section-title">Pregled postojećih featured proizvoda</h2>
+        <p class="section-subtitle">
+          Ovde će biti tabela sa svim TOP / Akcija / Novo / Preporučeno proizvodima, uz opciju brisanja.
+        </p>
+
+        <div *ngIf="!featuredProducts.length" class="empty-state">
+          <p>Još uvek nema dodatih featured proizvoda.</p>
+          <button class="link-btn" (click)="setTab('add')">
+            + Dodaj prvi featured proizvod
+          </button>
+        </div>
+
+        <!-- Kasnije: prava tabela -->
+        <!--
+        <table class="featured-table" *ngIf="featuredProducts.length">
+          ...
+        </table>
+        -->
+      </div>
+    </div>
+  </div>
+</div>

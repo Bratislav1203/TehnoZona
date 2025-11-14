@@ -27,6 +27,8 @@ import { CartComponent } from './pages/cart/cart.component';
 import {CheckoutComponent} from "./pages/cart/checkout/checkout.component";
 import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
 import { AllCategoriesMenuComponent } from './menu/all-categories-menu/all-categories-menu.component';
+import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { AllCategoriesMenuComponent } from './menu/all-categories-menu/all-categ
     CartComponent,
     CheckoutComponent,
     AboutUsPageComponent,
-    AllCategoriesMenuComponent
+    AllCategoriesMenuComponent,
+    AdminLoginComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

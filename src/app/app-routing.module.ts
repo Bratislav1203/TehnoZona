@@ -7,9 +7,13 @@ import { CategoryPageComponent } from "./pages/category-page/category-page.compo
 import { CartComponent } from "./pages/cart/cart.component";
 import { CheckoutComponent } from "./pages/cart/checkout/checkout.component";
 import { AboutUsPageComponent } from "./pages/about-us-page/about-us-page.component";
+import {AdminLoginComponent} from "./admin/admin-login/admin-login.component";
+import {AdminDashboardComponent} from "./admin/admin-dashboard/admin-dashboard.component";
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
+  { path: 'x9frk2n7pb4qm8stj5h0', component: AdminLoginComponent },
+  { path: 'x9frk2n7pb4qm8stj5h0/dashboard', component: AdminDashboardComponent },
   { path: 'product/:id', component: ProductDetailsComponent },
   { path: 'auth', component: LoginPageComponent },
   { path: 'cart', component: CartComponent },
@@ -20,7 +24,8 @@ const routes: Routes = [
   { path: ':glavnaGrupa', component: CategoryPageComponent },
   { path: ':glavnaGrupa/:nadgrupa', component: CategoryPageComponent },
   { path: ':glavnaGrupa/:nadgrupa/:grupa', component: CategoryPageComponent },
-  { path: 'search=:query', component: CategoryPageComponent },
+  { path: 'search=:query', component: CategoryPageComponent }
+
 ];
 
 @NgModule({

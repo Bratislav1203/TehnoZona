@@ -43,7 +43,6 @@ export class CategoryPageComponent {
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private cartService: CartService,
     public utilService: UtilService,
     private mockService: MockGlavnaGrupaService // 👈 novi servis
   ) {}
@@ -258,15 +257,6 @@ export class CategoryPageComponent {
     return this.expandedCategories[category] || false;
   }
 
-  private setPriceRange(): void {
-    if (!this.products || this.products.length === 0) { return; }
-    const prices = this.products.map((p) => p.b2bcena);
-    this.minValue = Math.min(...prices);
-    this.maxValue = Math.max(...prices);
-    this.initialMinValue = this.minValue;
-    this.initialMaxValue = this.maxValue;
-  }
-
   updateVisiblePages(): void {
     const pages: (number | string)[] = [];
     if (this.totalPages <= 6) {
@@ -378,7 +368,25 @@ export class CategoryPageComponent {
     element.src = 'assets/noImageAvailable.jpg';
   }
 
-  ucitajBrend(brandName: string): void {
-    // future use
+  ucitajBrend(brand: string) {
+    this.isLoading = true;
+
+    this.productService.getProductsByBrand(2, brand).subscribe(response => {
+
+      this.products = response;
+
+      this.initialMinValue = response.initialMinCena;
+      this.initialMaxValue = response.initialMaxCena;
+
+      if (!this.minValue) { this.minValue = response.minCena; }
+      if (!this.maxValue) { this.maxValue = response.maxCena; }
+
+      this.totalProducts = response.length;
+      this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+      this.updateVisiblePages();
+
+      this.isLoading = false;
+    });
   }
+
 }

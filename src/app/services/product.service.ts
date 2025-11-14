@@ -13,14 +13,6 @@ export class ProductService {
   currentProduct: Product;
   constructor(private http: HttpClient) {}
 
-  getProducts(vendorId: number, limit: number): Observable<Product[]> {
-    const params = new HttpParams()
-      .set('vendorId', vendorId.toString())
-      .set('limit', limit.toString());
-
-    return this.http.get<Product[]>(this.apiUrlArtikli, { params });
-  }
-
   getProductByBarcode(vendorId: number, barcode: string): Observable<any> {
     const url = `${this.apiUrl}/${vendorId}/artikal/${barcode}`;
     return this.http.get<Product>(url);
@@ -128,14 +120,6 @@ export class ProductService {
     return this.http.get<Product[]>(url, { params });
   }
 
-
-  getProductsByProizvodjac(proizvodjac: string): Observable<Product[]> {
-    const params = new HttpParams().set('proizvodjac', proizvodjac);
-    const url = `${this.apiUrlArtikli}/proizvodjac`;
-    return this.http.get<Product[]>(url, { params });
-  }
-
-
   setCurrentProduct(product: Product) {
     this.currentProduct = product;
   }
@@ -175,42 +159,6 @@ export class ProductService {
     );
   }
 
-  getProizvodjaciCountNadgrupaWithPrice(vendorId: number, glavnaGrupa: string, minCena: number, maxCena: number): Observable<{ [key: string]: number }> {
-    //
-    // OVO TRENUTNO RADI ZA GLAVNU GRUPU!!!!!!
-    //
-    const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
-    let params = new HttpParams();
-
-    if (minCena !== undefined && minCena !== null && minCena !== 0) {
-      params = params.set('minCena', minCena.toString());
-    }
-    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
-      params = params.set('maxCena', maxCena.toString());
-    }
-
-    const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGlavnaGrupa}/proizvodjaci-count`;
-
-    return this.http.get<{ [key: string]: number }>(url, { params });
-
-  }
-  getProductsFromNadgrupaWithPrice(vendorId: number, glavnaGrupa: string, nadgrupa: string, minCena: number, maxCena: number): Observable<Product[]> {
-    const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
-    const encodedNadgrupa = encodeURIComponent(nadgrupa);
-
-    const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGlavnaGrupa}/nadgrupa/${encodedNadgrupa}/artikli`;
-
-    let params = new HttpParams();
-
-    if (minCena !== undefined && minCena !== null && minCena !== 0) {
-      params = params.set('minCena', minCena.toString());
-    }
-    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
-      params = params.set('maxCena', maxCena.toString());
-    }
-    console.log(params);
-    return this.http.get<Product[]>(url, { params });
-  }
   getNadgrupeZaGrupu(glavnaGrupa: string) {
     const encodedGrupa = encodeURIComponent(glavnaGrupa);
     const url = `${this.apiUrl}/glavneGrupe/${encodedGrupa}/nadgrupe`;
@@ -220,10 +168,10 @@ export class ProductService {
     return this.http.get<string[]>(`${this.apiUrl}/glavni-proizvodjaci`);
   }
 
-  searchProducts(vendorId: number, query: string): Observable<Product[]> {
-    const params = new HttpParams()
-      .set('query', query);
-    return this.http.get<Product[]>(`${this.apiUrl}/${vendorId}/artikli/search`, { params });
+  getProductsByBrand(vendorId: number, brand: string): Observable<any> {
+    const encodedBrand = encodeURIComponent(brand);
+    const url = `${this.apiUrl}/${vendorId}/artikli/brand/${encodedBrand}`;
+    return this.http.get<Product[]>(url);
   }
 
 }
