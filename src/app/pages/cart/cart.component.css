@@ -1,51 +1,137 @@
-.cart-container {
+:host {
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+.cart-page-container {
   padding: 20px;
-  background: #f7f8fa;
-  border-radius: 8px;
-  max-width: 900px;
-  margin: auto;
+  background-color: #f7f8fa;
+}
+
+.cart-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* ====================== DESKTOP — TABELA ====================== */
+
+.cart-table-wrapper {
+  overflow-x: auto;
 }
 
 .cart-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 700px;
 }
 
-.cart-table th, .cart-table td {
-  padding: 10px;
+.cart-table th,
+.cart-table td {
+  padding: 12px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
 
 .cart-table th {
   background: #e0e0e0;
+  font-weight: 600;
 }
 
 .product-info {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .product-image {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
 }
 
 input[type="number"] {
-  width: 50px;
+  width: 60px;
+  padding: 4px;
   text-align: center;
 }
 
 .remove-btn {
-  background: red;
+  background-color: #e53935;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
   cursor: pointer;
-  display: flex;
-  gap: 5px;
 }
+
+.remove-btn:hover {
+  background-color: #c62828;
+}
+
+/* ====================== MOBILNI — GRID ====================== */
+
+.cart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.cart-item-card {
+  background: white;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.item-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-product-image {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+}
+
+.item-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.item-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.item-controls {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quantity-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quantity-wrapper input {
+  width: 70px;
+  padding: 5px;
+}
+
+.item-total {
+  text-align: right;
+  font-size: 15px;
+}
+
+/* ====================== ACTIONS ====================== */
 
 .cart-actions {
   display: flex;
@@ -53,47 +139,44 @@ input[type="number"] {
   margin-top: 20px;
 }
 
-.continue-shopping-btn, .clear-cart-btn {
+.primary-btn {
   background: #4285f4;
   color: white;
+  padding: 12px 18px;
   border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-
-.empty-cart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 500px;
-  text-align: center;
-  color: #444;
-}
-
-.cart-icon {
-  font-size: 150px;
-  color: #666;
-  margin-bottom: 20px;
-}
-.primary-btn {
-  background: #4285f4; /* plava */
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: 6px;
+  font-weight: 600;
 }
 
 .secondary-btn {
-  background: #d5d5da; /* svetlosiva */
-  color: #4285f4;       /* plava slova */
-  border: 1px solid #d0d0d0;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
+  background: #d5d5da;
+  color: #4285f4;
+  padding: 12px 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ====================== MOBILNI ====================== */
+
+@media (max-width: 768px) {
+  .cart-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cart-actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-grid {
+    grid-template-columns: 1fr;
+  }
 }

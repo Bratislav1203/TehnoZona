@@ -8,15 +8,27 @@ import { Product } from '../../services/product.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
+
   cartItems: Product[] = [];
+  isMobile = false;
 
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
+    this.detectMobile();
+
+    window.addEventListener('resize', () => {
+      this.detectMobile();
+    });
+
     this.cartItems = this.cartService.getCartItems();
     this.cartService.cart$.subscribe(items => {
       this.cartItems = items;
     });
+  }
+
+  private detectMobile() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   removeFromCart(product: Product) {
@@ -30,6 +42,4 @@ export class CartComponent implements OnInit {
   updateQuantity(product: Product) {
     this.cartService.updateQuantity(product, product.cartKolicina);
   }
-
-
 }

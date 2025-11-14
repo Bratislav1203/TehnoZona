@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { FilterCategory, Product, ProductService, nameAndImage } from "../../services/product.service";
-import { CartService } from "../../services/cart.service";
-import { UtilService } from "../../services/util.service";
-import { MockGlavnaGrupaService } from "../../services/mock-glavna-grupa.service"; // 👈 dodato
+import { FilterCategory, Product, ProductService, nameAndImage } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
+import { UtilService } from '../../services/util.service';
+import { MockGlavnaGrupaService } from '../../services/mock-glavna-grupa.service'; // 👈 dodato
 
 @Component({
   selector: 'app-category-page',
@@ -66,13 +66,13 @@ export class CategoryPageComponent {
         this.grupa = params.get('grupa');
 
         // Query parametri
-        this.currentPage = (+queryParams['page'] || 1) - 1;
-        this.pageSize = +queryParams['size'] || 20;
-        this.minValue = +queryParams['minCena'] || 0;
-        this.maxValue = +queryParams['maxCena'] || 0;
+        this.currentPage = (+queryParams.page || 1) - 1;
+        this.pageSize = +queryParams.size || 20;
+        this.minValue = +queryParams.minCena || 0;
+        this.maxValue = +queryParams.maxCena || 0;
 
-        const proizvodjaciParam = queryParams['proizvodjaci'];
-        this.selectedTypes['Proizvođač'] = proizvodjaciParam
+        const proizvodjaciParam = queryParams.proizvodjaci;
+        this.selectedTypes.Proizvođač = proizvodjaciParam
           ? Array.from(new Set(proizvodjaciParam.split(',')))
           : [];
 
@@ -142,13 +142,13 @@ export class CategoryPageComponent {
   private getGrupeIzMockServisa(glavnaGrupa: string, nadgrupa: string): { name: string }[] {
     const all = this.mockService.getAllGlavneGrupe();
     const match = all.find(g => g.name.toUpperCase() === glavnaGrupa.toUpperCase());
-    if (!match) return [];
+    if (!match) { return []; }
     const groups = match.nadgrupe[nadgrupa.toUpperCase()] || [];
     return groups.map(name => ({ name: this.utilService.formatirajNaziv(name.trim()) }));
   }
 
   ucitajStranicu(): void {
-    if (!this.glavnaGrupa) return;
+    if (!this.glavnaGrupa) { return; }
     this.isLoading = true;
 
     this.productService
@@ -159,7 +159,7 @@ export class CategoryPageComponent {
         this.pageSize,
         this.minValue,
         this.maxValue,
-        this.selectedTypes['Proizvođač']
+        this.selectedTypes.Proizvođač
       )
       .subscribe(
         (response) => {
@@ -167,11 +167,11 @@ export class CategoryPageComponent {
           this.totalProducts = response.totalCount;
           this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
 
-          this.initialMinValue = response.minCena;
-          this.initialMaxValue = response.maxCena;
+          this.initialMinValue = response.initialMinCena;
+          this.initialMaxValue = response.initialMaxCena;
 
-          if (!this.minValue) this.minValue = response.minCena;
-          if (!this.maxValue) this.maxValue = response.maxCena;
+          if (!this.minValue) { this.minValue = response.minCena; }
+          if (!this.maxValue) { this.maxValue = response.maxCena; }
 
           this.updateVisiblePages();
           this.isLoading = false;
@@ -181,10 +181,10 @@ export class CategoryPageComponent {
   }
 
   ucitajStranicuZaGrupu(): void {
-    if (!this.glavnaGrupa || !this.nadgrupa || !this.grupa) return;
+    if (!this.glavnaGrupa || !this.nadgrupa || !this.grupa) { return; }
     this.isLoading = true;
 
-    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
+    const selektovaniProizvodjaci = this.selectedTypes.Proizvođač || [];
 
     this.productService
       .getProductsFromGrupa(
@@ -199,11 +199,15 @@ export class CategoryPageComponent {
         selektovaniProizvodjaci
       )
       .subscribe(
-        (data) => {
-          this.products = data.products;
-          this.setPriceRange();
-          this.totalProducts = data.totalCount;
+        (response) => {
+          this.products = response.products;
+          this.totalProducts = response.totalCount;
           this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+          this.initialMinValue = response.initialMinCena;
+          this.initialMaxValue = response.initialMaxCena;
+
+          if (!this.minValue) { this.minValue = response.minCena; }
+          if (!this.maxValue) { this.maxValue = response.maxCena; }
           this.updateVisiblePages();
           this.isLoading = false;
         },
@@ -213,10 +217,10 @@ export class CategoryPageComponent {
 
 
   ucitajStranicuZaNadgrupu(): void {
-    if (!this.glavnaGrupa || !this.nadgrupa) return;
+    if (!this.glavnaGrupa || !this.nadgrupa) { return; }
     this.isLoading = true;
 
-    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
+    const selektovaniProizvodjaci = this.selectedTypes.Proizvođač || [];
 
     this.productService
       .getProductsFromNadgrupa(
@@ -230,10 +234,14 @@ export class CategoryPageComponent {
         selektovaniProizvodjaci
       )
       .subscribe(
-        (data) => {
-          this.products = data.products;
-          this.setPriceRange();
-          this.totalProducts = data.totalCount;
+        (response) => {
+          this.products = response.products;
+          this.initialMinValue = response.initialMinCena;
+          this.initialMaxValue = response.initialMaxCena;
+
+          if (!this.minValue) { this.minValue = response.minCena; }
+          if (!this.maxValue) { this.maxValue = response.maxCena; }
+          this.totalProducts = response.totalCount;
           this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
           this.updateVisiblePages();
           this.isLoading = false;
@@ -242,7 +250,7 @@ export class CategoryPageComponent {
       );
   }
 
-  toggleCategory(category: string) {
+  toggleCategory(category: string): void {
     this.expandedCategories[category] = !this.expandedCategories[category];
   }
 
@@ -251,7 +259,7 @@ export class CategoryPageComponent {
   }
 
   private setPriceRange(): void {
-    if (!this.products || this.products.length === 0) return;
+    if (!this.products || this.products.length === 0) { return; }
     const prices = this.products.map((p) => p.b2bcena);
     this.minValue = Math.min(...prices);
     this.maxValue = Math.max(...prices);
@@ -262,22 +270,23 @@ export class CategoryPageComponent {
   updateVisiblePages(): void {
     const pages: (number | string)[] = [];
     if (this.totalPages <= 6) {
-      for (let i = 0; i < this.totalPages; i++) pages.push(i);
+      for (let i = 0; i < this.totalPages; i++) { pages.push(i); }
     } else {
       const lastPage = this.totalPages - 1;
       if (this.currentPage <= 2) {
-        for (let i = 0; i <= 3; i++) pages.push(i);
+        for (let i = 0; i <= 3; i++) { pages.push(i); }
         pages.push('...');
         pages.push(lastPage);
       } else if (this.currentPage >= lastPage - 2) {
         pages.push(0);
         pages.push('...');
-        for (let i = lastPage - 3; i <= lastPage; i++) pages.push(i);
+        for (let i = lastPage - 3; i <= lastPage; i++) { pages.push(i); }
       } else {
         pages.push(0);
         pages.push('...');
-        for (let i = this.currentPage - 1; i <= this.currentPage + 1; i++)
+        for (let i = this.currentPage - 1; i <= this.currentPage + 1; i++) {
           pages.push(i);
+        }
         pages.push('...');
         pages.push(lastPage);
       }
@@ -286,7 +295,7 @@ export class CategoryPageComponent {
   }
 
   goToPage(page: number): void {
-    if (typeof page === 'string') return;
+    if (typeof page === 'string') { return; }
     this.currentPage = page;
     this.navigateWithFilters();
   }
@@ -306,14 +315,15 @@ export class CategoryPageComponent {
   }
 
   updateSlider(): void {
-    if (this.minValue > this.maxValue)
+    if (this.minValue > this.maxValue) {
       [this.minValue, this.maxValue] = [this.maxValue, this.minValue];
+    }
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => this.navigateWithFilters(), 300);
   }
 
   onTypeChange(category: string, type: string, isChecked: boolean) {
-    if (!this.selectedTypes[category]) this.selectedTypes[category] = [];
+    if (!this.selectedTypes[category]) { this.selectedTypes[category] = []; }
 
     if (isChecked) {
       if (!this.selectedTypes[category].includes(type)) {
@@ -337,11 +347,11 @@ export class CategoryPageComponent {
       maxCena: this.maxValue,
     };
 
-    const proizvodjaci = this.selectedTypes['Proizvođač'];
+    const proizvodjaci = this.selectedTypes.Proizvođač;
     if (proizvodjaci && proizvodjaci.length > 0) {
-      queryParams['proizvodjaci'] = proizvodjaci.join(',');
+      queryParams.proizvodjaci = proizvodjaci.join(',');
     } else {
-      queryParams['proizvodjaci'] = null;
+      queryParams.proizvodjaci = null;
     }
 
     this.router.navigate([], {

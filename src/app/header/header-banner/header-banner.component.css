@@ -97,7 +97,7 @@ body {
 
 .cart-badge {
   position: absolute;
-  top: -7px;
+  top: 8px;
   right: 43px;
   background-color: red;
   color: white;
@@ -118,7 +118,9 @@ body {
     height: auto;
     padding: 10px 16px;
   }
-
+  .cart-badge {
+    top: -7px;
+  }
   /* grupiši logo i korpu u isti red */
   .header {
     display: grid;

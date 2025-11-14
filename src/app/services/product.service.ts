@@ -29,7 +29,7 @@ export class ProductService {
     minCena?: number,
     maxCena?: number,
     proizvodjaci?: string[]
-  ): Observable<{ products: Product[], totalCount: number, minCena: number, maxCena: number }> {
+  ): Observable<any> {
     const encodedGrupa = encodeURIComponent(glavnaGrupa);
     let params = new HttpParams()
       .set('page', page.toString())

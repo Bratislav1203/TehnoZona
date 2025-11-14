@@ -1,3 +1,4 @@
+<!-- PRAZNA KORPA -->
 <div *ngIf="cartItems.length === 0; else cartContent" class="empty-cart">
   <i class="fa fa-shopping-cart cart-icon"></i>
   <h2>Vaša korpa je prazna</h2>
@@ -5,44 +6,102 @@
 </div>
 
 <ng-template #cartContent>
-  <div class="cart-container">
-    <h2>Korpa</h2>
+  <div class="cart-page-container">
+    <h2 class="cart-title">Korpa</h2>
 
-    <table class="cart-table">
-      <thead>
-      <tr>
-        <th>Proizvod</th>
-        <th>Cena</th>
-        <th>Količina</th>
-        <th>Total</th>
-        <th>Akcija</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of cartItems">
-        <td class="product-info">
-          <img [src]="item.slike ? item.slike[0] : 'assets/placeholder.png'" alt="{{ item.naziv }}" class="product-image">
-          <span>{{ item.naziv }}</span>
-        </td>
-        <td><strong>{{ item.b2bcena | number: '1.2-2' }} {{ item.valuta }}</strong></td>
-        <td>
-          <input type="number" [(ngModel)]="item.cartKolicina" (change)="updateQuantity(item)" min="1">
-        </td>
-        <td><strong>{{ (item.b2bcena * item.cartKolicina) | number: '1.2-2' }} {{ item.valuta }}</strong></td>
-        <td>
-          <button (click)="removeFromCart(item)" class="remove-btn">
+    <!-- DESKTOP TABELA -->
+    <div class="cart-table-wrapper" *ngIf="!isMobile">
+      <table class="cart-table">
+        <thead>
+        <tr>
+          <th>Proizvod</th>
+          <th>Cena</th>
+          <th>Količina</th>
+          <th>Ukupno</th>
+          <th>Akcija</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td class="product-info">
+            <img
+              [src]="item.slike?.length > 0 ? item.slike[0] : 'assets/placeholder.png'"
+              alt="{{ item.naziv }}"
+              class="product-image"
+            />
+            <span>{{ item.naziv }}</span>
+          </td>
+
+          <td><strong>{{ item.b2bcena | number:'1.2-2' }} {{ item.valuta }}</strong></td>
+
+          <td>
+            <input type="number"
+                   [(ngModel)]="item.cartKolicina"
+                   (change)="updateQuantity(item)"
+                   min="1"/>
+          </td>
+
+          <td>
+            <strong>
+              {{ (item.b2bcena * item.cartKolicina) | number:'1.2-2' }} {{ item.valuta }}
+            </strong>
+          </td>
+
+          <td>
+            <button (click)="removeFromCart(item)" class="remove-btn">
+              Ukloni <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MOBILNI GRID -->
+    <div class="cart-grid" *ngIf="isMobile">
+      <div class="cart-item-card" *ngFor="let item of cartItems">
+
+        <div class="item-main">
+          <img
+            [src]="item.slike?.length > 0 ? item.slike[0] : 'assets/placeholder.png'"
+            alt="{{ item.naziv }}"
+            class="mobile-product-image"
+          />
+
+          <div class="item-info">
+            <h3 class="item-name">{{ item.naziv }}</h3>
+            <p class="item-price">{{ item.b2bcena | number:'1.2-2' }} {{ item.valuta }}</p>
+          </div>
+        </div>
+
+        <div class="item-controls">
+          <div class="quantity-wrapper">
+            <label>Količina:</label>
+            <input type="number"
+                   [(ngModel)]="item.cartKolicina"
+                   (change)="updateQuantity(item)"
+                   min="1" />
+          </div>
+
+          <div class="item-total">
+            <strong>
+              {{ (item.b2bcena * item.cartKolicina) | number:'1.2-2' }} {{ item.valuta }}
+            </strong>
+          </div>
+
+          <button class="remove-btn" (click)="removeFromCart(item)">
             Ukloni <i class="fa fa-trash"></i>
           </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        </div>
 
+      </div>
+    </div>
+
+    <!-- DUGMAD -->
     <div class="cart-actions">
-      <button class="secondary-btn" routerLink="/">⟵ Nastavi sa kupovinom</button>
-      <button *ngIf="cartItems.length > 0" routerLink="/checkout" class="primary-btn">
-        Potvrdi kupovinu
-      </button>
+      <button class="secondary-btn" routerLink="/">⟵ Nastavi kupovinu</button>
+      <button routerLink="/checkout" class="primary-btn">Potvrdi kupovinu</button>
     </div>
 
   </div>
