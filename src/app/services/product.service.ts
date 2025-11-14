@@ -21,6 +21,11 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrlArtikli, { params });
   }
 
+  getProductByBarcode(vendorId: number, barcode: string): Observable<any> {
+    const url = `${this.apiUrl}/${vendorId}/artikal/${barcode}`;
+    return this.http.get<Product>(url);
+  }
+
   getProductsFromCategory(
     vendorId: number,
     glavnaGrupa: string,

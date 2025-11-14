@@ -10,7 +10,6 @@ import { CartService } from "../../services/cart.service";
 export class ProductcardComponent implements OnInit {
 
   @Input() product: Product;
-  showPopup = false;
 
   constructor(private productService: ProductService, private cartService: CartService) {
   }
@@ -23,11 +22,6 @@ export class ProductcardComponent implements OnInit {
 
   addToCart(product: Product): void {
     this.cartService.addToCart(product);
-    this.showPopup = true;
-
-    setTimeout(() => {
-      this.showPopup = false;
-    }, 2000);
   }
 
   onImageError(event: Event) {

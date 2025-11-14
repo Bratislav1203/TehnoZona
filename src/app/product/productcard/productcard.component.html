@@ -1,5 +1,5 @@
 <div class="product-card">
-  <div style="cursor:pointer;" [routerLink]="['/product', product.sifra]" (click)="setCurrentProduct(product)">
+  <div style="cursor:pointer;" [routerLink]="['/product', product.barkod]" (click)="setCurrentProduct(product)">
     <img
       [src]="product.slike[0]"
       (error)="onImageError($event)"

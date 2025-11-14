@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import { Product } from './product.service';
 import {HttpClient} from "@angular/common/http";
 import { environment } from '../../environments/environment';
+import Swal from "sweetalert2";
 
 const CART_KEY = 'cart';
 
@@ -37,8 +38,15 @@ export class CartService {
     }
     this.saveCartToLocalStorage();
     this.cartSubject.next(this.cart);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Proizvod je dodat u korpu',
+      showConfirmButton: false,
+      timer: 1500,
+      toast: true
+    });
   }
-
 
   removeFromCart(product: Product): void {
     this.cart = this.cart.filter(item => item.sifra !== product.sifra);
