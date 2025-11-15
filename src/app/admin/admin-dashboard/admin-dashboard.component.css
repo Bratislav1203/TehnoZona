@@ -1,3 +1,7 @@
+/* --------------------------------------------- */
+/* COMMON LAYOUT                                 */
+/* --------------------------------------------- */
+
 .admin-dashboard-page {
   max-width: 1600px;
   margin-inline: auto;
@@ -11,15 +15,17 @@
   gap: 16px;
 }
 
-/* Naslov */
 .admin-title {
   font-size: 24px;
   font-weight: 700;
   color: #212121;
-  margin: 0 0 4px;
+  margin-bottom: 4px;
 }
 
-/* TABOVI */
+/* --------------------------------------------- */
+/* TABS                                           */
+/* --------------------------------------------- */
+
 .tabs {
   display: inline-flex;
   align-items: center;
@@ -27,7 +33,7 @@
   border-radius: 999px;
   padding: 4px;
   width: fit-content;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .tab-btn {
@@ -39,64 +45,49 @@
   cursor: pointer;
   background-color: transparent;
   color: #555;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: 0.2s;
   white-space: nowrap;
 }
 
 .tab-btn.active {
   background-color: #4285f4;
   color: #fff;
-  box-shadow: 0 2px 6px rgba(66, 133, 244, 0.35);
+  box-shadow: 0 2px 6px rgba(66,133,244,0.35);
 }
 
 .tab-btn:not(.active):hover {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255,255,255,0.9);
 }
 
-/* KARTICA SADRŽAJA */
+/* --------------------------------------------- */
+/* CONTENT CARD                                   */
+/* --------------------------------------------- */
+
 .tab-content-card {
   margin-top: 10px;
-  background-color: #ffffff;
-  border: 1px solid #d1d3e2;
-  border-radius: 12px;
   padding: 20px 24px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #d1d3e2;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
 }
 
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  margin: 0 0 6px;
-  color: #212121;
+  margin-bottom: 6px;
 }
 
 .section-subtitle {
-  margin: 0 0 18px;
   font-size: 14px;
   color: #555;
+  margin-bottom: 18px;
 }
 
-/* ALERTI */
-.alert {
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 13px;
-  margin-bottom: 14px;
-}
+/* --------------------------------------------- */
+/* FORMS                                          */
+/* --------------------------------------------- */
 
-.alert-success {
-  background-color: #e6f4ea;
-  border: 1px solid #34a853;
-  color: #256029;
-}
-
-.alert-error {
-  background-color: #fce8e6;
-  border: 1px solid #ea4335;
-  color: #8b241c;
-}
-
-/* FORMA */
 .featured-form {
   display: flex;
   flex-direction: column;
@@ -105,7 +96,7 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2,1fr);
   gap: 16px;
 }
 
@@ -118,7 +109,6 @@
 .form-field label {
   font-size: 14px;
   font-weight: 600;
-  color: #333;
 }
 
 .form-field input,
@@ -127,148 +117,189 @@
   border-radius: 8px;
   padding: 8px 10px;
   font-size: 14px;
-  outline: none;
-  background-color: #fff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-  border-color: #4285f4;
-  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.15);
-  background-color: #fbfdff;
-}
-
-.field-hint {
-  font-size: 12px;
-  color: #777;
-}
-
-/* AKCIJE */
-.form-actions {
-  margin-top: 8px;
-  display: flex;
-  justify-content: flex-start;
+  background: #fff;
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #4285f4, #3367d6);
-  color: #ffffff;
+  background: linear-gradient(135deg,#4285f4,#3367d6);
+  color: #fff;
   border: none;
   border-radius: 999px;
   padding: 10px 22px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(66, 133, 244, 0.4);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  transition: 0.2s;
 }
 
-.primary-btn:hover:not(:disabled) {
-  box-shadow: 0 5px 14px rgba(66, 133, 244, 0.55);
+.primary-btn:hover {
   transform: translateY(-1px);
 }
 
-.primary-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  box-shadow: none;
+/* --------------------------------------------- */
+/* DESKTOP TABLE                                  */
+/* --------------------------------------------- */
+
+.desktop-only {
+  display: block;
 }
 
-/* TAB PANELI */
-.tab-panel {
-  animation: fadeIn 0.2s ease-out;
+.featured-table {
+  width: 100%;
+  border-spacing: 0 8px;
+  border-collapse: separate;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.featured-table thead tr {
+  background: #f0f2f5;
 }
 
-/* EMPTY STATE ZA LISTU */
-.empty-state {
-  margin-top: 10px;
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px dashed #c2c5d6;
-  background-color: #fafbff;
-  text-align: center;
+.featured-table th {
+  padding: 10px 14px;
   font-size: 14px;
-  color: #555;
-}
-
-.link-btn {
-  margin-top: 8px;
-  background: none;
-  border: none;
-  color: #4285f4;
   font-weight: 600;
-  cursor: pointer;
+  color: #333;
+  text-align: left;
+}
+
+.featured-table tbody tr {
+  background: #fff;
+  border: 1px solid #d1d3e2;
+  border-radius: 10px;
+  height: 80px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.featured-table td {
+  padding: 12px 14px;
   font-size: 14px;
-  text-decoration: underline;
 }
 
-.link-btn:hover {
-  color: #3367d6;
+.cell-product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* MOBILNI PRIKAZ */
+.product-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.p-name {
+  font-weight: 600;
+}
+
+.p-barcode {
+  font-size: 12px;
+  color: #777;
+}
+
+.p-price {
+  font-size: 13px;
+  color: #4285f4;
+  font-weight: 700;
+}
+
+.cell-actions {
+  text-align: right;
+}
+
+.delete-btn {
+  background: #ea4335;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* --------------------------------------------- */
+/* MOBILE LIST                                     */
+/* --------------------------------------------- */
+
+.mobile-only {
+  display: none;
+}
+
+/* Mobile switches */
 @media (max-width: 767px) {
-  .admin-dashboard-page {
-    padding: 12px;
+
+  .desktop-only {
+    display: none !important;
   }
 
-  .admin-title {
-    font-size: 20px;
-    text-align: center;
+  .mobile-only {
+    display: flex !important;
   }
 
   .tabs {
     width: 100%;
-    justify-content: space-between;
   }
 
   .tab-btn {
     flex: 1;
     text-align: center;
-    padding-inline: 10px;
     font-size: 13px;
-  }
-
-  .tab-content-card {
-    padding: 16px 14px;
+    padding-inline: 10px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
   }
 
-  .form-actions {
-    justify-content: center;
+  .featured-mobile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .primary-btn {
-    width: 100%;
+  .featured-mobile-item {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #d1d3e2;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
   }
-}
 
-/* VEĆE REZOLUCIJE */
-@media (min-width: 1200px) {
-  .tab-content-card {
-    padding: 24px 32px;
+  .fm-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  .admin-title {
-    font-size: 26px;
+  .fm-header img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain; /* popravljeno — više se ne izobličava */
+    border: 1px solid #eee;
+    background: #fafafa;
+    border-radius: 6px;
+  }
+
+  .fm-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .fm-info-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .fm-price {
+    font-weight: 700;
+    color: #4285f4;
+  }
+
+  .delete-btn {
+    padding: 8px 14px;
   }
 }

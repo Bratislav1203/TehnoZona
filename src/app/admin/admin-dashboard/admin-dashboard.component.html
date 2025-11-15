@@ -4,145 +4,160 @@
 
     <!-- TABOVI -->
     <div class="tabs">
-      <button
-        class="tab-btn"
-        [class.active]="activeTab === 'add'"
-        (click)="setTab('add')">
+      <button class="tab-btn" [class.active]="activeTab === 'add'" (click)="setTab('add')">
         Dodaj featured proizvod
       </button>
 
-      <button
-        class="tab-btn"
-        [class.active]="activeTab === 'list'"
-        (click)="setTab('list')">
+      <button class="tab-btn" [class.active]="activeTab === 'list'" (click)="setTab('list')">
         Pregled postojećih
       </button>
     </div>
 
-    <!-- KARTICA SADRŽAJA -->
     <div class="tab-content-card">
-      <!-- TAB: DODAVANJE -->
-      <div *ngIf="activeTab === 'add'" class="tab-panel tab-panel-add">
-        <h2 class="section-title">Dodavanje novog featured proizvoda</h2>
-        <p class="section-subtitle">
-          Obeleži proizvod kao <strong>Top</strong>, <strong>Akcija</strong>, <strong>Novo</strong> ili
-          <strong>Preporučeno</strong>, sa prioritetom i važenjem u vremenskom periodu.
-        </p>
 
-        <!-- ALERTI -->
+      <!-- ------------------------------------ -->
+      <!-- ADD TAB -->
+      <!-- ------------------------------------ -->
+      <div *ngIf="activeTab === 'add'" class="tab-panel">
+        <h2 class="section-title">Dodavanje novog featured proizvoda</h2>
+        <p class="section-subtitle">Obeleži proizvod kao Top / Akcija / Novo / Preporučeno.</p>
+
         <div *ngIf="submitSuccess" class="alert alert-success">
-          Proizvod je uspešno sačuvan (dummy za sada – posle vezujemo backend).
+          Proizvod je uspešno sačuvan.
         </div>
 
         <div *ngIf="submitError" class="alert alert-error">
           {{ submitError }}
         </div>
 
-        <!-- FORMA -->
         <form class="featured-form" (ngSubmit)="submitNew()">
-          <!-- PRVI RED: featureType + barcode -->
+
           <div class="form-row">
             <div class="form-field">
-              <label for="featureType">Feature tip</label>
-              <select
-                id="featureType"
-                [(ngModel)]="newFeatured.featureType"
-                name="featureType"
-                required>
-                <option *ngFor="let ft of featureTypes" [value]="ft.value">
-                  {{ ft.label }}
-                </option>
+              <label>Feature tip</label>
+              <select [(ngModel)]="newFeatured.featureType" name="featureType" required>
+                <option *ngFor="let ft of featureTypes" [value]="ft.value">{{ ft.label }}</option>
               </select>
             </div>
 
             <div class="form-field">
-              <label for="barcode">Barcode</label>
-              <input
-                id="barcode"
-                type="text"
-                [(ngModel)]="newFeatured.barcode"
-                name="barcode"
-                placeholder="Unesi barcode proizvoda"
-                required />
+              <label>Barcode</label>
+              <input type="text" [(ngModel)]="newFeatured.barcode" name="barcode" required />
             </div>
           </div>
 
-          <!-- DRUGI RED: priority -->
           <div class="form-row">
             <div class="form-field">
-              <label for="priority">Prioritet</label>
-              <select
-                id="priority"
-                [(ngModel)]="newFeatured.priority"
-                name="priority"
-                required>
-                <option *ngFor="let p of priorities" [value]="p">
-                  {{ p }}
-                </option>
+              <label>Prioritet</label>
+              <select [(ngModel)]="newFeatured.priority" name="priority" required>
+                <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
               </select>
-              <small class="field-hint">
-                1 = najviši prioritet (prikaz na vrhu).
-              </small>
             </div>
           </div>
 
-          <!-- TREĆI RED: validFrom + validTo -->
           <div class="form-row">
             <div class="form-field">
-              <label for="validFrom">Važi od</label>
-              <input
-                id="validFrom"
-                type="datetime-local"
-                [(ngModel)]="newFeatured.validFrom"
-                name="validFrom"
-                required />
+              <label>Važi od</label>
+              <input type="datetime-local" [(ngModel)]="newFeatured.validFrom" name="validFrom" required />
             </div>
 
             <div class="form-field">
-              <label for="validTo">Važi do</label>
-              <input
-                id="validTo"
-                type="datetime-local"
-                [(ngModel)]="newFeatured.validTo"
-                name="validTo"
-                required />
+              <label>Važi do</label>
+              <input type="datetime-local" [(ngModel)]="newFeatured.validTo" name="validTo" required />
             </div>
           </div>
 
-          <!-- DUGME -->
           <div class="form-actions">
-            <button
-              type="submit"
-              class="primary-btn"
-              [disabled]="isSubmitting || !newFeatured.barcode || !newFeatured.validFrom || !newFeatured.validTo">
-              <span *ngIf="!isSubmitting">Sačuvaj featured proizvod</span>
+            <button class="primary-btn" type="submit" [disabled]="isSubmitting">
+              <span *ngIf="!isSubmitting">Sačuvaj</span>
               <span *ngIf="isSubmitting">Čuvanje...</span>
             </button>
           </div>
+
         </form>
       </div>
 
-      <!-- TAB: LISTA – za sada placeholder -->
-      <div *ngIf="activeTab === 'list'" class="tab-panel tab-panel-list">
+      <!-- ------------------------------------ -->
+      <!-- LIST TAB -->
+      <!-- ------------------------------------ -->
+      <div *ngIf="activeTab === 'list'" class="tab-panel">
         <h2 class="section-title">Pregled postojećih featured proizvoda</h2>
-        <p class="section-subtitle">
-          Ovde će biti tabela sa svim TOP / Akcija / Novo / Preporučeno proizvodima, uz opciju brisanja.
-        </p>
+        <p class="section-subtitle">Lista svih TOP / Akcija / Novo / Preporučeno proizvoda.</p>
 
         <div *ngIf="!featuredProducts.length" class="empty-state">
-          <p>Još uvek nema dodatih featured proizvoda.</p>
-          <button class="link-btn" (click)="setTab('add')">
-            + Dodaj prvi featured proizvod
-          </button>
+          Još uvek nema featured proizvoda.
         </div>
 
-        <!-- Kasnije: prava tabela -->
-        <!--
-        <table class="featured-table" *ngIf="featuredProducts.length">
-          ...
+        <!-- DESKTOP TABELA -->
+        <table class="featured-table desktop-only" *ngIf="featuredProducts.length">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Proizvod</th>
+            <th>Tip</th>
+            <th>Prioritet</th>
+            <th>Važi od</th>
+            <th>Važi do</th>
+            <th></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr *ngFor="let item of featuredProducts">
+            <td>{{ item.featured.id }}</td>
+
+            <td class="cell-product">
+              <img class="product-img" [src]="getMainImage(item)" alt="slika" />
+              <div class="product-info">
+                <div class="p-name">{{ item.artikal?.naziv }}</div>
+                <div class="p-barcode">#{{ item.featured.barcode }}</div>
+                <div class="p-price">{{ item.artikal?.b2bcena }} RSD</div>
+              </div>
+            </td>
+
+            <td>{{ item.featured.featureType }}</td>
+            <td>{{ item.featured.priority }}</td>
+            <td>{{ item.featured.validFrom | date:'dd.MM.yyyy HH:mm' }}</td>
+            <td>{{ item.featured.validTo | date:'dd.MM.yyyy HH:mm' }}</td>
+
+            <td class="cell-actions">
+              <button class="delete-btn" (click)="deleteFeatured(item)">Obriši</button>
+            </td>
+          </tr>
+          </tbody>
         </table>
-        -->
+
+        <!-- MOBILNA LISTA -->
+        <div class="featured-mobile-list mobile-only" *ngIf="featuredProducts.length">
+          <div class="featured-mobile-item" *ngFor="let item of featuredProducts">
+
+            <div class="fm-header">
+              <img [src]="getMainImage(item)" alt="slika" />
+              <div>
+                <div class="fm-title">{{ item.artikal?.naziv }}</div>
+                <div class="fm-barcode">#{{ item.featured.barcode }}</div>
+              </div>
+            </div>
+
+            <div class="fm-info-row">
+              <div class="fm-type">{{ item.featured.featureType }}</div>
+              <div class="fm-price">{{ item.artikal?.b2bcena }} RSD</div>
+            </div>
+
+            <div class="fm-info-row">
+              <div>Od: {{ item.featured.validFrom | date:'dd.MM.yyyy HH:mm' }}</div>
+              <div>Do: {{ item.featured.validTo | date:'dd.MM.yyyy HH:mm' }}</div>
+            </div>
+
+            <div class="fm-actions">
+              <button class="delete-btn" (click)="deleteFeatured(item)">Obriši</button>
+            </div>
+
+          </div>
+        </div>
+
       </div>
+
     </div>
   </div>
 </div>

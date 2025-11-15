@@ -1,12 +1,5 @@
 import { Component } from '@angular/core';
-
-interface NewFeaturedProduct {
-  featureType: string;
-  barcode: string;
-  priority: number;
-  validFrom: string;
-  validTo: string;
-}
+import { FeaturedService, FeaturedAddRequest } from '../../services/featured.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -26,7 +19,7 @@ export class AdminDashboardComponent {
 
   priorities = [1, 2, 3, 4, 5];
 
-  newFeatured: NewFeaturedProduct = {
+  newFeatured: FeaturedAddRequest = {
     featureType: 'TOP',
     barcode: '',
     priority: 1,
@@ -38,13 +31,18 @@ export class AdminDashboardComponent {
   submitSuccess = false;
   submitError = '';
 
-  // Za drugi tab – kasnije ćemo puniti iz beka
   featuredProducts: any[] = [];
+
+  constructor(private featuredService: FeaturedService) {}
 
   setTab(tab: 'add' | 'list'): void {
     this.activeTab = tab;
     this.submitSuccess = false;
     this.submitError = '';
+
+    if (tab === 'list') {
+      this.loadFeaturedProducts();
+    }
   }
 
   submitNew(): void {
@@ -52,19 +50,52 @@ export class AdminDashboardComponent {
     this.submitError = '';
     this.isSubmitting = true;
 
-    // za sad samo log, posle povezujemo na backend
-    console.log('Submitting new featured product:', this.newFeatured);
+    const vendorId = 1;
 
-    // fake “request” – da imaš osećaj flow-a
-    setTimeout(() => {
-      this.isSubmitting = false;
-      this.submitSuccess = true;
+    this.featuredService.addFeatured(vendorId, this.newFeatured).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.submitSuccess = true;
 
-      // po želji očisti formu, barcode i datume
-      this.newFeatured.barcode = '';
-      this.newFeatured.priority = 1;
-      this.newFeatured.validFrom = '';
-      this.newFeatured.validTo = '';
-    }, 600);
+        this.newFeatured = {
+          featureType: 'TOP',
+          barcode: '',
+          priority: 1,
+          validFrom: '',
+          validTo: ''
+        };
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.submitError = 'Greška prilikom čuvanja featured proizvoda.';
+      }
+    });
   }
+
+  loadFeaturedProducts(): void {
+    this.featuredService.getAllFeatured().subscribe({
+      next: (list) => {
+        this.featuredProducts = list;
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  getMainImage(item: any): string {
+    if (!item?.artikal?.slike) return '/assets/no-image.png';
+    const arr = item.artikal.slike;
+    return Array.isArray(arr) && arr.length > 0 ? arr[0] : '/assets/no-image.png';
+  }
+
+  deleteFeatured(item: any): void {
+    if (!confirm('Da li sigurno želiš da obrišeš featured stavku?')) return;
+
+    this.featuredService.deleteFeatured(item.featured.id).subscribe({
+      next: () => {
+        this.featuredProducts = this.featuredProducts.filter(p => p.featured.id !== item.featured.id);
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
 }
