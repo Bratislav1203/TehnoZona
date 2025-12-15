@@ -35,7 +35,7 @@
       <span class="discount-percentage">-{{ ((product.mpcena - product.b2bcena) / product.mpcena * 100) | number:'1.0-0' }}%</span>
       <span class="discount-amount">Ušteda {{ product.mpcena - product.b2bcena | currency:'RSD' }}</span>
     </div>
-    <div class="current-price">{{ product.b2bcena | currency:'RSD' }}</div>
+    <div class="current-price">{{ product.mpcena | currency:'RSD' }}</div>
     <p class="sale-notice">
       Cena sa popustom važi samo za online kupovinu i gotovinsko plaćanje.
     </p>
