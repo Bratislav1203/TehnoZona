@@ -8,7 +8,7 @@
 
     <div class="product-details" >
       <h3 title="{{product.naziv}}" class="product-name">{{ product.naziv }}</h3>
-      <p class="product-price">{{ product.b2bcena | currency: 'RSD' }}</p>
+      <p class="product-price">{{ product.mpcena | currency: 'RSD' }}</p>
     </div>
   </div>
     <button (click)="addToCart(product)" class="add-to-cart">Dodaj u korpu</button>
