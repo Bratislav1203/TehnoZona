@@ -76,6 +76,7 @@ export class AdminDashboardComponent {
     this.featuredService.getAllFeatured().subscribe({
       next: (list) => {
         this.featuredProducts = list;
+        console.log(this.featuredProducts);
       },
       error: (err) => console.error(err)
     });

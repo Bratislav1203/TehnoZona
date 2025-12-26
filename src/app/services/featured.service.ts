@@ -3,25 +3,36 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export type FeatureType = 'TOP' | 'SALE' | 'NEW' | 'RECOMMENDED';
+
 export interface FeaturedAddRequest {
   barcode: string;
-  featureType: string;
+  featureType: FeatureType;
   priority?: number;
   validFrom?: string;
   validTo?: string;
 }
 
-export interface FeaturedArtikalResponse {
-  id: number;
-  barcode: string;
-  vendorId: number;
-  featureType: string;
-  priority: number;
-  validFrom: string;
-  validTo: string;
-  naziv: string;
-  slika: string;
-  cena: number;
+export interface FeaturedResponseItem {
+  artikal: {
+    barcode: string;
+    naziv: string;
+    slike: string[];
+    webCena: number;
+    glavnaGrupa: string;
+    nadgrupa: string;
+    grupa: string;
+    proizvodjac: string;
+  };
+  featured: {
+    id: number;
+    barcode: string;
+    vendorId: number;
+    featureType: FeatureType;
+    priority: number;
+    validFrom: string;
+    validTo: string;
+  };
 }
 
 @Injectable({
@@ -33,15 +44,14 @@ export class FeaturedService {
 
   constructor(private http: HttpClient) {}
 
-  // 🟩 ADD FEATURED PRODUCT
-  addFeatured(vendorId: number, req: FeaturedAddRequest): Observable<any> {
-
+  // 🟩 ADMIN – ADD FEATURED
+  addFeatured(vendorId: number, req: FeaturedAddRequest): Observable<void> {
     let params = new HttpParams()
       .set('barcode', req.barcode)
       .set('featureType', req.featureType);
 
-    if (req.priority !== undefined && req.priority !== null) {
-      params = params.set('priority', String(req.priority));
+    if (req.priority !== undefined) {
+      params = params.set('priority', req.priority.toString());
     }
 
     if (req.validFrom) {
@@ -52,23 +62,24 @@ export class FeaturedService {
       params = params.set('validTo', req.validTo);
     }
 
-    const url = `${this.apiUrl}/${vendorId}/featured`;
-    return this.http.post(url, null, { params });
+    return this.http.post<void>(
+      `${this.apiUrl}/${vendorId}/featured`,
+      null,
+      { params }
+    );
   }
 
-  // 🟦 GET ALL FEATURED (active)
-  getAllFeatured(): Observable<FeaturedArtikalResponse[]> {
-    return this.http.get<FeaturedArtikalResponse[]>(`${this.apiUrl}/featured/all`);
+  // 🟦 HOME – GET ALL FEATURED
+  getAllFeatured(): Observable<FeaturedResponseItem[]> {
+    return this.http.get<FeaturedResponseItem[]>(
+      `${this.apiUrl}/featured/all`
+    );
   }
 
-  // 🟧 GET BY TYPE
-  getFeaturedByType(type: string): Observable<FeaturedArtikalResponse[]> {
-    const params = new HttpParams().set('type', type);
-    return this.http.get<FeaturedArtikalResponse[]>(`${this.apiUrl}/featured`, { params });
+  // 🟥 ADMIN – DELETE
+  deleteFeatured(id: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/featured/${id}`
+    );
   }
-// 🟥 DELETE FEATURED PRODUCT
-  deleteFeatured(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/featured/${id}`);
-  }
-
 }

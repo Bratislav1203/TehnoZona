@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService, nameAndImage } from '../../services/product.service';
-import { CommonModule } from '@angular/common';
+import { FeaturedService, FeaturedResponseItem } from '../../services/featured.service';
 
 @Component({
   selector: 'app-home-page',
@@ -8,25 +8,49 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
+
   products: Product[] = [];
   brands: nameAndImage[] = [];
 
-  // nove sekcije
-  topProducts: { name: string; imageUrl: string; price: number }[] = [];
-  recommendedCategories: {glavnaGrupa: string; nadgrupa: string; name: string; imgUrl: string }[] = [];
-  saleItems: { name: string; imgUrl: string; oldPrice: number; newPrice: number }[] = [];
+  // 🛒 Top proizvodi (dinamički iz featured)
+  topProducts: {
+    barcode: string;
+    name: string;
+    imageUrl: string;
+    price: number;
+  }[] = [];
+
+  // 🧭 Preporučene kategorije (OSTAJE KAKO JESTE)
+  recommendedCategories: {
+    glavnaGrupa: string;
+    nadgrupa: string;
+    name: string;
+    imgUrl: string;
+  }[] = [];
+
+  // 💥 Akcije i popusti (dinamički iz featured)
+  saleItems: {
+    barcode: string;
+    name: string;
+    imgUrl: string;
+    oldPrice: number;
+    newPrice: number;
+  }[] = [];
 
   vendorId = 2;
   glavnaGrupa: string = 'TV, FOTO, AUDIO I VIDEO';
   page = 0;
   size = 20;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private featuredService: FeaturedService
+  ) {}
 
   ngOnInit(): void {
     this.ucitajProizvode();
 
-    // popularni brendovi
+    // 🧩 Najpopularniji brendovi (OSTAJE ISTO)
     this.productService.getGlavniProizvodjaci().subscribe(
       (podaci: string[]) => {
         this.brands = podaci.map(naziv => ({
@@ -39,38 +63,67 @@ export class HomePageComponent implements OnInit {
       }
     );
 
-    // statički podaci (kasnije možeš povući iz backenda)
-    this.topProducts = [
-      { name: 'Samsung TV 55"', imageUrl: 'assets/frizider.jpg', price: 499 },
-      { name: 'Sony Soundbar', imageUrl: 'assets/frizider.jpg', price: 249 },
-      { name: 'LG Monitor 27"', imageUrl: 'assets/frizider.jpg', price: 199 },
-      { name: 'LG Monitor 27"', imageUrl: 'assets/frizider.jpg', price: 199 },
-    ];
-
+    // 🧭 Preporučene kategorije (OSTAJE STATIČKO)
     this.recommendedCategories = [
-      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Televizori', imgUrl: 'assets/subcategories/AUDIO.jpg' },
-      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Laptopovi', imgUrl: 'assets/tv.jpg' },
-      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Frižideri', imgUrl: 'assets/frizider.jpg' },
-      { glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO', nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Mobilni telefoni', imgUrl: 'assets/frizider.jpg' },
+      {
+        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
+        nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Televizori',
+        imgUrl: 'assets/subcategories/AUDIO.jpg'
+      },
+      {
+        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
+        nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Laptopovi',
+        imgUrl: 'assets/tv.jpg'
+      },
+      {
+        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
+        nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Frižideri',
+        imgUrl: 'assets/frizider.jpg'
+      },
+      {
+        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
+        nadgrupa: 'TV, AUDIO, VIDEO',
+        name: 'Mobilni telefoni',
+        imgUrl: 'assets/frizider.jpg'
+      }
     ];
 
-    this.saleItems = [
-      { name: 'Philips TV 43"', imgUrl: 'assets/tv.jpg', oldPrice: 399, newPrice: 329 },
-      { name: 'Beko frižider', imgUrl: 'assets/frizider.jpg', oldPrice: 499, newPrice: 429 },
-    ];
+    // 🛒 Featured → Top + Sale
+    this.ucitajFeaturedSekcije();
+  }
+
+  private ucitajFeaturedSekcije(): void {
+    this.featuredService.getAllFeatured().subscribe({
+      next: (data: FeaturedResponseItem[]) => {
+
+        const top = data.filter(i => i.featured.featureType === 'TOP');
+        const sale = data.filter(i => i.featured.featureType === 'SALE');
+
+        this.topProducts = top.map(i => ({
+          barcode: i.featured.barcode,
+          name: i.artikal.naziv,
+          imageUrl: i.artikal.slike?.[0] || 'assets/no-image.png',
+          price: i.artikal.webCena
+        }));
+        console.log(data);
+
+        this.saleItems = sale.map(i => ({
+          barcode: i.artikal.barcode,
+          name: i.artikal.naziv,
+          imgUrl: i.artikal.slike?.[0] || 'assets/no-image.png',
+          oldPrice: Math.round(i.artikal.webCena * 1.2), // privremeno dok ne dobiješ popust iz backenda
+          newPrice: i.artikal.webCena
+        }));
+      },
+      error: err => console.error('Greška pri učitavanju featured sekcija:', err)
+    });
   }
 
   ucitajProizvode(): void {
-    // ako ti zatreba backend poziv, ovde ga lako aktiviraš ponovo
-    // this.productService.getProductsFromCategory(this.vendorId, this.glavnaGrupa, this.page, this.size)
-    //   .subscribe((data) => {
-    //     this.products = data;
-    //     console.log(this.products);
-    //   });
+    // trenutno ne koristiš
   }
 
   formatirajNaziv(naziv: string): string {

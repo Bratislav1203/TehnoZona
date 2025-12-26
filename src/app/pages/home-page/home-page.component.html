@@ -3,16 +3,23 @@
 <app-brand [brands]="brands"></app-brand>
 
 <!-- 🛒 Top proizvodi -->
-<section class="top-products-section">
+<section class="top-products-section" *ngIf="topProducts.length > 0">
   <h3 class="section-title">Top proizvodi</h3>
 
   <div class="top-products-container">
     <div class="product-card" *ngFor="let product of topProducts">
       <img [src]="product.imageUrl" [alt]="product.name" />
+
       <div class="product-info">
         <h4>{{ product.name }}</h4>
-        <p class="price">{{ product.price | currency:'EUR':'symbol':'1.0-0' }}</p>
-        <button class="details-btn">Detaljnije</button>
+        <p class="price">{{ product.price | currency:'RSD':'symbol':'1.0-0' }}</p>
+
+        <button
+          class="details-btn"
+          [routerLink]="['/product', product.barcode]"
+        >
+          Detaljnije
+        </button>
       </div>
     </div>
   </div>
@@ -37,21 +44,25 @@
     </div>
   </div>
 </section>
+
 <!-- 💥 Akcije i popusti -->
-<section class="sale-section">
+<section class="sale-section" *ngIf="saleItems.length > 0">
   <h3 class="section-title">Akcije i popusti</h3>
 
   <div class="sale-container">
     <div class="sale-card" *ngFor="let item of saleItems">
-      <div class="discount-badge">-{{ item.discount || 20 }}%</div>
+      <div class="discount-badge">-20%</div>
       <img [src]="item.imgUrl" [alt]="item.name" />
       <div class="sale-info">
         <h4>{{ item.name }}</h4>
         <div class="prices">
-          <span class="old-price">{{ item.oldPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
-          <span class="new-price">{{ item.newPrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+          <span class="old-price">{{ item.oldPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
+          <span class="new-price">{{ item.newPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
         </div>
-        <button class="buy-btn">Kupi sada</button>
+
+        <button class="buy-btn" [routerLink]="['/product', item.barcode]">
+          Kupi sada
+        </button>
       </div>
     </div>
   </div>
