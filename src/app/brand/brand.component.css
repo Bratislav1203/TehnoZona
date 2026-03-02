@@ -1,112 +1,74 @@
-/* Osnovni izgled */
-.slider {
-  position: relative;
-  background: white;
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
-  overflow: hidden;
-  border-radius: 8px;
-  margin: 20px auto;
-  width: 95%;
+/* ===== PREMIUM BRAND GRID ===== */
+
+@keyframes brandFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Trake */
-.slide-track {
+.brand-grid {
   display: flex;
-  width: calc(250px * 14);
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  animation: brandFadeIn 0.6s ease both;
 }
 
-.top {
-  animation: scroll-left 45s linear infinite;
-}
-
-.bottom {
-  animation: scroll-right 45s linear infinite;
-  animation-delay: -22.5s; /* pomak - pola trajanja animacije */
-}
-
-/* Animacije */
-@keyframes scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-250px * 7)); }
-}
-
-@keyframes scroll-right {
-  0% { transform: translateX(calc(-250px * 7)); }
-  100% { transform: translateX(0); }
-}
-
-/* Svaki brend */
-.slide {
-  height: 100px;
-  width: 250px;
+.brand-card {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.slide img {
-  width: 130px;
-  height: 80%;
-  object-fit: contain;
-  transition: transform 0.3s ease;
+  height: 88px;
+  padding: 0 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  text-decoration: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.slide img:hover {
-  transform: scale(1.1);
+.brand-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transform: scale(1.03);
 }
 
-/* Fade ivice */
-.slider::before,
-.slider::after {
-  content: "";
-  position: absolute;
-  height: 50%;
-  width: 100px;
-  top: 0;
-  z-index: 2;
+.brand-card img {
+  height: 48px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  filter: brightness(0);
+  opacity: 0.75;
+  transition: all 0.35s ease;
 }
 
-.slider::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+.brand-card:hover img {
+  filter: grayscale(0%);
+  opacity: 1;
 }
 
-.slider::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-}
-
-/* 📱 Mobilni prikaz */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .slider {
-    height: 160px; /* dve trake po 80px */
+  .brand-grid {
+    gap: 10px;
   }
 
-  .slide {
-    height: 80px;
-    width: 150px;
+  .brand-card {
+    height: 68px;
+    padding: 0 24px;
+    border-radius: 12px;
   }
 
-  .slide img {
-    width: 90px;
-    height: 70%;
-  }
-
-  .top {
-    animation: scroll-left 50s linear infinite;
-  }
-
-  .bottom {
-    animation: scroll-right 50s linear infinite;
-    animation-delay: -25s; /* opet pomak pola trajanja animacije */
-  }
-
-  .slider::before,
-  .slider::after {
-    width: 50px;
+  .brand-card img {
+    height: 30px;
+    max-width: 90px;
+    filter: none;
+    opacity: 1;
   }
 }

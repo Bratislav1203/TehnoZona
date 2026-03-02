@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService } from "../../services/product.service";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import {CartService} from "../../services/cart.service";
+import { CartService } from "../../services/cart.service";
 
 @Component({
   selector: 'app-product-details',
@@ -15,7 +15,7 @@ export class ProductDetailsComponent implements OnInit {
   product: Product;
   sanitizedDescription: SafeHtml;
 
-  constructor(private productService: ProductService, private sanitizer: DomSanitizer, private cartService: CartService) {}
+  constructor(private productService: ProductService, private sanitizer: DomSanitizer, private cartService: CartService) { }
 
   ngOnInit() {
     this.product = this.productService.getCurrentProduct();

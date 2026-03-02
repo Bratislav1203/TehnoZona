@@ -29,6 +29,7 @@ import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.compon
 import { AllCategoriesMenuComponent } from './menu/all-categories-menu/all-categories-menu.component';
 import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { DemoNavigacijaComponent } from './demo-navigacija/demo-navigacija.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard
     AboutUsPageComponent,
     AllCategoriesMenuComponent,
     AdminLoginComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    DemoNavigacijaComponent
   ],
   imports: [
     BrowserModule,

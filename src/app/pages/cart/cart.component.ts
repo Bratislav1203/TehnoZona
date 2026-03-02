@@ -12,7 +12,7 @@ export class CartComponent implements OnInit {
   cartItems: Product[] = [];
   isMobile = false;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
     this.detectMobile();
@@ -41,5 +41,21 @@ export class CartComponent implements OnInit {
 
   updateQuantity(product: Product) {
     this.cartService.updateQuantity(product, product.cartKolicina);
+  }
+
+  getTotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + (item.b2bcena * item.cartKolicina), 0);
+  }
+
+  incrementQty(item: Product) {
+    item.cartKolicina++;
+    this.updateQuantity(item);
+  }
+
+  decrementQty(item: Product) {
+    if (item.cartKolicina > 1) {
+      item.cartKolicina--;
+      this.updateQuantity(item);
+    }
   }
 }

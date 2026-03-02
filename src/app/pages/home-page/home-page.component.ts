@@ -45,7 +45,7 @@ export class HomePageComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private featuredService: FeaturedService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.ucitajProizvode();
@@ -69,25 +69,25 @@ export class HomePageComponent implements OnInit {
         glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
         nadgrupa: 'TV, AUDIO, VIDEO',
         name: 'Televizori',
-        imgUrl: 'assets/subcategories/AUDIO.jpg'
+        imgUrl: 'assets/cat-tv-light.png'
       },
       {
         glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
         nadgrupa: 'TV, AUDIO, VIDEO',
         name: 'Laptopovi',
-        imgUrl: 'assets/tv.jpg'
+        imgUrl: 'assets/cat-laptop-light.png'
       },
       {
         glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
         nadgrupa: 'TV, AUDIO, VIDEO',
         name: 'Frižideri',
-        imgUrl: 'assets/frizider.jpg'
+        imgUrl: 'assets/cat-fridge-light.png'
       },
       {
         glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
         nadgrupa: 'TV, AUDIO, VIDEO',
         name: 'Mobilni telefoni',
-        imgUrl: 'assets/frizider.jpg'
+        imgUrl: 'assets/cat-phone-light.png'
       }
     ];
 

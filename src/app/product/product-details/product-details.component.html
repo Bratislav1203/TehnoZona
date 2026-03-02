@@ -1,48 +1,73 @@
-<div class="product-details-container">
-  <!-- Leva kolona za slike proizvoda -->
-  <div class="product-image-gallery">
-    <div class="main-image">
-      <img [src]="mainImage" alt="Product Image" />
-      <button
-        *ngIf="product.slike.length > 1"
-        class="arrow left"
-        (click)="previousImage()">&#10094;
-      </button>
-      <button
-        *ngIf="product.slike.length > 1"
-        class="arrow right"
-        (click)="nextImage()">&#10095;
-      </button>
+<div class="product-page-wrapper">
+  <div class="product-details-container">
+
+    <!-- LEVA KOLONA: Galerija -->
+    <div class="product-gallery">
+      <div class="main-image-box">
+        <img [src]="mainImage" alt="Product Image" class="main-img" />
+
+        <button *ngIf="product.slike.length > 1" class="gallery-nav prev" (click)="previousImage()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button *ngIf="product.slike.length > 1" class="gallery-nav next" (click)="nextImage()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="thumb-list" *ngIf="product.slike.length > 1">
+        <div class="thumb-item" *ngFor="let image of product.slike; let i = index"
+          [class.active]="currentImageIndex === i" (click)="changeMainImage(image); currentImageIndex = i">
+          <img [src]="image" alt="Thumbnail" />
+        </div>
+      </div>
     </div>
-    <div
-      class="thumbnail-gallery"
-      *ngIf="product.slike.length > 1">
-      <img *ngFor="let image of product.slike; let i = index"
-           [src]="image"
-           (click)="changeMainImage(image); currentImageIndex = i"
-           [class.active]="mainImage === image"
-           alt="Thumbnail" />
+
+    <!-- DESNA KOLONA: Info -->
+    <div class="product-essential-info">
+      <div class="info-header">
+        <span class="sku">Šifra artikla: {{ product.sifra }}</span>
+        <h1 class="product-name">{{ product.naziv }}</h1>
+      </div>
+
+      <!-- PURCHASE CARD -->
+      <div class="purchase-card">
+        <div class="price-section">
+          <div class="price-row" [class.has-discount]="product.flagAkcijskaCena">
+            <div class="main-price">
+              <span class="amount">{{ product.mpcena | number:'1.0-0' }}</span>
+              <span class="currency">RSD</span>
+            </div>
+
+            <div class="old-price-box" *ngIf="product.flagAkcijskaCena">
+              <span class="old-amount">{{ product.mpcena | number:'1.0-0' }} RSD</span>
+              <span class="savings">Ušteda {{ product.mpcena - product.b2bcena | number:'1.0-0' }} RSD</span>
+            </div>
+          </div>
+          <p class="price-note">Online cena sa PDV-om</p>
+        </div>
+
+        <button (click)="addToCart(product)" class="buy-button">
+          Dodaj u korpu
+        </button>
+      </div>
+
     </div>
+
   </div>
 
-
-  <!-- Desna kolona za detalje o proizvodu -->
-  <div class="product-info">
-    <p class="product-code">Šifra artikla: {{ product.sifra }}</p>
-    <h1 class="product-title">{{ product.naziv }}</h1>
-    <div class="discount" *ngIf="product.flagAkcijskaCena">
-      <span class="old-price">{{ product.mpcena | currency:'RSD' }}</span>
-      <span class="discount-percentage">-{{ ((product.mpcena - product.b2bcena) / product.mpcena * 100) | number:'1.0-0' }}%</span>
-      <span class="discount-amount">Ušteda {{ product.mpcena - product.b2bcena | currency:'RSD' }}</span>
+  <!-- DONJA SEKCIJA: Opis -->
+  <div class="product-description-section">
+    <div class="section-header">
+      <h2 class="section-title">Opis proizvoda</h2>
     </div>
-    <div class="current-price">{{ product.mpcena | currency:'RSD' }}</div>
-    <p class="sale-notice">
-      Cena sa popustom važi samo za online kupovinu i gotovinsko plaćanje.
-    </p>
-    <div class="product-description" [innerHTML]="sanitizedDescription"></div>
-    <div class="availability">
-      <p class="availability-text"><span class="dot"></span> {{ product.cartKolicina }}</p>
+    <div class="description-body">
+      <div class="rich-text-content" [innerHTML]="sanitizedDescription"></div>
     </div>
-    <button (click)="addToCart(product)" class="add-to-cart-button">Dodaj proizvod u korpu</button>
   </div>
-</div>)
+</div>

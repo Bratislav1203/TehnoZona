@@ -1,27 +1,122 @@
-<header class="header" >
+<header class="header">
+  <!-- Levo: Logo -->
   <div class="logo" [routerLink]="['/']">
-    <img src="assets/logocrni.png" alt="Logo" />
-  </div>
-  <div class="search-bar">
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      placeholder="Pretraga..."
-      (keydown)="onKeydown($event)"
-    />
-    <span class="search-icon" (click)="onSearch()">
-    <i class="fas fa-search"></i>
-  </span>
+    <img src="assets/logoKum.jpeg" alt="TehnoZona" />
   </div>
 
-  <div class="actions">
-    <div *ngIf="false" class="action-item" [routerLink]="['/auth']">
-      <i class="fas fa-user"></i>
-      <span>Prijava</span>
+  <!-- Odmah pored logo-a: SVE KATEGORIJE (Desktop/Mobile Toggle) -->
+  <div class="demo-trigger" (click)="toggleMenu(); $event.stopPropagation()">
+    <div class="trigger-content">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+      <span class="kategorije-tekst">KATEGORIJE</span>
     </div>
-    <div class="action-item cart-icon" [routerLink]="['/cart']">
-      <i class="fas fa-shopping-cart"></i>
-      <span>Korpa</span>
+
+    <!-- Floating Panel (SaaS Style) -->
+    <div class="demo-floating-panel" *ngIf="showMenu" (click)="$event.stopPropagation()">
+      <div class="panel-inner" [class.has-active]="activeGlavnaGrupa">
+
+        <!-- Column 1: Main Groups -->
+        <div class="col-main">
+          <div class="mobile-header-close" (click)="forceCloseMenu(); $event.stopPropagation()">
+            <span>Sve Kategorije</span>
+            <i class="fas fa-times"></i>
+          </div>
+
+          <ul class="nav-list vertical-list">
+            <li *ngFor="let grupa of allGlavneGrupe" class="nav-item main-group-item"
+              [class.active]="activeGlavnaGrupa === grupa">
+              <div class="item-content">
+                <span class="item-text" (click)="goToGlavnaGrupaStrana(grupa); $event.stopPropagation()">{{
+                  utilService.formatirajNaziv(grupa.name) }}</span>
+                <svg class="chevron" (click)="selectGlavnaGrupa(grupa)" xmlns="http://www.w3.org/2000/svg" width="14"
+                  height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Merged Column 2 & 3: Sub Groups and Leaf Items -->
+        <div class="col-merged" *ngIf="activeGlavnaGrupa">
+          <!-- Mobile header with category name + close -->
+          <div class="mobile-header-close">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fas fa-arrow-left" (click)="activeGlavnaGrupa = null; $event.stopPropagation()"
+                style="font-size: 16px; color: #888; cursor: pointer;"></i>
+              <span>{{ utilService.formatirajNaziv(activeGlavnaGrupa.name) }}</span>
+            </div>
+            <i class="fas fa-times" (click)="forceCloseMenu(); $event.stopPropagation()"></i>
+          </div>
+
+          <div class="groups-container">
+            <!-- Iteracija kroz sve Nadgrupe te Glavne Grupe -->
+            <div class="nadgrupa-section" *ngFor="let nadgrupa of getNadgrupeKeys(activeGlavnaGrupa)">
+
+              <!-- Naslov Nadgrupe -->
+              <div class="nadgrupa-header">
+                <h5 class="nadgrupa-link" (click)="goToNadgrupaStrana(nadgrupa); $event.stopPropagation()">{{
+                  utilService.formatirajNaziv(nadgrupa) }}</h5>
+                <svg class="nadgrupa-chevron" [class.nad-rotated]="activeNadgrupaName === nadgrupa"
+                  (click)="toggleNadgrupa(nadgrupa); $event.stopPropagation()" xmlns="http://www.w3.org/2000/svg"
+                  width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+
+              <!-- Leaf itemi - vidljivi samo kada je nadgrupa expandovana -->
+              <div class="grid-3" *ngIf="activeNadgrupaName === nadgrupa">
+                <div *ngFor="let leaf of activeGlavnaGrupa.nadgrupe[nadgrupa]" class="leaf-item"
+                  (click)="navigateToGrupa(leaf); $event.stopPropagation()">
+                  {{ utilService.formatirajNaziv(leaf) }}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="empty-state" *ngIf="getNadgrupeKeys(activeGlavnaGrupa).length === 0">
+              Nema dostupnih podkategorija.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Centralno: Pretraga -->
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Pretraga uređaja, modela, kategorija..."
+      (keydown)="onKeydown($event)" />
+    <button class="search-icon" (click)="onSearch()" aria-label="Pretraga">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+
+  <!-- Desno: Akcije (Profil, Korpa) -->
+  <div class="actions">
+    <div class="action-item user-icon" [routerLink]="['/auth']" title="Moj nalog">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    </div>
+
+    <div class="action-item cart-icon" [routerLink]="['/cart']" title="Korpa">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
       <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
     </div>
   </div>

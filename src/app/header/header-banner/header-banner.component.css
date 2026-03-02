@@ -1,27 +1,30 @@
-/* Header Styles */
+/* Premium Header Styles */
 .header {
   top: 0;
   left: 0;
   width: 100%;
-  transform: translateY(-100%);
-  transition: transform 0.3s ease-in-out;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  color: #000; /* Black text color */
+  padding: 0 56px;
+  height: 72px;
+  color: #333333;
   z-index: 1000;
-  height: 50px;
+  box-sizing: border-box;
 }
 
-/* Show header when not hidden */
+/* Hide/Show logic maintained */
 .header:not(.hidden) {
   transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
 }
 
-/* Hide header when scrolling down or stationary */
 .hidden {
   transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
 }
 
 /* Logo Styles */
@@ -29,13 +32,360 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  height: 100%;
 }
 
 .logo img {
-  height: 130px;
-  width: 140px;
+  height: 40px;
+  /* Smanjen i centriran za 72px visinu */
+  width: auto;
+  object-fit: contain;
+}
+
+/* SVE KATEGORIJE Trigger */
+.demo-trigger {
   position: relative;
-  top: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  cursor: pointer;
+}
+
+.trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333333;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  background: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.trigger-content:hover {
+  background: #f0f0f0;
+  border-color: #d5d5d5;
+}
+
+.kategorije-tekst {
+  display: inline-block;
+}
+
+/* -------------------------------------
+   FLOATING PANEL (SaaS Style)
+   ------------------------------------- */
+
+.demo-floating-panel {
+  position: absolute;
+  top: 60px;
+  /* Panel lebdi ispod headera (približno) */
+  left: 0;
+  width: 900px;
+  /* Stripe style fixed width for predictable layout */
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+  /* Mekša SaaS senka */
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  cursor: default;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-inner {
+  display: flex;
+  min-height: 420px;
+}
+
+/* Columns Base */
+.col-main,
+.col-merged {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-main {
+  flex: 0 0 280px;
+  border-right: 1px solid #f3f4f6;
+  background: #fafafa;
+}
+
+.col-merged {
+  flex: 1;
+  padding: 24px 36px;
+  background: #ffffff;
+  overflow-y: auto;
+  max-height: 600px;
+  /* Omogucavamo da panel bude visi s obzirom na puno redova */
+}
+
+/* Custom Skrol za veliku kolonu */
+.col-merged::-webkit-scrollbar {
+  width: 6px;
+}
+
+.col-merged::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.col-merged::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.col-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  padding: 0 8px;
+}
+
+.groups-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  /* Prostranstvo izmedju razlicitih nadgrupa */
+}
+
+.nadgrupa-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.nadgrupa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.nadgrupa-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.nadgrupa-header h5:hover {
+  color: #2563eb;
+}
+
+.nadgrupa-chevron {
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: transform 0.25s ease, color 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nadgrupa-chevron:hover {
+  color: #111827;
+  background: #e5e7eb;
+}
+
+.nadgrupa-chevron.nad-rotated {
+  transform: rotate(180deg);
+  color: #111827;
+}
+
+.view-all-btn-small {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #2563eb;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+}
+
+.view-all-btn-small:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+.desktop-only {
+  display: block;
+}
+
+.mobile-header-close {
+  display: none;
+}
+
+/* Level 1: Main List */
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chevron {
+  color: #d1d5db;
+  transition: transform 0.2s ease, color 0.2s;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.chevron:hover {
+  color: #111827;
+  background: #e5e7eb;
+}
+
+.item-text {
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.item-text:hover {
+  color: #2563eb;
+}
+
+.nav-item:hover {
+  background: #f3f4f6;
+}
+
+/* Aktivno stanje glavne grupe sa levom indikacijom */
+.nav-item.active {
+  background: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  /* Izlazi van itema spajajući se sa ivicom panela */
+  top: 15%;
+  height: 70%;
+  width: 3px;
+  background: #111827;
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-item.active .item-content {
+  font-weight: 600;
+}
+
+.nav-item.active .chevron {
+  color: #111827;
+  transform: translateX(2px);
+}
+
+/* Level 2: Sub Groups Grid */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.sub-item {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.sub-item:hover,
+.sub-item.active {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Level 3: Leaf Items */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 16px;
+}
+
+.leaf-item {
+  font-size: 13px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.leaf-item:hover {
+  color: #111827;
+  background: #f9fafb;
+  font-weight: 500;
+}
+
+.empty-state {
+  font-size: 13px;
+  color: #9ca3af;
+  font-style: italic;
+  padding: 12px 8px;
+}
+
+/* "Prikazi sve" link */
+.view-all-btn {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #2563eb;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+  letter-spacing: 0.5px;
+}
+
+.view-all-btn:hover {
+  color: #1e40af;
+  /* Tamnija plava */
+  text-decoration: underline;
+}
+
+/* Mobile-only back button (hidden on desktop) */
+.mobile-back-btn {
+  display: none;
 }
 
 /* Search Bar Styles */
@@ -43,119 +393,403 @@
   position: relative;
   display: flex;
   align-items: center;
-  cursor: text !important;
+  flex: 0 1 500px;
+  /* Max širina pretrage, fleksibilno skupljanje */
+  margin: 0 20px;
 }
 
 .search-bar input {
-  padding: 8px 12px;
-  border-radius: 20px 0 0 20px;
-  border: 1px solid #d1d3e2;
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  padding-right: 45px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
   outline: none;
-  border-right: none;
-  width: 400px;
+  font-size: 14px;
+  background-color: #f8f8f8;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.search-bar input:focus {
+  background-color: #ffffff;
+  border-color: #c0c0c0;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.03);
 }
 
 .search-icon {
-  background-color: #183c5c; /* Blue background for button */
-  color: white;
+  position: absolute;
+  right: 5px;
+  background: transparent;
+  border: none;
+  color: #666666;
+  /* Ne agresivna boja */
   padding: 8px;
-  border-radius: 0 20px 20px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 1px solid #183c5c;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+}
+
+.search-icon:hover {
+  color: #000000;
+  /* Lagana promena boje */
 }
 
 /* Actions Styles */
 .actions {
   display: flex;
-  gap: 15px; /* Space between items */
-  margin-right: 40px;
-  color: white;
-  height: 50px;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
 }
 
 .action-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-}
-
-.action-item i {
-  margin-right: 5px; /* Space between icon and text */
-}
-
-/* Add padding to body to prevent content overlap */
-body {
-  padding-top: 70px; /* Adjust based on header height */
-}
-
-.cart-icon {
+  color: #374151;
+  /* Graphite grey */
   position: relative;
+  transition: all 0.2s ease;
+  padding: 10px;
+  border-radius: 12px;
 }
 
+.action-item svg {
+  display: block;
+  stroke-width: 1.8px;
+  /* Slightly thinner for more premium feel */
+}
+
+.action-item:hover {
+  color: #111827;
+  background: #f9fafb;
+}
+
+/* Badge (Korpa broj) */
 .cart-badge {
   position: absolute;
-  top: 8px;
-  right: 43px;
-  background-color: red;
+  top: 6px;
+  right: 6px;
+  background-color: #111827;
+  /* Deep black-grey */
   color: white;
   border-radius: 50%;
-  height: 13px;
-  width: 13px;
+  height: 16px;
+  min-width: 16px;
+  padding: 0 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  font-weight: bold;
-  border: 1px solid white;
+  font-weight: 700;
+  border: 1.5px solid #ffffff;
+  box-sizing: border-box;
+  transform: translate(25%, -25%);
 }
+
+/* Add padding to body to prevent content overlap */
+body {
+  padding-top: 72px;
+  /* Match header height */
+}
+
+/* Responsive Styles */
 @media (max-width: 992px) {
   .header {
-    flex-direction: column;
-    align-items: stretch;
     height: auto;
-    padding: 10px 16px;
-  }
-  .cart-badge {
-    top: -7px;
-  }
-  /* grupiši logo i korpu u isti red */
-  .header {
+    padding: 8px 16px;
     display: grid;
     grid-template-areas:
       "logo actions"
-      "search search";
+      "search search"
+      "kategorije kategorije";
     grid-template-columns: 1fr auto;
-    height: 94px;
+    gap: 6px;
   }
 
   .logo {
     grid-area: logo;
-    display: flex;
-    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .logo img {
+    height: 28px;
   }
 
   .actions {
     grid-area: actions;
-    display: flex;
     justify-content: flex-end;
-    align-items: center;
+    gap: 4px;
+  }
+
+  .action-item {
+    font-size: 18px;
+    padding: 6px;
   }
 
   .search-bar {
     grid-area: search;
-    width: 100%;
+    flex: 1 1 100%;
+    margin: 0;
   }
 
   .search-bar input {
-    width: 75%;
+    height: 36px;
+    font-size: 13px;
+    border-radius: 10px;
   }
 
-  .logo img {
-    height: 60px;
-    width: auto;
+  .demo-trigger {
+    grid-area: kategorije;
+    margin-left: 0;
+    justify-content: center;
+    background: transparent;
+    border-radius: 0;
+    height: auto;
+  }
+
+  .trigger-content {
+    justify-content: center;
+    width: 100%;
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    border-color: #e5e5e5;
+  }
+
+  /* ===== MOBILE CATEGORY PANEL — Premium Drill-Down ===== */
+  .demo-floating-panel {
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    animation: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    z-index: 10000;
+    background: #f5f5f7;
+    overflow: hidden;
+  }
+
+  .panel-inner {
+    flex-direction: column;
+    min-height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    padding: 0 0 60px 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .col-main {
+    flex: none;
+    width: 100%;
+    border-right: none;
+    padding: 8px 16px;
+    background: transparent;
+    box-sizing: border-box;
+  }
+
+  .col-merged {
+    flex: none;
+    width: 100%;
+    border-right: none;
+    padding: 0 16px 20px;
+    background: transparent;
+    max-height: none;
+    overflow-y: visible;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  /* ——— Sticky Close Header ——— */
+  .mobile-header-close {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    padding: 16px 20px;
+    border-bottom: none;
+    cursor: pointer;
+    position: sticky;
+    top: 0;
+    background: #f5f5f7;
+    z-index: 2;
+  }
+
+  .mobile-header-close i {
+    font-size: 16px;
+    color: #888;
+    padding: 6px;
+    border-radius: 50%;
+    background: #e8e8ed;
+  }
+
+  /* ——— Level 1: Glavne Grupe — Soft Cards ——— */
+  .nav-list {
+    gap: 8px;
+    padding: 0;
+  }
+
+  .nav-item {
+    border-radius: 12px;
+    border-bottom: none;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .item-content {
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .chevron {
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    color: #b0b0b0;
+  }
+
+  .nav-item.active {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-left: 3px solid #111827;
+  }
+
+  .nav-item.active::before {
+    display: none;
+  }
+
+  .nav-item.active .item-content {
+    font-weight: 600;
+  }
+
+  .nav-item.active .chevron {
+    color: #111827;
+  }
+
+  /* ——— Drill-Down Toggle ——— */
+  .panel-inner.has-active .col-main {
+    display: none;
+  }
+
+  .panel-inner.has-active .col-merged {
+    padding-top: 0;
+  }
+
+  /* ——— Mobile Back Button ——— */
+  .mobile-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-bottom: none;
+    background: #f5f5f7;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .mobile-back-btn:active {
+    color: #111;
+  }
+
+  /* ——— Level 2: Nadgrupe — Soft Cards ——— */
+  .col-title {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    margin: 4px 4px 12px;
+    padding: 0;
+    color: #888;
+  }
+
+  .groups-container {
+    gap: 8px;
+  }
+
+  .nadgrupa-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .nadgrupa-header {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    margin-bottom: 0;
+    border-bottom: none;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nadgrupa-header h5 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0;
+    flex: 1;
+  }
+
+  .nadgrupa-chevron {
+    width: 18px;
+    height: 18px;
+    color: #b0b0b0;
+    flex-shrink: 0;
+    padding: 2px;
+  }
+
+  .nadgrupa-chevron.nad-rotated {
+    color: #111827;
+  }
+
+  /* ——— Level 3: Leaf Items ——— */
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .leaf-item {
+    padding: 13px 16px 13px 24px;
+    font-size: 14px;
+    color: #555;
+    border-radius: 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  .leaf-item:last-child {
+    border-bottom: none;
+  }
+
+  .leaf-item:active {
+    background: #f0f0f5;
   }
 }

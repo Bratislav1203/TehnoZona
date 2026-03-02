@@ -1,100 +1,131 @@
+/* ===== Premium Light Footer ===== */
 .footer {
-  background-color: #2f2f2f; /* tamno siva kao na slikama */
-  color: #f7f8fa;
-  padding: 40px 20px 10px;
-  font-family: "Segoe UI", sans-serif;
+  background-color: #f8f8f8;
+  color: #555555;
+  padding: 60px 40px 20px;
+  font-family: 'Segoe UI', -apple-system, sans-serif;
+  border-top: 1px solid #ebebeb;
 }
 
 .footer-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  gap: 30px;
+  gap: 48px;
 }
 
+/* --- Kolone --- */
 .footer-column {
-  flex: 1 1 250px;
+  flex: 1 1 200px;
+  min-width: 180px;
 }
 
+.brand-col {
+  flex: 1.3 1 260px;
+}
+
+/* Logo */
+.footer-logo {
+  height: 36px;
+  margin-bottom: 16px;
+  opacity: 0.85;
+}
+
+/* Brand opis */
+.brand-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #777;
+  margin: 0 0 20px 0;
+  max-width: 280px;
+}
+
+/* --- Naslovi kolona --- */
 .footer-column h4 {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #222222;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
 }
 
+/* --- Link liste --- */
 .footer-column ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .footer-column ul li {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .footer-column ul li a {
-  color: #f7f8fa;
+  color: #555555;
   text-decoration: none;
-  transition: color 0.3s;
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.2s ease;
 }
 
 .footer-column ul li a:hover {
-  color: #ffa726; /* narandžasta nijansa iz tvojih boja */
+  color: #111111;
 }
 
-.contact-info p {
-  margin: 5px 0;
-  color: #f7f8fa;
-}
-
-.footer-logo {
-  height: 100px;
-  margin-bottom: -20px;
-}
-
-.footer-contact a {
-  color: #ffa726;
-  text-decoration: none;
-}
-
-.footer-contact a:hover {
-  text-decoration: underline;
-}
-
-/* 🔗 Social icons */
+/* --- Social Icons --- */
 .social-icons {
-  margin-top: 15px;
+  display: flex;
+  gap: 16px;
 }
 
 .social-icons a {
-  font-size: 20px;
-  color: #f7f8fa;
-  margin-right: 15px;
-  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eeeeee;
+  color: #555;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .social-icons a:hover {
-  color: #ffa726;
+  background: #e0e0e0;
+  color: #222;
 }
 
-/* Donji deo footera */
+/* --- Footer Bottom --- */
 .footer-bottom {
   text-align: center;
-  border-top: 1px solid #444;
-  margin-top: 30px;
-  padding-top: 15px;
-  font-size: 14px;
-  color: #ccc;
+  border-top: 1px solid #e8e8e8;
+  margin-top: 48px;
+  padding-top: 20px;
+  font-size: 13px;
+  color: #999;
 }
 
-/* 📱 Mobilni prikaz */
+.footer-bottom strong {
+  color: #555;
+  font-weight: 600;
+}
+
+/* ===== Mobile ===== */
 @media (max-width: 768px) {
+  .footer {
+    padding: 40px 24px 16px;
+  }
+
   .footer-container {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 32px;
   }
 
   .footer-column {
@@ -102,11 +133,27 @@
     width: 100%;
   }
 
-  .social-icons a {
-    margin-right: 10px;
+  .brand-col {
+    text-align: center;
+  }
+
+  .brand-desc {
+    max-width: none;
+  }
+
+  .footer-logo {
+    margin-bottom: 12px;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  .footer-column h4 {
+    font-size: 12px;
   }
 
   .footer-bottom {
-    font-size: 13px;
+    margin-top: 32px;
   }
 }

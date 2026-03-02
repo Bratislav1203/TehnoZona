@@ -1,66 +1,292 @@
-/* Glavna traka */
-.tab-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  color: white;
-  padding: 0 16px;
-  position: relative;
-  height: 46px;
-  z-index: 500;
+/* Root variables za čistu SaaS paletu */
+:host {
+  --nav-bg: #ffffff;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --border-color: #f3f4f6;
+  --hover-bg: #f9fafb;
+  --accent: #2563eb;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --radius: 12px;
 }
 
-/* Tab */
-.tab {
+.demo-nav {
+  background: var(--nav-bg);
+  border-bottom: 1px solid #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.demo-tab-bar {
   display: flex;
   align-items: center;
-  padding: 8px 14px;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 60px;
+  padding: 0 40px;
+  position: relative;
+}
+
+/* SVE KATEGORIJE Trigger */
+.demo-trigger {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
   cursor: pointer;
-  transition: background-color 0.3s;
+}
+
+.trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.trigger-content:hover {
+  background: var(--hover-bg);
+}
+
+/* -------------------------------------
+   FLOATING PANEL (SaaS Style)
+   ------------------------------------- */
+
+.demo-floating-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  /* Panel lebdi 4px ispod navigacije */
+  left: 0;
+  width: 900px;
+  /* Stripe style fixed width for predictable layout */
+  background: var(--nav-bg);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-float);
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  cursor: default;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-inner {
+  display: flex;
+  min-height: 420px;
+}
+
+/* Columns Base */
+.col-main,
+.col-sub,
+.col-leaf {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-main {
+  flex: 0 0 280px;
+  border-right: 1px solid var(--border-color);
+  background: #fafafa;
+  /* Blago tamnija pozadina za glavni selektor (Notion stil) */
+}
+
+.col-sub {
+  flex: 0 0 300px;
+  border-right: 1px solid var(--border-color);
+}
+
+.col-leaf {
+  flex: 1;
+}
+
+.col-title {
   font-size: 12px;
   text-transform: uppercase;
-  white-space: nowrap;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  padding: 0 8px;
 }
 
-.tab:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 5px;
+/* Level 1: Main List */
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-/* SVE KATEGORIJE */
-.allCategories {
-  position: relative;
+.nav-item {
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.item-content {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-right: 20px;
+  justify-content: space-between;
+  padding: 10px 12px;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.kategorije-trigger {
+.chevron {
+  color: #d1d5db;
+  transition: transform 0.2s ease, color 0.2s;
+}
+
+.nav-item:hover {
+  background: #f3f4f6;
+}
+
+/* Aktivno stanje glavne grupe sa levom indikacijom */
+.nav-item.active {
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  /* Izlazi van itema spajajući se sa ivicom panela */
+  top: 15%;
+  height: 70%;
+  width: 3px;
+  background: var(--text-main);
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-item.active .item-content {
   font-weight: 600;
+}
+
+.nav-item.active .chevron {
+  color: var(--text-main);
+  transform: translateX(2px);
+}
+
+/* Level 2: Sub Groups Grid */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.sub-item {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.sub-item:hover,
+.sub-item.active {
+  background: var(--hover-bg);
+  color: var(--text-main);
+}
+
+/* Level 3: Leaf Items */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* 2 kolone za leaf zbog širine */
+  gap: 12px 16px;
+}
+
+.leaf-item {
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.leaf-item:hover {
+  color: var(--text-main);
+  background: var(--hover-bg);
+  font-weight: 500;
+}
+
+.empty-state {
+  font-size: 13px;
+  color: #9ca3af;
+  font-style: italic;
+  padding: 12px 8px;
+}
+
+/* -------------------------------------
+   REGULAR LINKS
+   ------------------------------------- */
+.demo-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.demo-link {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  padding: 0 16px;
   cursor: pointer;
 }
 
-/* Meni ispod taba */
-.allCategories app-all-categories-menu {
-  position: absolute;
-  left: 0;
-  z-index: 1000;
-  top: 39px
+.demo-link:hover {
+  color: #000000;
 }
 
-/* Mega meni ispod glavnih grupa */
+.tab-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Mega meni ispod glavnih grupa (kad se pređe preko običnih linkova) */
 .dropdown-menu {
   position: absolute;
-  top: 46px;
+  top: 60px;
+  /* uskladjeno sa demo-tab-bar (60px) */
   left: 0;
   width: 100%;
-  background: #fff;
-  color: #000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 0 0 4px 4px;
+  background: #ffffff;
+  color: #333333;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  /* Mekša senka */
+  border-radius: 0 0 8px 8px;
+  border: 1px solid #eeeeee;
+  border-top: none;
   z-index: 1000;
-  padding: 16px 24px;
+  padding: 24px 32px;
+  /* Više prostora za premium feel */
 }
 
 /* Mobile */
@@ -69,24 +295,23 @@
     display: none;
   }
 
-  .tab-bar {
-    justify-content: center;
-    background: #183c5c;
+  .demo-nav {
+    background-color: #f9f9f9;
   }
 
-  .allCategories {
+  .demo-tab-bar {
+    justify-content: center;
+    padding: 0 20px;
+    height: 48px;
+  }
+
+  .demo-links {
+    display: none;
+  }
+
+  .demo-trigger {
     justify-content: center;
     flex: 1;
-  }
-
-  .allCategories app-all-categories-menu {
-    position: fixed;
-    top: 112px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 46px);
-    background: #fff;
-    overflow-y: auto;
-    z-index: 9999;
+    margin-right: 0;
   }
 }

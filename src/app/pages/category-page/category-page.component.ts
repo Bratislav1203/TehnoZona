@@ -45,7 +45,7 @@ export class CategoryPageComponent {
     private router: Router,
     public utilService: UtilService,
     private mockService: MockGlavnaGrupaService // 👈 novi servis
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const fullUrlSegments = this.route.snapshot.url.map(segment => segment.path);
@@ -100,7 +100,7 @@ export class CategoryPageComponent {
               this.filterCategories = [
                 {
                   category: 'Proizvođač',
-                  types: Object.entries(data).map(([name, quantity]) => ({
+                  types: Object.entries(data || {}).map(([name, quantity]) => ({
                     name,
                     quantity,
                   })),
@@ -112,7 +112,7 @@ export class CategoryPageComponent {
           this.productService
             .getNadgrupeZaGrupu(this.glavnaGrupa)
             .subscribe((nadgrupe: string[]) => {
-              this.subCategories = nadgrupe.map((naziv) => ({
+              this.subCategories = (nadgrupe || []).map((naziv) => ({
                 name: this.utilService.formatirajNaziv(naziv),
                 imgUrl: `assets/subcategories/${naziv}.jpg`,
               }));

@@ -1,42 +1,74 @@
+/* ===== PREMIUM PRODUCT CARD ===== */
+
 .product-card {
   width: 100%;
   max-width: 100%;
-  min-width: 0; /* 🔥 sprečava probijanje grida */
-  min-height: 320px;
-  border: 1px solid #d1d3e2;
-  border-radius: 8px;
-  padding: 12px;
-  text-align: center;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+  min-width: 0;
+  height: 420px;
+  background: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
-  box-sizing: border-box; /* 🔥 padding se računa unutar širine */
-  overflow: hidden; /* sprečava izlazak unutrašnjeg sadržaja */
+  box-sizing: border-box;
+  overflow: hidden;
   justify-content: space-between;
+  transition: all 0.3s ease;
 }
 
-/* Slika proizvoda */
-.product-image {
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.product-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== IMAGE ===== */
+.product-img-wrapper {
   width: 100%;
-  max-width: 100%;
-  height: 180px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: #fafbfc;
+  border-radius: 12px;
+}
+
+.product-image {
+  max-width: 90%;
+  max-height: 180px;
   object-fit: contain;
-  display: block;
-  margin-bottom: 8px;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
-.product-image:hover {
-  transform: scale(1.05);
+.product-card:hover .product-image {
+  transform: scale(1.04);
 }
 
-/* Naziv proizvoda */
+/* ===== DETAILS ===== */
+.product-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .product-name {
-  font-size: 14px;
-  font-weight: 500;
-  margin: 8px 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: #111827;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -45,51 +77,93 @@
   word-break: break-word;
 }
 
-/* Cena */
+/* ===== PRICE ===== */
 .product-price {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 8px 0;
-  color: #000;
-  word-break: break-word;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
 }
 
-/* Dugme */
+.currency {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  letter-spacing: 0;
+}
+
+/* ===== BUTTON ===== */
 .add-to-cart {
   margin-top: auto;
   width: 100%;
-  background-color: #ffa726;
+  background: #111827;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
+  padding: 12px 16px;
+  border-radius: 12px;
   cursor: pointer;
-  color: white;
+  color: #ffffff;
+  font-size: 14px;
   font-weight: 600;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
 }
 
 .add-to-cart:hover {
-  background-color: #fb8c00;
+  background: #1f2937;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.2);
 }
 
-/* Notifikacija */
+/* ===== TOAST ===== */
 .popup-toast {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #4285f4;
+  background-color: #111827;
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
   font-size: 14px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
 
-/* Osiguranje za unutrašnje elemente */
+/* ===== SAFETY ===== */
 .product-card * {
   max-width: 100%;
   box-sizing: border-box;
-  word-break: break-word;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 767px) {
+  .product-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .product-img-wrapper {
+    height: 150px;
+    margin-bottom: 14px;
+  }
+
+  .product-image {
+    max-height: 130px;
+  }
+
+  .product-name {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .product-price {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+
+  .add-to-cart {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
 }

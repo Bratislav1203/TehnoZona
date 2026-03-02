@@ -1,68 +1,129 @@
-<!-- 🧩 Najpopularniji brendovi -->
-<h3 class="brand-row-title">Najpopularniji brendovi</h3>
-<app-brand [brands]="brands"></app-brand>
-
-<!-- 🛒 Top proizvodi -->
-<section class="top-products-section" *ngIf="topProducts.length > 0">
-  <h3 class="section-title">Top proizvodi</h3>
-
-  <div class="top-products-container">
-    <div class="product-card" *ngFor="let product of topProducts">
-      <img [src]="product.imageUrl" [alt]="product.name" />
-
-      <div class="product-info">
-        <h4>{{ product.name }}</h4>
-        <p class="price">{{ product.price | currency:'RSD':'symbol':'1.0-0' }}</p>
-
-        <button
-          class="details-btn"
-          [routerLink]="['/product', product.barcode]"
-        >
-          Detaljnije
-        </button>
+<!-- 1️⃣ HERO SEKCIJA -->
+<section class="hero-section">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Super Popusti u TehnoZoni</h1>
+      <p class="hero-subtitle">Iskoristite specijalne ponude na najpopularnije proizvode.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" routerLink="/products">Pregledaj ponudu</button>
+        <button class="btn-secondary" routerLink="/products">Najpopularniji proizvodi</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="assets/hero-device.png" alt="Premium uređaj" />
+      <div class="hero-badge">
+        <span class="badge-percent">-20%</span>
+        <span class="badge-text">Na izabrane artikle</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 🧭 Preporučene kategorije -->
-<section class="recommended-section">
-  <h3 class="section-title">Popularne kategorije</h3>
+<!-- 2️⃣ BRENDOVI — Editorial Style -->
+<section class="brands-section">
+  <div class="section-inner">
+    <div class="editorial-header">
+      <span class="section-label">PARTNER BRENDOVI</span>
+      <h2 class="editorial-title">Najtraženiji brendovi u TehnoZoni</h2>
+      <div class="title-divider"></div>
+    </div>
+    <app-brand [brands]="brands"></app-brand>
+  </div>
+</section>
 
-  <div class="recommended-container">
-    <div
-      class="category-card diamond-style"
-      *ngFor="let category of recommendedCategories"
-      [routerLink]="[category.glavnaGrupa, category.nadgrupa, category.name]"
-    >
-      <div class="diamond-wrapper">
-        <div class="diamond-shape">
+<!-- 3️⃣ KATEGORIJE — Light Premium -->
+<section class="categories-section">
+  <div class="section-inner">
+    <div class="editorial-header">
+      <span class="section-label">ISTRAŽI</span>
+      <h2 class="editorial-title">Popularne kategorije</h2>
+      <div class="title-divider"></div>
+    </div>
+    <div class="categories-grid">
+      <div class="category-card" *ngFor="let category of recommendedCategories"
+        [routerLink]="[category.glavnaGrupa, category.nadgrupa, category.name]">
+        <div class="cat-img-wrapper">
           <img [src]="category.imgUrl" [alt]="category.name" />
         </div>
+        <div class="cat-card-footer">
+          <h3 class="cat-card-name">{{ category.name }}</h3>
+          <span class="cat-card-link">Pogledaj ponudu →</span>
+        </div>
       </div>
-      <span class="category-label">{{ category.name }}</span>
     </div>
   </div>
 </section>
 
-<!-- 💥 Akcije i popusti -->
-<section class="sale-section" *ngIf="saleItems.length > 0">
-  <h3 class="section-title">Akcije i popusti</h3>
-
-  <div class="sale-container">
-    <div class="sale-card" *ngFor="let item of saleItems">
-      <div class="discount-badge">-20%</div>
-      <img [src]="item.imgUrl" [alt]="item.name" />
-      <div class="sale-info">
-        <h4>{{ item.name }}</h4>
-        <div class="prices">
-          <span class="old-price">{{ item.oldPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
-          <span class="new-price">{{ item.newPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
+<!-- 4️⃣ AKCIJE & NOVOSTI -->
+<section class="promos-section">
+  <div class="section-inner">
+    <h2 class="section-heading">Akcije & Novosti</h2>
+    <div class="promos-grid">
+      <div class="promo-card promo-left">
+        <div class="promo-content">
+          <span class="promo-tag">Novo</span>
+          <h3>Stigli novi modeli 2025</h3>
+          <p>Pogledajte najnovije telefone i uređaje.</p>
         </div>
+        <div class="promo-img">
+          <img src="assets/hero-device.png" alt="Novi modeli" />
+        </div>
+      </div>
+      <div class="promo-card promo-right">
+        <div class="promo-content">
+          <span class="promo-tag">Akcija</span>
+          <h3>Gaming oprema na akciji</h3>
+          <p>Do 30% popusta na gaming periferije.</p>
+        </div>
+        <div class="promo-img">
+          <img src="assets/hero-device.png" alt="Gaming oprema" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <button class="buy-btn" [routerLink]="['/product', item.barcode]">
-          Kupi sada
-        </button>
+<!-- 5️⃣ NAJNOVIJI PROIZVODI (TOP + SALE) -->
+<section class="products-section" *ngIf="topProducts.length > 0">
+  <div class="section-inner">
+    <h2 class="section-heading">Najnoviji proizvodi</h2>
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let product of topProducts">
+        <div class="product-img-wrapper">
+          <img [src]="product.imageUrl" [alt]="product.name" />
+        </div>
+        <div class="product-info">
+          <h4>{{ product.name }}</h4>
+          <p class="product-price">{{ product.price | currency:'RSD':'symbol':'1.0-0' }}</p>
+          <button class="btn-add-cart" [routerLink]="['/product', product.barcode]">
+            Dodaj u korpu
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Akcije i popusti (SALE itemi) -->
+<section class="sale-section" *ngIf="saleItems.length > 0">
+  <div class="section-inner">
+    <h2 class="section-heading">Akcije i popusti</h2>
+    <div class="products-grid">
+      <div class="product-card sale-card" *ngFor="let item of saleItems">
+        <div class="discount-badge">-20%</div>
+        <div class="product-img-wrapper">
+          <img [src]="item.imgUrl" [alt]="item.name" />
+        </div>
+        <div class="product-info">
+          <h4>{{ item.name }}</h4>
+          <div class="prices">
+            <span class="old-price">{{ item.oldPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
+            <span class="new-price">{{ item.newPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
+          </div>
+          <button class="btn-add-cart" [routerLink]="['/product', item.barcode]">
+            Kupi sada
+          </button>
+        </div>
       </div>
     </div>
   </div>

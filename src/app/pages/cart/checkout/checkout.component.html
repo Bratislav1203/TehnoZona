@@ -1,32 +1,97 @@
-<div class="checkout-form">
-  <h2>Podaci o naručiocu</h2>
+<div class="checkout-page">
+  <div class="checkout-layout">
 
-  <form (ngSubmit)="submitOrder()">
-    <div>
-      <label>Ime:</label>
-      <input type="text" [(ngModel)]="firstName" name="firstName" required>
+    <!-- LEVA KOLONA: Forma -->
+    <div class="checkout-form-section">
+      <div class="form-header">
+        <span class="step-label">Korak 2 od 3</span>
+        <h1 class="form-title">Podaci za dostavu</h1>
+      </div>
+
+      <form (ngSubmit)="submitOrder()" class="checkout-form">
+        <div class="form-grid">
+          <!-- Red 1: Ime | Prezime -->
+          <div class="form-field">
+            <label for="firstName">Ime</label>
+            <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName" required
+              placeholder="Unesite ime" />
+          </div>
+          <div class="form-field">
+            <label for="lastName">Prezime</label>
+            <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName" required
+              placeholder="Unesite prezime" />
+          </div>
+
+          <!-- Red 2: Email -->
+          <div class="form-field full-width">
+            <label for="email">Email adresa</label>
+            <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="vas@email.com" />
+          </div>
+
+          <!-- Red 3: Adresa -->
+          <div class="form-field full-width">
+            <label for="address">Adresa za dostavu</label>
+            <input type="text" id="address" [(ngModel)]="address" name="address" required placeholder="Ulica i broj" />
+          </div>
+
+          <!-- Red 4: Poštanski broj | Grad -->
+          <div class="form-field">
+            <label for="postalCode">Poštanski broj</label>
+            <input type="text" id="postalCode" [(ngModel)]="postalCode" name="postalCode" required
+              placeholder="11000" />
+          </div>
+          <div class="form-field">
+            <label for="city">Grad</label>
+            <input type="text" id="city" [(ngModel)]="city" name="city" placeholder="Beograd" />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Nastavi na plaćanje</button>
+      </form>
     </div>
 
-    <div>
-      <label>Prezime:</label>
-      <input type="text" [(ngModel)]="lastName" name="lastName" required>
+    <!-- DESNA KOLONA: Summary -->
+    <div class="checkout-summary">
+      <div class="summary-card">
+        <h3 class="summary-title">Vaša porudžbina</h3>
+
+        <div class="summary-items">
+          <div class="summary-item" *ngFor="let item of cartItems">
+            <div class="item-thumb">
+              <img [src]="item.slike?.length > 0 ? item.slike[0] : 'assets/placeholder.png'" alt="{{ item.naziv }}" />
+            </div>
+            <div class="item-details">
+              <span class="item-name">{{ item.naziv }}</span>
+              <span class="item-qty">× {{ item.cartKolicina }}</span>
+            </div>
+            <span class="item-price">{{ (item.b2bcena * item.cartKolicina) | number:'1.0-0' }} RSD</span>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row">
+          <span>Proizvodi ({{ getItemCount() }})</span>
+          <span>{{ getTotal() | number:'1.0-0' }} RSD</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Dostava</span>
+          <span class="free-label">Besplatna</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total-row">
+          <span>Ukupno</span>
+          <div class="grand-total">
+            <span class="grand-amount">{{ getTotal() | number:'1.0-0' }}</span>
+            <span class="grand-currency">RSD</span>
+          </div>
+        </div>
+        <p class="tax-note">PDV uključen u cenu</p>
+      </div>
     </div>
 
-    <div>
-      <label>Adresa:</label>
-      <input type="text" [(ngModel)]="address" name="address" required>
-    </div>
-
-    <div>
-      <label>Poštanski broj:</label>
-      <input type="text" [(ngModel)]="postalCode" name="postalCode" required>
-    </div>
-
-    <div>
-      <label>Email:</label>
-      <input type="email" [(ngModel)]="email" name="email" required>
-    </div>
-
-    <button type="submit">Pošalji porudžbinu</button>
-  </form>
+  </div>
 </div>

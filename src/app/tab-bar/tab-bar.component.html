@@ -1,41 +1,82 @@
-<nav>
-  <div class="tab-bar">
+<nav class="demo-nav">
+  <div class="demo-tab-bar">
 
-    <!-- SVE KATEGORIJE -->
-    <div
-      class="tab allCategories"
-      (mouseenter)="openMenu()"
-      (mouseleave)="closeMenu()"
-    >
-      <i class="fas fa-bars"></i>
-      <span class="kategorije-trigger">SVE KATEGORIJE</span>
-
-      <!-- vertikalni meni -->
-      <app-all-categories-menu
-        *ngIf="showMenu"
-        (closeMenu)="forceCloseMenu()"
-      ></app-all-categories-menu>
-    </div>
-
-    <!-- Glavne kategorije (tabovi) -->
-    <div
-      *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupamaUziSkup; let i = index"
-      class="tab-wrapper"
-      (mouseenter)="onMouseEnter(i)"
-      (mouseleave)="onMouseLeave()"
-    >
-      <div class="tab" [routerLink]="[glavnaGrupa.name]">
-        <span>{{ utilService.formatirajNaziv(glavnaGrupa.name) }}</span>
+    <!-- All Categories Trigger -->
+    <div class="demo-trigger" (mouseenter)="openMenu()" (mouseleave)="closeMenu()">
+      <div class="trigger-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <span>SVE KATEGORIJE</span>
       </div>
 
-      <!-- Mega meni za hover glavne grupe -->
-      <div
-        class="dropdown-menu"
-        *ngIf="hoveredIndex === i"
-        (mouseenter)="onMouseEnter(i)"
-        (mouseleave)="onMouseLeave()"
-      >
-        <app-submenu [glavnaGrupa]="glavnaGrupa"></app-submenu>
+      <!-- Floating Panel (SaaS Style) -->
+      <div class="demo-floating-panel" *ngIf="showMenu" (mouseenter)="onMenuEnter()" (mouseleave)="onMenuLeave()">
+        <div class="panel-inner">
+
+          <!-- Column 1: Main Groups -->
+          <div class="col-main">
+            <h4 class="col-title">Kategorije</h4>
+            <ul class="nav-list vertical-list">
+              <li *ngFor="let grupa of allGlavneGrupe" class="nav-item main-group-item"
+                [class.active]="activeGlavnaGrupa === grupa" (mouseenter)="selectGlavnaGrupa(grupa)"
+                (click)="navigateToGlavnaGrupa(grupa)">
+                <div class="item-content">
+                  <span class="item-text">{{ utilService.formatirajNaziv(grupa.name) }}</span>
+                  <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2: Sub Groups -->
+          <div class="col-sub" *ngIf="activeGlavnaGrupa">
+            <h4 class="col-title">{{ utilService.formatirajNaziv(activeGlavnaGrupa.name) }}</h4>
+            <div class="grid-2">
+              <div *ngFor="let nadgrupa of getNadgrupeKeys(activeGlavnaGrupa)" class="nav-item sub-item"
+                [class.active]="activeNadgrupaName === nadgrupa"
+                (mouseenter)="selectNadgrupa(activeGlavnaGrupa, nadgrupa)" (click)="navigateToNadgrupa(nadgrupa)">
+                <span class="item-text">{{ utilService.formatirajNaziv(nadgrupa) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Leaf Groups -->
+          <div class="col-leaf" *ngIf="activeNadgrupaName">
+            <h4 class="col-title">{{ utilService.formatirajNaziv(activeNadgrupaName) }}</h4>
+            <div class="grid-3">
+              <div *ngFor="let leaf of activeGrupe" class="leaf-item" (click)="navigateToGrupa(leaf)">
+                {{ utilService.formatirajNaziv(leaf) }}
+              </div>
+            </div>
+            <div class="empty-state" *ngIf="activeGrupe.length === 0">
+              Nema dostupnih grupa.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Regular Links (Glavne Kategorije / Tabovi) -->
+    <div class="demo-links">
+      <div *ngFor="let glavnaGrupa of glavneGrupeSaNadgrupamaIGrupamaUziSkup; let i = index" class="tab-wrapper"
+        (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave()">
+        <a class="demo-link" [routerLink]="[glavnaGrupa.name]">
+          {{ utilService.formatirajNaziv(glavnaGrupa.name) }}
+        </a>
+
+        <!-- Mega meni za hover glavne grupe -->
+        <div class="dropdown-menu" *ngIf="hoveredIndex === i" (mouseenter)="onMouseEnter(i)"
+          (mouseleave)="onMouseLeave()">
+          <app-submenu [glavnaGrupa]="glavnaGrupa"></app-submenu>
+        </div>
       </div>
     </div>
 

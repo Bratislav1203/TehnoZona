@@ -1,330 +1,327 @@
+/* ===== PREMIUM PRODUCT DETAIL PAGE ===== */
+
+.product-page-wrapper {
+  max-width: 1300px;
+  margin: 40px auto;
+  padding: 0 40px;
+  font-family: inherit;
+}
+
 .product-details-container {
   display: flex;
-  gap: 40px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 64px;
+  margin-bottom: 80px;
 }
 
-.product-image-gallery {
-  flex: 1;
-  max-width: 600px;
+/* ===== LEVA KOLONA: GALERIJA ===== */
+.product-gallery {
+  flex: 0 0 55%;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+}
+
+.main-image-box {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  min-height: 500px;
 }
 
-.main-image {
-  position: relative;
-  width: 100%;
-  border-radius: 5px;
-  overflow: hidden;
-  border: 1px solid #d1d3e2;
+.main-img {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
 }
 
-.main-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.arrow {
+.gallery-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 24px;
-  color: #333;
-  background-color: rgba(255, 255, 255, 0.7);
+  background: white;
   border: none;
-  padding: 10px;
-  cursor: pointer;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  transition: background-color 0.3s;
-  z-index: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #111827;
+  transition: all 0.2s;
+  z-index: 2;
 }
 
-.arrow:hover {
-  background-color: #4285f4;
+.gallery-nav:hover {
+  background: #111827;
   color: white;
 }
 
-.arrow.left {
-  left: 10px;
+.gallery-nav.prev {
+  left: 20px;
 }
 
-.arrow.right {
-  right: 10px;
+.gallery-nav.next {
+  right: 20px;
 }
 
-.thumbnail-gallery {
+.thumb-list {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 16px;
+  justify-content: center;
 }
 
-.thumbnail-gallery img {
-  width: 60px;
-  height: 60px;
+.thumb-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: white;
+  padding: 8px;
   cursor: pointer;
-  border-radius: 5px;
-  border: 1px solid #d1d3e2;
-  transition: transform 0.3s, border-color 0.3s;
+  border: 1.5px solid transparent;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.thumbnail-gallery img:hover {
-  transform: scale(1.1);
-  border-color: #4285f4;
+.thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.thumbnail-gallery img.active {
-  border: 2px solid #4285f4;
+.thumb-item.active {
+  border-color: #111827;
 }
 
-.product-info {
-  flex: 1;
+.thumb-item:hover:not(.active) {
+  border-color: #d1d5db;
+}
+
+/* ===== DESNA KOLONA: INFO ===== */
+.product-essential-info {
+  flex: 0 0 45%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
+  gap: 32px;
 }
 
-.product-code {
-  font-size: 14px;
-  color: #757575;
-}
-
-.product-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #212121;
-}
-
-.review-link {
-  color: #4285f4;
-  text-decoration: underline;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.discount {
+.info-header {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.old-price {
-  font-size: 16px;
-  color: #757575;
-  text-decoration: line-through;
+.sku {
+  font-size: 13px;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
 }
 
-.discount-percentage {
-  font-size: 16px;
-  color: red;
-}
-
-.discount-amount {
-  font-size: 16px;
-  color: red;
-}
-
-.current-price {
+.product-name {
   font-size: 32px;
-  font-weight: bold;
-  color: #212121;
-}
-
-.sale-notice,
-.installments {
-  font-size: 14px;
-  color: #424242;
-}
-
-.add-to-cart-button {
-  background-color: #ffcc00;
-  color: #000;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.add-to-cart-button:hover {
-  background-color: #ffd633;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.actions button {
-  border: 1px solid #d1d3e2;
-  background-color: white;
-  padding: 10px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.product-specs {
-  list-style: none;
-  padding: 0;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
   margin: 0;
 }
 
-.product-specs li {
-  font-size: 14px;
-  color: #424242;
-  margin-bottom: 5px;
+/* ===== PURCHASE CARD ===== */
+.purchase-card {
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid #f3f4f6;
 }
 
-.availability-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: #28a745;
+.main-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
-.dot {
-  height: 10px;
-  width: 10px;
-  background-color: #28a745;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
+.amount {
+  font-size: 40px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.03em;
 }
 
-::ng-deep .product-description table {
+.currency {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.old-price-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: -4px;
+}
+
+.old-amount {
+  font-size: 16px;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.savings {
+  font-size: 12px;
+  font-weight: 700;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 2px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.price-note {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 4px 0 0 0;
+}
+
+.buy-button {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 0;
+  height: 56px;
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-::ng-deep .product-description th,
-::ng-deep .product-description td {
-  border: 1px solid #d1d3e2; /* Svetlo siva ivica */
-  border-left: none;
-  border-right: none;
-  padding: 10px;
-  text-align: left;
-  font-size: 14px;
-  color: #212121; /* Tamno siva boja teksta */
+.buy-button:hover {
+  background: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.15);
 }
 
-::ng-deep .product-description th {
-  background-color: #4285f4; /* Plava pozadina */
-  color: white; /* Bela boja teksta */
-  font-weight: bold;
+.buy-button:active {
+  transform: translateY(0);
 }
 
-::ng-deep .product-description td:first-child {
-  font-weight: bold;
-  color: #333; /* Tamniji tekst za prvu kolonu */
+/* ===== OPIS SEKCIJA ===== */
+.product-description-section {
+  margin-top: 60px;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 40px;
 }
-/* ===== MOBILNI PRIKAZ ===== */
-@media (max-width: 768px) {
+
+.section-header {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.description-body {
+  padding: 0 8px;
+}
+
+.rich-text-content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #374151;
+}
+
+/* ===== RESPONZIVNOST ===== */
+@media (max-width: 1024px) {
   .product-details-container {
     flex-direction: column;
-    gap: 20px;
-    padding: 10px;
+    gap: 40px;
   }
 
-  .product-image-gallery {
+  .product-gallery,
+  .product-essential-info {
+    flex: 1 1 auto;
     width: 100%;
-    max-width: 100%;
-    position: relative;
   }
 
-  .main-image {
-    width: 100%;
-    border: none;
-    border-radius: 0;
+  .main-image-box {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-page-wrapper {
+    padding: 0 20px;
+    margin: 20px auto;
   }
 
-  .main-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 0;
+  .main-image-box {
+    min-height: 300px;
+    padding: 20px;
+    border-radius: 16px;
   }
 
-  .arrow {
+  .product-name {
+    font-size: 24px;
+  }
+
+  .amount {
     font-size: 32px;
-    padding: 12px;
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #fff;
   }
 
-  .thumbnail-gallery {
-    display: flex;
-    justify-content: center;
+  .tabs-header {
+    gap: 20px;
     overflow-x: auto;
-    gap: 8px;
-    padding: 10px 0;
   }
 
-  .thumbnail-gallery img {
-    width: 60px;
-    height: 60px;
-    flex: 0 0 auto;
-  }
-
-  .product-info {
-    max-width: 100%;
-    padding: 0 10px;
-  }
-
-  .product-title {
-    font-size: 20px;
-  }
-
-  .current-price {
-    font-size: 26px;
-  }
-
-  .add-to-cart-button {
-    width: 100%;
-    font-size: 18px;
-    padding: 12px 0;
+  .tab-link {
+    font-size: 14px;
+    white-space: nowrap;
   }
 }
-.product-description {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto; /* ako ipak neko ubaci preširoku tabelu, pojaviće se horizontalni scroll */
-  box-sizing: border-box;
-  word-wrap: break-word;
-}
 
-::ng-deep .product-description * {
-  max-width: 100% !important; /* sprečava da neki unutrašnji element “probije” okvir */
-  box-sizing: border-box;
-}
-
-::ng-deep .product-description table {
+/* Override existing table styles for premium look */
+::ng-deep .rich-text-content table {
   width: 100% !important;
-  table-layout: fixed; /* sprečava rastezanje kolona */
+  border-collapse: collapse !important;
+  margin: 24px 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid #f3f4f6 !important;
 }
 
-::ng-deep .product-description td,
-::ng-deep .product-description th {
-  word-break: break-word;
-  white-space: normal;
-  max-width: 100%;
+::ng-deep .rich-text-content td,
+::ng-deep .rich-text-content th {
+  padding: 16px 20px !important;
+  border: none !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  font-size: 14px !important;
 }
-::ng-deep .product-description table td,
-::ng-deep .product-description table th,
-::ng-deep .product-description .td1,
-::ng-deep .product-description .td2,
-::ng-deep .product-description [class*="td"] {
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  padding: 6px 8px !important;
-  background: unset !important;
-  border: 1px solid #d1d3e2 !important;
-  box-sizing: border-box;
-  word-break: break-word;
+
+::ng-deep .rich-text-content tr:last-child td {
+  border-bottom: none !important;
+}
+
+::ng-deep .rich-text-content th {
+  background: #f9fafb !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  text-align: left !important;
+}
+
+::ng-deep .rich-text-content td:first-child {
+  font-weight: 600 !important;
+  color: #4b5563 !important;
+  width: 35% !important;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Product} from "../../../services/product.service";
-import {CartService} from "../../../services/cart.service";
+import { Product } from "../../../services/product.service";
+import { CartService } from "../../../services/cart.service";
 
 @Component({
   selector: 'app-checkout',
@@ -15,9 +15,10 @@ export class CheckoutComponent implements OnInit {
   lastName: string = '';
   address: string = '';
   postalCode: string = '';
+  city: string = '';
   email: string = '';
 
-  constructor(private cartService: CartService, private http: HttpClient) {}
+  constructor(private cartService: CartService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.cartService.cart$.subscribe((items: Product[]) => {
@@ -37,6 +38,7 @@ export class CheckoutComponent implements OnInit {
       email: this.email,
       adresa: this.address,
       postanskiBroj: this.postalCode,
+      grad: this.city,
       artikli: this.cartItems
     };
 
@@ -52,4 +54,11 @@ export class CheckoutComponent implements OnInit {
     );
   }
 
+  getTotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + (item.b2bcena * item.cartKolicina), 0);
+  }
+
+  getItemCount(): number {
+    return this.cartItems.reduce((count, item) => count + item.cartKolicina, 0);
+  }
 }

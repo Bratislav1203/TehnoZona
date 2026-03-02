@@ -1,15 +1,13 @@
 <div class="product-card">
-  <div style="cursor:pointer;" [routerLink]="['/product', product.barkod]" (click)="setCurrentProduct(product)">
-    <img
-      [src]="product.slike[0]"
-      (error)="onImageError($event)"
-      class="product-image"
-    />
+  <div class="product-link" [routerLink]="['/product', product.barkod]" (click)="setCurrentProduct(product)">
+    <div class="product-img-wrapper">
+      <img [src]="product.slike[0]" (error)="onImageError($event)" class="product-image" />
+    </div>
 
-    <div class="product-details" >
+    <div class="product-details">
       <h3 title="{{product.naziv}}" class="product-name">{{ product.naziv }}</h3>
-      <p class="product-price">{{ product.mpcena | currency: 'RSD' }}</p>
+      <p class="product-price">{{ product.mpcena | currency: 'RSD':'':'1.0-0' }} <span class="currency">RSD</span></p>
     </div>
   </div>
-    <button (click)="addToCart(product)" class="add-to-cart">Dodaj u korpu</button>
+  <button (click)="addToCart(product)" class="add-to-cart">Dodaj u korpu</button>
 </div>
