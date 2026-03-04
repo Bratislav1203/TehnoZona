@@ -7,10 +7,10 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl  = `${environment.apiBaseUrl}api/vendors`;
+  private apiUrl = `${environment.apiBaseUrl}api/vendors`;
 
   currentProduct: Product;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getProductByBarcode(vendorId: number, barcode: string): Observable<any> {
     const url = `${this.apiUrl}/${vendorId}/artikal/${barcode}`;
@@ -171,6 +171,38 @@ export class ProductService {
     const encodedBrand = encodeURIComponent(brand);
     const url = `${this.apiUrl}/${vendorId}/artikli/brand/${encodedBrand}`;
     return this.http.get<Product[]>(url);
+  }
+
+  searchProducts(
+    vendorId: number,
+    query: string,
+    page: number = 0,
+    size: number = 20,
+    minCena?: number,
+    maxCena?: number,
+    proizvodjaci?: string[],
+    sort?: string
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('q', query)
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
+    }
+    if (proizvodjaci && proizvodjaci.length > 0) {
+      params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
+    }
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    const url = `${this.apiUrl}/${vendorId}/search`;
+    return this.http.get<any>(url, { params });
   }
 
 }

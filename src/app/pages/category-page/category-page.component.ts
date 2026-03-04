@@ -77,6 +77,47 @@ export class CategoryPageComponent {
 
         if (isSearchRoute && searchQuery) {
           this.searchFilter = searchQuery;
+          this.isLoading = true;
+          this.productService
+            .searchProducts(
+              2,
+              searchQuery,
+              this.currentPage,
+              this.pageSize,
+              this.minValue,
+              this.maxValue,
+              this.selectedTypes['Proizvođač']
+            )
+            .subscribe((data: any) => {
+              this.products = data?.items || data?.products || data?.content || [];
+              this.totalProducts = data?.total || data?.totalCount || data?.totalElements || this.products.length;
+              this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+
+              // Postavi inicijalne min/max cene ako backend šalje
+              if (data?.minPrice !== undefined && this.initialMinValue === 0) {
+                this.initialMinValue = data.minPrice;
+                this.minValue = data.minPrice;
+              }
+              if (data?.maxPrice !== undefined && this.initialMaxValue === 0) {
+                this.initialMaxValue = data.maxPrice;
+                this.maxValue = data.maxPrice;
+              }
+
+              if (data?.manufacturerCounts) {
+                this.filterCategories = [
+                  {
+                    category: 'Proizvođač',
+                    types: Object.entries(data.manufacturerCounts).map(([name, quantity]) => ({
+                      name,
+                      quantity: quantity as number,
+                    })),
+                  },
+                ];
+              }
+
+              this.updateVisiblePages();
+              this.isLoading = false;
+            });
           return;
         }
 
