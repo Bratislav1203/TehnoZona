@@ -28,11 +28,7 @@
   <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row">
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
       <div [routerLink]="['/', glavnaGrupa, subCategory.name]">
-        <img
-          [src]="subCategory.imgUrl"
-          [alt]="subCategory.name"
-          (error)="onImageError($event)"
-        />
+        <img [src]="subCategory.imgUrl" [alt]="subCategory.name" (error)="onImageError($event)" />
         <p>{{ subCategory.name }}</p>
       </div>
     </div>
@@ -40,11 +36,8 @@
 
   <!-- Grupe unutar nadgrupe (bez slike) -->
   <div *ngIf="glavnaGrupa && nadgrupa && !grupa" class="sub-category-row">
-    <div
-      *ngFor="let group of groups"
-      class="sub-category-card no-image group-card"
-      [routerLink]="['/', glavnaGrupa, nadgrupa, group.name]"
-    >
+    <div *ngFor="let group of groups" class="sub-category-card no-image group-card"
+      [routerLink]="['/', glavnaGrupa, nadgrupa, group.name]">
       <div class="no-image-box">
         <span>{{ group.name }}</span>
       </div>
@@ -59,11 +52,7 @@
   </button>
 
   <!-- Overlay i mobilni panel filtera -->
-  <div
-    class="filter-overlay"
-    *ngIf="showMobileFilters"
-    (click)="showMobileFilters = false"
-  ></div>
+  <div class="filter-overlay" *ngIf="showMobileFilters" (click)="showMobileFilters = false"></div>
 
   <div class="mobile-filter-panel" *ngIf="showMobileFilters">
     <button class="close-mobile-filters" (click)="showMobileFilters = false">
@@ -80,20 +69,10 @@
         </div>
 
         <div class="slider">
-          <input
-            type="range"
-            [min]="initialMinValue"
-            [max]="initialMaxValue"
-            [value]="minValue"
-            (input)="minValue = +$event.target.value; updateSlider()"
-          />
-          <input
-            type="range"
-            [min]="initialMinValue"
-            [max]="initialMaxValue"
-            [value]="maxValue"
-            (input)="maxValue = +$event.target.value; updateSlider()"
-          />
+          <input type="range" [min]="initialMinValue" [max]="initialMaxValue" [value]="minValue"
+            (input)="minValue = +$event.target.value; updateSlider()" />
+          <input type="range" [min]="initialMinValue" [max]="initialMaxValue" [value]="maxValue"
+            (input)="maxValue = +$event.target.value; updateSlider()" />
         </div>
       </div>
 
@@ -101,28 +80,18 @@
       <div class="filter-category" *ngFor="let category of filterCategories">
         <h3>{{ category.category }}</h3>
 
-        <div
-          class="filter-item"
-          *ngFor="let type of (isExpanded(category.category)
+        <div class="filter-item" *ngFor="let type of (isExpanded(category.category)
             ? category.types
-            : category.types.slice(0, 10))"
-        >
-          <input
-            type="checkbox"
-            [checked]="selectedTypes[category.category]?.includes(type.name)"
+            : category.types.slice(0, 10))">
+          <input type="checkbox" [checked]="selectedTypes[category.category]?.includes(type.name)"
             (change)="onTypeChange(category.category, type.name, $event.target.checked)"
-            id="{{ category.category }}-{{ type.name }}"
-          />
+            id="{{ category.category }}-{{ type.name }}" />
           <label [for]="category.category + '-' + type.name">
             {{ type.name }} <span>({{ type.quantity }})</span>
           </label>
         </div>
 
-        <button
-          *ngIf="category.types.length > 10"
-          (click)="toggleCategory(category.category)"
-          class="show-more-btn"
-        >
+        <button *ngIf="category.types.length > 10" (click)="toggleCategory(category.category)" class="show-more-btn">
           {{ isExpanded(category.category)
           ? 'Prikaži manje'
           : 'Prikaži više (' + (category.types.length - 10) + ')' }}
@@ -136,7 +105,7 @@
     <app-loading-overlay [isLoading]="isLoading"></app-loading-overlay>
 
     <!-- Sidebar (desktop filteri) -->
-    <div class="sidebar">
+    <div class="sidebar" *ngIf="products.length > 0">
       <div class="filters-container">
         <div class="slider-container">
           <label>Cena:</label>
@@ -146,48 +115,28 @@
           </div>
 
           <div class="slider">
-            <input
-              type="range"
-              [min]="initialMinValue"
-              [max]="initialMaxValue"
-              [value]="minValue"
-              (input)="minValue = +$event.target.value; updateSlider()"
-            />
-            <input
-              type="range"
-              [min]="initialMinValue"
-              [max]="initialMaxValue"
-              [value]="maxValue"
-              (input)="maxValue = +$event.target.value; updateSlider()"
-            />
+            <input type="range" [min]="initialMinValue" [max]="initialMaxValue" [value]="minValue"
+              (input)="minValue = +$event.target.value; updateSlider()" />
+            <input type="range" [min]="initialMinValue" [max]="initialMaxValue" [value]="maxValue"
+              (input)="maxValue = +$event.target.value; updateSlider()" />
           </div>
         </div>
 
         <div class="filter-category" *ngFor="let category of filterCategories">
           <h3>{{ category.category }}</h3>
 
-          <div
-            class="filter-item"
-            *ngFor="let type of (isExpanded(category.category)
+          <div class="filter-item" *ngFor="let type of (isExpanded(category.category)
               ? category.types
-              : category.types.slice(0, 10))"
-          >
-            <input
-              type="checkbox"
-              [checked]="selectedTypes[category.category]?.includes(type.name)"
+              : category.types.slice(0, 10))">
+            <input type="checkbox" [checked]="selectedTypes[category.category]?.includes(type.name)"
               (change)="onTypeChange(category.category, type.name, $event.target.checked)"
-              id="{{ category.category }}-{{ type.name }}"
-            />
+              id="{{ category.category }}-{{ type.name }}" />
             <label [for]="category.category + '-' + type.name">
               {{ type.name }} <span>({{ type.quantity }})</span>
             </label>
           </div>
 
-          <button
-            *ngIf="category.types.length > 10"
-            (click)="toggleCategory(category.category)"
-            class="show-more-btn"
-          >
+          <button *ngIf="category.types.length > 10" (click)="toggleCategory(category.category)" class="show-more-btn">
             {{ isExpanded(category.category)
             ? 'Prikaži manje'
             : 'Prikaži više (' + (category.types.length - 10) + ')' }}
@@ -198,29 +147,49 @@
 
     <!-- Proizvodi i paginacija -->
     <div class="page-container">
-      <div class="products-grid">
-        <app-productcard
-          *ngFor="let product of products"
-          [product]="product"
-        ></app-productcard>
+      <div class="page-header-actions" *ngIf="products.length > 0">
+        <div class="results-count">
+          Prikazano <strong>{{ products.length }}</strong> od <strong>{{ totalProducts }}</strong> proizvoda
+        </div>
+        <div class="sort-container">
+          <label for="sort-select">Sortiraj:</label>
+          <select id="sort-select" [ngModel]="sort" (ngModelChange)="onSortChange($event)">
+            <option value="">Podrazumevano</option>
+            <option value="PRICE_ASC">Cena: rastuća</option>
+            <option value="PRICE_DESC">Cena: opadajuća</option>
+            <option value="NAME_ASC">Naziv: A-Z</option>
+            <option value="NAME_DESC">Naziv: Z-A</option>
+          </select>
+        </div>
       </div>
 
-      <div class="pagination-container">
-        <button
-          class="pagination-btn"
-          (click)="goToPrevious()"
-          [disabled]="currentPage === 0"
-        >
+      <div class="products-grid" *ngIf="products.length > 0; else noResults">
+        <app-productcard *ngFor="let product of products" [product]="product"></app-productcard>
+      </div>
+
+      <ng-template #noResults>
+        <div class="no-results-container" *ngIf="!isLoading">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="#d1d5db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+          <h2>Nema pronađenih rezultata</h2>
+          <p>Pokušajte sa drugom ključnom reči ili izmenite filtere pretrage.</p>
+          <button (click)="resetFilters()" class="reset-filters-btn">Prikaži sve proizvode</button>
+        </div>
+      </ng-template>
+
+      <div class="pagination-container" *ngIf="products.length > 0 && totalPages > 1">
+        <button class="pagination-btn" (click)="goToPrevious()" [disabled]="currentPage === 0">
           ‹
         </button>
 
         <ng-container *ngFor="let page of visiblePages">
-          <button
-            *ngIf="page !== '...'; else dots"
-            class="pagination-btn"
-            [class.active]="page === currentPage"
-            (click)="goToPage(page)"
-          >
+          <button *ngIf="page !== '...'; else dots" class="pagination-btn" [class.active]="page === currentPage"
+            (click)="goToPage(page)">
             {{ page + 1 }}
           </button>
           <ng-template #dots>
@@ -228,11 +197,7 @@
           </ng-template>
         </ng-container>
 
-        <button
-          class="pagination-btn"
-          (click)="goToNext()"
-          [disabled]="currentPage === totalPages - 1"
-        >
+        <button class="pagination-btn" (click)="goToNext()" [disabled]="currentPage === totalPages - 1">
           ›
         </button>
       </div>

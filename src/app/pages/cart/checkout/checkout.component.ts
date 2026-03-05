@@ -55,7 +55,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + (item.b2bcena * item.cartKolicina), 0);
+    return this.cartItems.reduce((sum, item) => sum + (item.mpcena * item.cartKolicina), 0);
   }
 
   getItemCount(): number {

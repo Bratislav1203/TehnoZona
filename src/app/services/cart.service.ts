@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Product } from './product.service';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import Swal from "sweetalert2";
 
@@ -91,7 +91,7 @@ export class CartService {
         sifra: artikal.sifra,
         naziv: artikal.naziv,
         proizvodjac: artikal.proizvodjac,
-        b2bcena: artikal.b2bcena,
+        mpcena: artikal.mpcena,
         cartKolicina: artikal.cartKolicina ?? 1
       }))
     };

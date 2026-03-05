@@ -24,7 +24,8 @@ export class ProductService {
     size: number = 10,
     minCena?: number,
     maxCena?: number,
-    proizvodjaci?: string[]
+    proizvodjaci?: string[],
+    sort?: string
   ): Observable<any> {
     const encodedGrupa = encodeURIComponent(glavnaGrupa);
     let params = new HttpParams()
@@ -42,10 +43,15 @@ export class ProductService {
       proizvodjaci.forEach(p => {
         params = params.append('proizvodjaci', p);
       });
+      params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
     }
 
-    const url = `${this.apiUrl}/1/glavnaGrupa/${encodedGrupa}/artikli`;
-    return this.http.get<{ products: Product[], totalCount: number, minCena: number, maxCena: number }>(url, { params });
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGrupa}/artikli`;
+    return this.http.get<any>(url, { params });
   }
 
   getProductsFromNadgrupa(
@@ -56,12 +62,13 @@ export class ProductService {
     size: number = 20,
     minCena?: number,
     maxCena?: number,
-    proizvodjaci?: string[] // dodatni parametar
+    proizvodjaci?: string[],
+    sort?: string
   ): Observable<any> {
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
     const encodedNadgrupa = encodeURIComponent(nadgrupa);
 
-    const url = `${this.apiUrl}/1/glavnaGrupa/${encodedGlavnaGrupa}/nadgrupa/${encodedNadgrupa}/artikli`;
+    const url = `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodedGlavnaGrupa}/nadgrupa/${encodedNadgrupa}/artikli`;
 
     let params = new HttpParams()
       .set('page', page.toString())
@@ -77,8 +84,14 @@ export class ProductService {
       proizvodjaci.forEach(p => {
         params = params.append('proizvodjaci', p);
       });
+      params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
     }
-    return this.http.get<Product[]>(url, { params });
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<any>(url, { params });
   }
 
   getProductsFromGrupa(
@@ -90,7 +103,8 @@ export class ProductService {
     size: number = 20,
     minCena?: number,
     maxCena?: number,
-    proizvodjaci?: string[]
+    proizvodjaci?: string[],
+    sort?: string
   ): Observable<any> {
     const encodedGlavnaGrupa = encodeURIComponent(glavnaGrupa);
     const encodedNadgrupa = encodeURIComponent(nadgrupa);
@@ -114,9 +128,14 @@ export class ProductService {
       proizvodjaci.forEach(p => {
         params = params.append('proizvodjaci', p);
       });
+      params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
     }
 
-    return this.http.get<Product[]>(url, { params });
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<any>(url, { params });
   }
 
   setCurrentProduct(product: Product) {
@@ -153,7 +172,7 @@ export class ProductService {
     params = params.append('grupa', grupa);
 
     return this.http.get<{ [key: string]: number }>(
-      `${this.apiUrl}/1/glavnaGrupa/${encodeURIComponent(glavnaGrupa)}/proizvodjaci-count`,
+      `${this.apiUrl}/${vendorId}/glavnaGrupa/${encodeURIComponent(glavnaGrupa)}/proizvodjaci-count`,
       { params }
     );
   }
@@ -167,10 +186,40 @@ export class ProductService {
     return this.http.get<string[]>(`${this.apiUrl}/glavni-proizvodjaci`);
   }
 
-  getProductsByBrand(vendorId: number, brand: string): Observable<any> {
+  getProductsByBrand(
+    vendorId: number,
+    brand: string,
+    page: number = 0,
+    size: number = 20,
+    minCena?: number,
+    maxCena?: number,
+    proizvodjaci?: string[],
+    sort?: string
+  ): Observable<any> {
     const encodedBrand = encodeURIComponent(brand);
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (minCena !== undefined && minCena !== null && minCena !== 0) {
+      params = params.set('minCena', minCena.toString());
+    }
+    if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
+      params = params.set('maxCena', maxCena.toString());
+    }
+    if (proizvodjaci && proizvodjaci.length > 0) {
+      proizvodjaci.forEach(p => {
+        params = params.append('proizvodjaci', p);
+      });
+      params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
+    }
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
     const url = `${this.apiUrl}/${vendorId}/artikli/brand/${encodedBrand}`;
-    return this.http.get<Product[]>(url);
+    console.log(url);
+    return this.http.get<any>(url, { params });
   }
 
   searchProducts(
@@ -195,6 +244,9 @@ export class ProductService {
       params = params.set('maxCena', maxCena.toString());
     }
     if (proizvodjaci && proizvodjaci.length > 0) {
+      proizvodjaci.forEach(p => {
+        params = params.append('proizvodjaci', p);
+      });
       params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
     }
     if (sort) {

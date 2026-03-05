@@ -106,7 +106,7 @@ export class HomePageComponent implements OnInit {
           barcode: i.featured.barcode,
           name: i.artikal.naziv,
           imageUrl: i.artikal.slike?.[0] || 'assets/no-image.png',
-          price: i.artikal.webCena
+          price: i.artikal.mpcena
         }));
         console.log(data);
 
@@ -114,8 +114,8 @@ export class HomePageComponent implements OnInit {
           barcode: i.artikal.barcode,
           name: i.artikal.naziv,
           imgUrl: i.artikal.slike?.[0] || 'assets/no-image.png',
-          oldPrice: Math.round(i.artikal.webCena * 1.2), // privremeno dok ne dobiješ popust iz backenda
-          newPrice: i.artikal.webCena
+          oldPrice: Math.round(i.artikal.mpcena * 1.2), // privremeno dok ne dobiješ popust iz backenda
+          newPrice: i.artikal.mpcena
         }));
       },
       error: err => console.error('Greška pri učitavanju featured sekcija:', err)

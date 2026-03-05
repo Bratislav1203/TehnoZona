@@ -75,6 +75,9 @@
 .main-content {
   display: flex;
   margin-top: 20px;
+  position: relative;
+  min-height: 400px;
+  /* Osigurava prostor za loading čak i kad je lista prazna */
 }
 
 /* Sidebar sa filterima — Premium */
@@ -681,4 +684,131 @@ input[type="range"]::-moz-range-thumb {
 
 .sub-category-card.no-image.group-card:hover .no-image-box::after {
   color: #111827;
+}
+
+/* === PAGE HEADER ACTIONS (Sort & Results) === */
+.page-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 12px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.results-count {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.results-count strong {
+  color: #111827;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sort-container label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.sort-container select {
+  padding: 8px 32px 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #111827;
+  background-color: #f9fafb;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='StatusM19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  transition: all 0.2s;
+}
+
+.sort-container select:hover {
+  border-color: #d1d5db;
+  background-color: white;
+}
+
+.sort-container select:focus {
+  outline: none;
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.05);
+}
+
+@media (max-width: 768px) {
+  .page-header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* === NO RESULTS STATE === */
+.no-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  margin-top: 20px;
+}
+
+.no-results-container svg {
+  margin-bottom: 24px;
+}
+
+.no-results-container h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.no-results-container p {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0 0 32px 0;
+}
+
+.reset-filters-btn {
+  background: #111827;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-filters-btn:hover {
+  background: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.15);
+}
+
+@media (max-width: 768px) {
+  .no-results-container {
+    padding: 60px 16px;
+  }
+
+  .no-results-container h2 {
+    font-size: 20px;
+  }
 }

@@ -38,18 +38,13 @@
       <!-- PURCHASE CARD -->
       <div class="purchase-card">
         <div class="price-section">
-          <div class="price-row" [class.has-discount]="product.flagAkcijskaCena">
+          <div class="price-row">
             <div class="main-price">
               <span class="amount">{{ product.mpcena | number:'1.0-0' }}</span>
               <span class="currency">RSD</span>
             </div>
-
-            <div class="old-price-box" *ngIf="product.flagAkcijskaCena">
-              <span class="old-amount">{{ product.mpcena | number:'1.0-0' }} RSD</span>
-              <span class="savings">Ušteda {{ product.mpcena - product.b2bcena | number:'1.0-0' }} RSD</span>
-            </div>
           </div>
-          <p class="price-note">Online cena sa PDV-om</p>
+          <p class="price-note">Maloprodajna cena sa PDV-om</p>
         </div>
 
         <button (click)="addToCart(product)" class="buy-button">

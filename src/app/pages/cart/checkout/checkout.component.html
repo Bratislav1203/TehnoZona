@@ -64,7 +64,7 @@
               <span class="item-name">{{ item.naziv }}</span>
               <span class="item-qty">× {{ item.cartKolicina }}</span>
             </div>
-            <span class="item-price">{{ (item.b2bcena * item.cartKolicina) | number:'1.0-0' }} RSD</span>
+            <span class="item-price">{{ (item.mpcena * item.cartKolicina) | number:'1.0-0' }} RSD</span>
           </div>
         </div>
 

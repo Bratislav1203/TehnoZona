@@ -19,6 +19,7 @@ export interface FeaturedResponseItem {
     naziv: string;
     slike: string[];
     webCena: number;
+    mpcena: number;
     glavnaGrupa: string;
     nadgrupa: string;
     grupa: string;
@@ -42,7 +43,7 @@ export class FeaturedService {
 
   private apiUrl = `${environment.apiBaseUrl}api/vendors`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 🟩 ADMIN – ADD FEATURED
   addFeatured(vendorId: number, req: FeaturedAddRequest): Observable<void> {

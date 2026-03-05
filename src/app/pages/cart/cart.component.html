@@ -40,7 +40,7 @@
 
             <div class="card-bottom">
               <div class="price-per-unit">
-                <span class="price-value">{{ item.b2bcena | number:'1.0-0' }}</span>
+                <span class="price-value">{{ item.mpcena | number:'1.0-0' }}</span>
                 <span class="price-currency">RSD</span>
               </div>
 
@@ -51,7 +51,7 @@
               </div>
 
               <div class="line-total">
-                <span class="total-value">{{ (item.b2bcena * item.cartKolicina) | number:'1.0-0' }}</span>
+                <span class="total-value">{{ (item.mpcena * item.cartKolicina) | number:'1.0-0' }}</span>
                 <span class="total-currency">RSD</span>
               </div>
             </div>
