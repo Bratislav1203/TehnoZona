@@ -54,6 +54,7 @@ export class HomePageComponent implements OnInit {
     buttonRoute: string;
   }[] = [];
 
+  isLoading: boolean = true;
   vendorId = 2;
   page = 0;
   size = 20;
@@ -165,8 +166,12 @@ export class HomePageComponent implements OnInit {
         console.table(this.recommendedCategories);
         console.log('--------------------------------------------------');
 
+        this.isLoading = false;
       },
-      error: err => console.error('Greška pri učitavanju homepage sekcija:', err)
+      error: err => {
+        console.error('Greška pri učitavanju homepage sekcija:', err);
+        this.isLoading = false;
+      }
     });
   }
 

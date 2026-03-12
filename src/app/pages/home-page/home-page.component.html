@@ -1,6 +1,6 @@
 <!-- 1️⃣ HERO SEKCIJA -->
-<section class="hero-section" *ngIf="heroBanner; else staticHero">
-  <div class="hero-inner">
+<section class="hero-section" *ngIf="!isLoading && heroBanner">
+  <div class="hero-inner" *ngIf="heroBanner">
     <div class="hero-text">
       <h1>{{ heroBanner.title }}</h1>
       <p class="hero-subtitle">{{ heroBanner.subtitle }}</p>
@@ -13,28 +13,6 @@
     </div>
   </div>
 </section>
-
-<ng-template #staticHero>
-  <section class="hero-section">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h1>Super Popusti u TehnoZoni</h1>
-        <p class="hero-subtitle">Iskoristite specijalne ponude na najpopularnije proizvode.</p>
-        <div class="hero-buttons">
-          <button class="btn-primary" routerLink="/products">Pregledaj ponudu</button>
-          <button class="btn-secondary" routerLink="/products">Najpopularniji proizvodi</button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img src="assets/hero-device.png" alt="Premium uređaj" />
-        <div class="hero-badge">
-          <span class="badge-percent">-20%</span>
-          <span class="badge-text">Na izabrane artikle</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</ng-template>
 
 <!-- 2️⃣ BRENDOVI — Editorial Style -->
 <section class="brands-section">
