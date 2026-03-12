@@ -1,3 +1,14 @@
+<!-- 🌟 FULL PAGE LOADER -->
+<div class="home-loader-overlay" *ngIf="isLoading">
+  <div class="loader-content">
+    <img src="assets/newLogo.png" alt="TehnoZona" class="loader-logo" />
+    <div class="loader-spinner-wrapper">
+      <div class="loader-progress"></div>
+    </div>
+    <span class="loading-text">Učitavanje...</span>
+  </div>
+</div>
+
 <!-- 1️⃣ HERO SEKCIJA -->
 <section class="hero-section" *ngIf="!isLoading && heroBanner">
   <div class="hero-inner" *ngIf="heroBanner">
@@ -27,7 +38,7 @@
 </section>
 
 <!-- 3️⃣ KATEGORIJE — Light Premium -->
-<section class="categories-section">
+<section class="categories-section" *ngIf="!isLoading && recommendedCategories.length > 0">
   <div class="section-inner">
     <div class="editorial-header">
       <span class="section-label">ISTRAŽI</span>
@@ -51,7 +62,7 @@
 <!-- 4️⃣ AKCIJE & NOVOSTI UKLONJENO (DUMMY PODACI) -->
 
 <!-- 5️⃣ NAJNOVIJI PROIZVODI (TOP + SALE) -->
-<section class="products-section" *ngIf="topProducts.length > 0">
+<section class="products-section" *ngIf="!isLoading && topProducts.length > 0">
   <div class="section-inner">
     <h2 class="section-heading">Najnoviji proizvodi</h2>
     <div class="products-grid">
@@ -72,7 +83,7 @@
 </section>
 
 <!-- Akcije i popusti (SALE itemi) -->
-<section class="sale-section" *ngIf="saleItems.length > 0">
+<section class="sale-section" *ngIf="!isLoading && saleItems.length > 0">
   <div class="section-inner">
     <h2 class="section-heading">Akcije i popusti</h2>
     <div class="products-grid">

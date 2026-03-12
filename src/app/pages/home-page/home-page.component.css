@@ -690,3 +690,80 @@
     margin-bottom: 20px;
   }
 }
+
+/* ============================================
+   🌟 PREMIUM FULL-PAGE LOADER
+   ============================================ */
+.home-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.loader-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.loader-logo {
+  height: 60px;
+  width: auto;
+  margin-bottom: 8px;
+  animation: logoPulse 2s infinite ease-in-out;
+}
+
+.loader-spinner-wrapper {
+  position: relative;
+  width: 200px;
+  height: 4px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.loader-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #111827, #3b82f6);
+  border-radius: 10px;
+  animation: progressMove 1.5s infinite ease-in-out;
+}
+
+.loading-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@keyframes logoPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes progressMove {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

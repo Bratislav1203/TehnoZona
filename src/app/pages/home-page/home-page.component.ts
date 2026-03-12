@@ -166,11 +166,16 @@ export class HomePageComponent implements OnInit {
         console.table(this.recommendedCategories);
         console.log('--------------------------------------------------');
 
-        this.isLoading = false;
+        // Dodajemo mali delay da loader bude "premium" i stabilniji
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
       },
       error: err => {
         console.error('Greška pri učitavanju homepage sekcija:', err);
-        this.isLoading = false;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
       }
     });
   }
