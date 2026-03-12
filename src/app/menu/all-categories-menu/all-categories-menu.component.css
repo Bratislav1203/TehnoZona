@@ -16,7 +16,9 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-body, main, .page-content {
+body,
+main,
+.page-content {
   padding-top: 70px !important;
 }
 
@@ -60,7 +62,8 @@ body, main, .page-content {
 .allCategories app-all-categories-menu {
   position: absolute;
   left: 0;
-  top: 39px; /* ispod tab bara */
+  top: 39px;
+  /* ispod tab bara */
   z-index: 1000;
   width: 100%;
   background: #fff;
@@ -157,6 +160,7 @@ body, main, .page-content {
 .allcat-right::-webkit-scrollbar {
   width: 6px;
 }
+
 .allcat-right::-webkit-scrollbar-thumb {
   background-color: rgba(24, 60, 92, 0.5);
   border-radius: 3px;
@@ -168,6 +172,7 @@ body, main, .page-content {
     opacity: 0;
     transform: translateY(-4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -267,6 +272,7 @@ body, main, .page-content {
     color: #333;
   }
 }
+
 /* ===== Strelica indikator za mobilni prikaz ===== */
 .mobile-indicator {
   display: none;
@@ -276,7 +282,8 @@ body, main, .page-content {
 }
 
 .mobile-indicator.expanded {
-  transform: rotate(90deg); /* Rotira nadole */
+  transform: rotate(90deg);
+  /* Rotira nadole */
   color: #183c5c;
 }
 
@@ -288,17 +295,24 @@ body, main, .page-content {
     margin-right: 20px;
     cursor: pointer;
     position: relative;
-    font-size: 14px;         /* veličina same strelice */
-    padding: 8px;            /* proširuje klikabilno polje oko nje */
-    margin-top: -8px;        /* centrira je vertikalno ponovo */
-    margin-bottom: -8px;     /* da ne “proširi” red vizuelno */
-    border-radius: 50%;      /* opcionalno – ako želiš “okruglo” klik polje */
+    font-size: 14px;
+    /* veličina same strelice */
+    padding: 8px;
+    /* proširuje klikabilno polje oko nje */
+    margin-top: -8px;
+    /* centrira je vertikalno ponovo */
+    margin-bottom: -8px;
+    /* da ne “proširi” red vizuelno */
+    border-radius: 50%;
+    /* opcionalno – ako želiš “okruglo” klik polje */
   }
 
   .mobile-indicator:hover {
-    background: rgba(0, 0, 0, 0.05); /* blagi vizuelni feedback */
+    background: rgba(0, 0, 0, 0.05);
+    /* blagi vizuelni feedback */
   }
 }
+
 /* Stilizacija linkova u meniju — uklanja plavu boju i underline */
 .allcat-left a,
 .allcat-right a {
@@ -308,12 +322,14 @@ body, main, .page-content {
 
 .allcat-left a:hover,
 .allcat-right a:hover {
-  color: #183c5c; /* tvoja plava iz dizajna */
+  color: #183c5c;
+  /* tvoja plava iz dizajna */
 }
 
 .allcat-left a:visited,
 .allcat-right a:visited {
-  color: #212121; /* ista boja kao normalni link */
+  color: #212121;
+  /* ista boja kao normalni link */
   text-decoration: none;
 }
 
@@ -322,5 +338,3 @@ body, main, .page-content {
   color: #183c5c;
   text-decoration: none;
 }
-
-

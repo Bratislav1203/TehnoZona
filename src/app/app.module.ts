@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeSr from '@angular/common/locales/sr-Latn';
+registerLocaleData(localeSr);
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -65,7 +68,8 @@ import { DemoNavigacijaComponent } from './demo-navigacija/demo-navigacija.compo
     CarouselModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'sr-Latn' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

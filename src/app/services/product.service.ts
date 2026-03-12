@@ -193,7 +193,6 @@ export class ProductService {
     size: number = 20,
     minCena?: number,
     maxCena?: number,
-    proizvodjaci?: string[],
     sort?: string
   ): Observable<any> {
     const encodedBrand = encodeURIComponent(brand);
@@ -207,18 +206,11 @@ export class ProductService {
     if (maxCena !== undefined && maxCena !== null && maxCena !== 0) {
       params = params.set('maxCena', maxCena.toString());
     }
-    if (proizvodjaci && proizvodjaci.length > 0) {
-      proizvodjaci.forEach(p => {
-        params = params.append('proizvodjaci', p);
-      });
-      params = params.set('proizvodjaciCsv', proizvodjaci.join(','));
-    }
     if (sort) {
       params = params.set('sort', sort);
     }
 
     const url = `${this.apiUrl}/${vendorId}/artikli/brand/${encodedBrand}`;
-    console.log(url);
     return this.http.get<any>(url, { params });
   }
 

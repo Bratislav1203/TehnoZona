@@ -200,66 +200,99 @@
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 32px;
 }
 
 .category-card {
-  background: #ffffff;
-  border-radius: 24px;
-  overflow: hidden;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: all 0.35s ease;
+  box-shadow: none;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  text-align: center;
 }
 
 .category-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
 }
 
 .cat-img-wrapper {
-  width: 100%;
-  height: 200px;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background: #fafbfc;
+  padding: 24px;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.category-card:hover .cat-img-wrapper {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  background: #ffffff;
 }
 
 .cat-img-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 16px;
-  transition: transform 0.5s ease;
+  object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .category-card:hover .cat-img-wrapper img {
-  transform: scale(1.05);
+  transform: scale(1.15) rotate(2deg);
 }
 
 .cat-card-footer {
-  padding: 20px 24px 24px;
+  padding: 0;
 }
 
 .cat-card-name {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: #111827;
   margin: 0 0 4px 0;
+  transition: color 0.3s ease;
+}
+
+.category-card:hover .cat-card-name {
+  color: #1a56db;
 }
 
 .cat-card-link {
   font-size: 13px;
-  font-weight: 500;
-  color: #9ca3af;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  position: relative;
+}
+
+.cat-card-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #1a56db;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .category-card:hover .cat-card-link {
-  color: #111827;
+  color: #1a56db;
+}
+
+.category-card:hover .cat-card-link::after {
+  transform: scaleX(1);
 }
 
 /* ============================================
@@ -407,6 +440,7 @@
   min-height: 36px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -500,6 +534,12 @@
 
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .cat-img-wrapper {
+    width: 140px;
+    height: 140px;
   }
 
   .promos-grid {
@@ -512,38 +552,139 @@
 }
 
 @media (max-width: 480px) {
+  .section-inner {
+    padding: 0 16px; /* Smanjujemo unutrašnji padding na mobilnom */
+  }
+
+  .hero-section {
+    padding: 24px 0;
+  }
+
   .hero-text h1 {
     font-size: 26px;
+    margin-bottom: 12px;
   }
 
   .hero-subtitle {
     font-size: 15px;
+    margin-bottom: 24px;
   }
 
   .hero-buttons {
     flex-direction: column;
+    gap: 10px;
   }
 
   .btn-primary,
   .btn-secondary {
     width: 100%;
     text-align: center;
+    padding: 12px;
+  }
+
+  .brands-section {
+    padding: 32px 0;
+  }
+
+  .categories-section {
+    padding: 32px 0;
   }
 
   .categories-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 8px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .category-card {
+    flex: none;
+    width: 100%;
+  }
+
+  .cat-img-wrapper {
+    width: 80px;
+    height: 80px;
+    padding: 12px;
+    margin: 0 auto 8px;
+  }
+
+  .cat-card-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: normal;
+    /* Vraćamo wrap za nazive u gridu */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .cat-card-link {
+    display: none;
+  }
+
+  /* Uklonjen duplikat .categories-section */
+
+  .editorial-header {
+    margin-bottom: 20px;
   }
 
   .editorial-title {
-    font-size: 22px;
+    font-size: 20px;
+  }
+
+  .title-divider {
+    width: 40px;
+  }
+
+  .promos-section,
+  .products-section,
+  .sale-section {
+    padding: 40px 16px;
   }
 
   .products-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .product-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .product-img-wrapper {
+    height: 120px;
+    margin-bottom: 12px;
+  }
+
+  .product-info h4 {
+    font-size: 13px;
+    min-height: 32px;
+    margin-bottom: 4px;
+  }
+
+  .product-price,
+  .new-price {
+    font-size: 15px;
+  }
+
+  .old-price {
+    font-size: 11px;
+  }
+
+  .btn-add-cart {
+    padding: 8px 0;
+    font-size: 12px;
+    border-radius: 8px;
   }
 
   .section-heading {
-    font-size: 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
   }
 }

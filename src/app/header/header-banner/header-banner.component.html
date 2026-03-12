@@ -31,8 +31,8 @@
             <li *ngFor="let grupa of allGlavneGrupe" class="nav-item main-group-item"
               [class.active]="activeGlavnaGrupa === grupa">
               <div class="item-content">
-                <span class="item-text" (click)="goToGlavnaGrupaStrana(grupa); $event.stopPropagation()">{{
-                  utilService.formatirajNaziv(grupa.name) }}</span>
+                <div class="item-text" (click)="goToGlavnaGrupaStrana(grupa); $event.stopPropagation()">{{
+                  utilService.formatirajNaziv(grupa.name) }}</div>
                 <svg class="chevron" (click)="selectGlavnaGrupa(grupa)" xmlns="http://www.w3.org/2000/svg" width="14"
                   height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">

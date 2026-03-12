@@ -1,11 +1,11 @@
 <div class="admin-dashboard-page">
   <div class="admin-dashboard-container">
-    <h1 class="admin-title">Admin portal – featured proizvodi</h1>
+    <h1 class="admin-title">Admin portal – Homepage Stavke</h1>
 
     <!-- TABOVI -->
     <div class="tabs">
       <button class="tab-btn" [class.active]="activeTab === 'add'" (click)="setTab('add')">
-        Dodaj featured proizvod
+        Dodaj novu stavku
       </button>
 
       <button class="tab-btn" [class.active]="activeTab === 'list'" (click)="setTab('list')">
@@ -19,59 +19,165 @@
       <!-- ADD TAB -->
       <!-- ------------------------------------ -->
       <div *ngIf="activeTab === 'add'" class="tab-panel">
-        <h2 class="section-title">Dodavanje novog featured proizvoda</h2>
-        <p class="section-subtitle">Obeleži proizvod kao Top / Akcija / Novo / Preporučeno.</p>
+        <h2 class="section-title">Dodavanje na početnu stranu</h2>
+        <p class="section-subtitle">Dodaj proizvod, kategoriju ili brend na Home Page.</p>
 
         <div *ngIf="submitSuccess" class="alert alert-success">
-          Proizvod je uspešno sačuvan.
+          Uspešno sačuvano.
         </div>
 
         <div *ngIf="submitError" class="alert alert-error">
           {{ submitError }}
         </div>
 
+        <!-- 🏁 WIZARD ZAGLAVLJE -->
+        <div class="wizard-header">
+          <div class="step-indicator" [class.active]="currentStep >= 1">1. Osnovno</div>
+          <div class="step-separator">></div>
+          <div class="step-indicator" [class.active]="currentStep >= 2">2. Detalji</div>
+          <div class="step-separator">></div>
+          <div class="step-indicator" [class.active]="currentStep === 3">3. Podešavanja</div>
+        </div>
+
         <form class="featured-form" (ngSubmit)="submitNew()">
 
-          <div class="form-row">
-            <div class="form-field">
-              <label>Feature tip</label>
-              <select [(ngModel)]="newFeatured.featureType" name="featureType" required>
-                <option *ngFor="let ft of featureTypes" [value]="ft.value">{{ ft.label }}</option>
-              </select>
+          <!-- ================= KORAK 1: VRSTA I SEKCIJA ================= -->
+          <div *ngIf="currentStep === 1" class="wizard-step">
+            <h3 class="step-title">Korak 1: Šta dodajemo?</h3>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Vrsta (Item Type)</label>
+                <select [(ngModel)]="newFeatured.itemType" name="itemType" required>
+                  <option *ngFor="let it of itemTypes" [value]="it.value">{{ it.label }}</option>
+                </select>
+                <small>Biraš da li dodaješ konkretan Proizvod, celu Kategoriju, ili Brend.</small>
+              </div>
+
+              <div class="form-field">
+                <label>Sekcija (Gde se prikazuje na sajtu?)</label>
+                <select [(ngModel)]="newFeatured.section" name="section" required>
+                  <option *ngFor="let s of sections" [value]="s.value">{{ s.label }}</option>
+                </select>
+                <small>npr. TOP ide u sekciju "Najnoviji proizvodi". RECOMMENDED ide u "Popularne kategorije".</small>
+              </div>
             </div>
 
-            <div class="form-field">
-              <label>Barcode</label>
-              <input type="text" [(ngModel)]="newFeatured.barcode" name="barcode" required />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label>Prioritet</label>
-              <select [(ngModel)]="newFeatured.priority" name="priority" required>
-                <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label>Važi od</label>
-              <input type="datetime-local" [(ngModel)]="newFeatured.validFrom" name="validFrom" required />
-            </div>
-
-            <div class="form-field">
-              <label>Važi do</label>
-              <input type="datetime-local" [(ngModel)]="newFeatured.validTo" name="validTo" required />
+            <div class="form-actions-wizard">
+              <button type="button" class="primary-btn btn-next" (click)="nextStep()">Dalje ➡️</button>
             </div>
           </div>
 
-          <div class="form-actions">
-            <button class="primary-btn" type="submit" [disabled]="isSubmitting">
-              <span *ngIf="!isSubmitting">Sačuvaj</span>
-              <span *ngIf="isSubmitting">Čuvanje...</span>
-            </button>
+          <!-- ================= KORAK 2: DETALJI ================= -->
+          <div *ngIf="currentStep === 2" class="wizard-step">
+            <h3 class="step-title">Korak 2: Detalji o {{ newFeatured.itemType }} stavci</h3>
+
+            <!-- AKO JE PRODUCT -->
+            <div class="form-row" *ngIf="newFeatured.itemType === 'PRODUCT'">
+              <div class="form-field">
+                <label>Barkod proizvoda</label>
+                <input type="text" [(ngModel)]="newFeatured.barcode" name="barcode"
+                  [required]="newFeatured.itemType === 'PRODUCT'" placeholder="npr. 8605051909873" />
+                <small>Ovaj kod pronalazi artikal iz XML baze i povlači sve njegove podatke (sliku, cenu,
+                  naziv).</small>
+              </div>
+            </div>
+
+            <!-- AKO JE CATEGORY -->
+            <ng-container *ngIf="newFeatured.itemType === 'CATEGORY'">
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Glavna grupa</label>
+                  <select [(ngModel)]="newFeatured.glavnaGrupa" name="glavnaGrupa" required
+                    (change)="onGlavnaGrupaChange()">
+                    <option value="" disabled>-- Izaberi glavnu grupu --</option>
+                    <option *ngFor="let g of svGlavneGrupe" [value]="g.name">{{ g.name }}</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>Nadgrupa (opciono)</label>
+                  <select [(ngModel)]="newFeatured.nadgrupa" name="nadgrupa" [disabled]="!dostupneNadgrupe.length"
+                    (change)="onNadgrupaChange()">
+                    <option value="">Nema odabrane</option>
+                    <option *ngFor="let ng of dostupneNadgrupe" [value]="ng">{{ ng }}</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>Grupa (opciono)</label>
+                  <select [(ngModel)]="newFeatured.grupa" name="grupa" [disabled]="!dostupneGrupe.length">
+                    <option value="">Nema odabrane</option>
+                    <option *ngFor="let gr of dostupneGrupe" [value]="gr">{{ gr }}</option>
+                  </select>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- AKO JE BRAND -->
+            <div class="form-row" *ngIf="newFeatured.itemType === 'BRAND'">
+              <div class="form-field">
+                <label>Ime Brend-a</label>
+                <input type="text" [(ngModel)]="newFeatured.brandName" name="brandName"
+                  [required]="newFeatured.itemType === 'BRAND'" placeholder="npr. SAMSUNG" />
+              </div>
+            </div>
+
+            <!-- CUSTOM NAME & IMAGE (ZA KATEGORIJU ZBOG LEPOK PRIKAZA NA HOME) -->
+            <ng-container *ngIf="newFeatured.itemType === 'CATEGORY' || newFeatured.itemType === 'BRAND'">
+              <div class="form-divider">Samo za prikaz na sajtu (Estetika)</div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Zameni dugačak naziv s kraćim</label>
+                  <input type="text" [(ngModel)]="newFeatured.customName" name="customName"
+                    placeholder="Umesto 'TV, FOTO, AUDIO I VIDEO' stavi 'Televizori'" />
+                </div>
+                <div class="form-field">
+                  <label>Putanja do ikonice (Slika)</label>
+                  <input type="text" [(ngModel)]="newFeatured.customImageUrl" name="customImageUrl"
+                    placeholder="npr. assets/cat-tv-light.png" />
+                </div>
+              </div>
+            </ng-container>
+
+            <div class="form-actions-wizard space-between">
+              <button type="button" class="secondary-btn btn-prev" (click)="prevStep()">⬅️ Nazad</button>
+              <button type="button" class="primary-btn btn-next" (click)="nextStep()">Dalje ➡️</button>
+            </div>
+          </div>
+
+          <!-- ================= KORAK 3: GLOBALNA PODEŠAVANJA ================= -->
+          <div *ngIf="currentStep === 3" class="wizard-step">
+            <h3 class="step-title">Korak 3: Trajanje i redosled</h3>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Prioritet na sajtu</label>
+                <select [(ngModel)]="newFeatured.priority" name="priority" required>
+                  <option *ngFor="let p of priorities" [value]="p">{{ p }} (1 je najviše)</option>
+                </select>
+                <small>Određuje redosled iscrtavanja, niži broj se prikazuje pre.</small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Važi od (Opciono, ako je unapred)</label>
+                <input type="datetime-local" [(ngModel)]="newFeatured.validFrom" name="validFrom" />
+              </div>
+
+              <div class="form-field">
+                <label>Važi do (Opciono, do kad traje?)</label>
+                <input type="datetime-local" [(ngModel)]="newFeatured.validTo" name="validTo" />
+                <small>Ako ostaviš prazno, akcija traje zauvek (dok ne obrišeš ručno).</small>
+              </div>
+            </div>
+
+            <div class="form-actions-wizard space-between mt-30">
+              <button type="button" class="secondary-btn btn-prev" (click)="prevStep()">⬅️ Nazad</button>
+              <button class="success-btn" type="submit" [disabled]="isSubmitting">
+                <span *ngIf="!isSubmitting">✅ Završi i sačuvaj</span>
+                <span *ngIf="isSubmitting">Čuvanje...</span>
+              </button>
+            </div>
           </div>
 
         </form>
@@ -81,49 +187,65 @@
       <!-- LIST TAB -->
       <!-- ------------------------------------ -->
       <div *ngIf="activeTab === 'list'" class="tab-panel">
-        <h2 class="section-title">Pregled postojećih featured proizvoda</h2>
-        <p class="section-subtitle">Lista svih TOP / Akcija / Novo / Preporučeno proizvoda.</p>
+        <h2 class="section-title">Pregled stavki na početnoj</h2>
+        <p class="section-subtitle">Svi istaknuti proizvodi, preporučene kategorije i partner brendovi.</p>
 
-        <div *ngIf="!featuredProducts.length" class="empty-state">
-          Još uvek nema featured proizvoda.
+        <div *ngIf="!featuredProducts.length && !isSubmitting" class="empty-state">
+          Nema aktivnih stavki za prikaz.
         </div>
 
         <!-- DESKTOP TABELA -->
         <table class="featured-table desktop-only" *ngIf="featuredProducts.length">
           <thead>
-          <tr>
-            <th>ID</th>
-            <th>Proizvod</th>
-            <th>Tip</th>
-            <th>Prioritet</th>
-            <th>Važi od</th>
-            <th>Važi do</th>
-            <th></th>
-          </tr>
+            <tr>
+              <th>ID</th>
+              <th>Prikaz</th>
+              <th>Vrsta</th>
+              <th>Sekcija</th>
+              <th>Prioritet</th>
+              <th>Važi do</th>
+              <th></th>
+            </tr>
           </thead>
 
           <tbody>
-          <tr *ngFor="let item of featuredProducts">
-            <td>{{ item.featured.id }}</td>
+            <tr *ngFor="let item of featuredProducts">
+              <td>{{ item.id }}</td>
 
-            <td class="cell-product">
-              <img class="product-img" [src]="getMainImage(item)" alt="slika" />
-              <div class="product-info">
-                <div class="p-name">{{ item.artikal?.naziv }}</div>
-                <div class="p-barcode">#{{ item.featured.barcode }}</div>
-                <div class="p-price">{{ item.artikal?.mpcena }} RSD</div>
-              </div>
-            </td>
+              <td class="cell-product">
+                <img class="product-img" [src]="getMainImage(item)" alt="slika" />
+                <div class="product-info">
+                  <!-- Ako je PRODUCT -->
+                  <ng-container *ngIf="item.itemType === 'PRODUCT'">
+                    <div class="p-name">{{ item.artikal?.naziv || 'Nepoznat proizvod' }}</div>
+                    <div class="p-barcode">#{{ item.barcode }}</div>
+                    <div class="p-price" *ngIf="item.artikal">{{ item.artikal.mpcena }} RSD</div>
+                  </ng-container>
 
-            <td>{{ item.featured.featureType }}</td>
-            <td>{{ item.featured.priority }}</td>
-            <td>{{ item.featured.validFrom | date:'dd.MM.yyyy HH:mm' }}</td>
-            <td>{{ item.featured.validTo | date:'dd.MM.yyyy HH:mm' }}</td>
+                  <!-- Ako je CATEGORY -->
+                  <ng-container *ngIf="item.itemType === 'CATEGORY'">
+                    <div class="p-name">{{ item.customName || item.glavnaGrupa }}</div>
+                    <div class="p-barcode">{{ item.glavnaGrupa }} <span *ngIf="item.nadgrupa">> {{item.nadgrupa}}</span>
+                    </div>
+                  </ng-container>
 
-            <td class="cell-actions">
-              <button class="delete-btn" (click)="deleteFeatured(item)">Obriši</button>
-            </td>
-          </tr>
+                  <!-- Ako je BRAND -->
+                  <ng-container *ngIf="item.itemType === 'BRAND'">
+                    <div class="p-name">{{ item.customName || item.brandName }}</div>
+                    <div class="p-barcode">Brend: {{ item.brandName }}</div>
+                  </ng-container>
+                </div>
+              </td>
+
+              <td><span class="badge type-badge">{{ item.itemType }}</span></td>
+              <td><span class="badge section-badge">{{ item.section }}</span></td>
+              <td>{{ item.priority }}</td>
+              <td>{{ item.validTo ? (item.validTo | date:'dd.MM.yyyy') : 'Zauvek' }}</td>
+
+              <td class="cell-actions">
+                <button class="delete-btn" (click)="deleteFeatured(item)">Obriši</button>
+              </td>
+            </tr>
           </tbody>
         </table>
 
@@ -133,20 +255,28 @@
 
             <div class="fm-header">
               <img [src]="getMainImage(item)" alt="slika" />
-              <div>
-                <div class="fm-title">{{ item.artikal?.naziv }}</div>
-                <div class="fm-barcode">#{{ item.featured.barcode }}</div>
+              <div *ngIf="item.itemType === 'PRODUCT'">
+                <div class="fm-title">{{ item.artikal?.naziv || 'Nepoznat proizvod' }}</div>
+                <div class="fm-barcode">#{{ item.barcode }}</div>
+              </div>
+              <div *ngIf="item.itemType === 'CATEGORY'">
+                <div class="fm-title">{{ item.customName || item.glavnaGrupa }}</div>
+                <div class="fm-barcode">Kategorija</div>
+              </div>
+              <div *ngIf="item.itemType === 'BRAND'">
+                <div class="fm-title">{{ item.customName || item.brandName }}</div>
+                <div class="fm-barcode">Brend</div>
               </div>
             </div>
 
             <div class="fm-info-row">
-              <div class="fm-type">{{ item.featured.featureType }}</div>
-              <div class="fm-price">{{ item.artikal?.b2bcena }} RSD</div>
+              <div class="fm-type">{{ item.section }} ({{ item.itemType }})</div>
+              <div class="fm-price" *ngIf="item.itemType === 'PRODUCT' && item.artikal">{{ item.artikal.mpcena }} RSD
+              </div>
             </div>
 
-            <div class="fm-info-row">
-              <div>Od: {{ item.featured.validFrom | date:'dd.MM.yyyy HH:mm' }}</div>
-              <div>Do: {{ item.featured.validTo | date:'dd.MM.yyyy HH:mm' }}</div>
+            <div class="fm-info-row" *ngIf="item.validTo">
+              <div>Do: {{ item.validTo | date:'dd.MM.yyyy HH:mm' }}</div>
             </div>
 
             <div class="fm-actions">

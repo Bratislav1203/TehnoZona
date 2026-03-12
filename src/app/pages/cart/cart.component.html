@@ -40,7 +40,7 @@
 
             <div class="card-bottom">
               <div class="price-per-unit">
-                <span class="price-value">{{ item.mpcena | number:'1.0-0' }}</span>
+                <span class="price-value">{{ item.mpcena | number:'1.2-2' }}</span>
                 <span class="price-currency">RSD</span>
               </div>
 
@@ -51,7 +51,7 @@
               </div>
 
               <div class="line-total">
-                <span class="total-value">{{ (item.mpcena * item.cartKolicina) | number:'1.0-0' }}</span>
+                <span class="total-value">{{ (item.mpcena * item.cartKolicina) | number:'1.2-2' }}</span>
                 <span class="total-currency">RSD</span>
               </div>
             </div>
@@ -69,7 +69,7 @@
 
           <div class="summary-row">
             <span>Proizvodi ({{ cartItems.length }})</span>
-            <span>{{ getTotal() | number:'1.0-0' }} RSD</span>
+            <span>{{ getTotal() | number:'1.2-2' }} RSD</span>
           </div>
 
           <div class="summary-row">
@@ -82,7 +82,7 @@
           <div class="summary-total-row">
             <span>Ukupno za naplatu</span>
             <div class="grand-total">
-              <span class="grand-amount">{{ getTotal() | number:'1.0-0' }}</span>
+              <span class="grand-amount">{{ getTotal() | number:'1.2-2' }}</span>
               <span class="grand-currency">RSD</span>
             </div>
           </div>

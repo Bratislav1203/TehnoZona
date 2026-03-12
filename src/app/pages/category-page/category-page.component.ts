@@ -112,6 +112,7 @@ export class CategoryPageComponent {
         if (isSearchRoute && searchQuery) {
           this.searchFilter = searchQuery;
           this.isLoading = true;
+          console.log(`📡 Gadjam: GET /api/vendors/2/search?q=${searchQuery}&sort=${this.sort}`);
           this.productService
             .searchProducts(
               2,
@@ -213,6 +214,7 @@ export class CategoryPageComponent {
   ucitajStranicu(): void {
     if (!this.glavnaGrupa) { return; }
     this.isLoading = true;
+    console.log(`📡 Gadjam: GET /api/vendors/2/glavnaGrupa/${this.glavnaGrupa}/artikli?sort=${this.sort}`);
 
     this.productService
       .getProductsFromCategory(
@@ -267,6 +269,7 @@ export class CategoryPageComponent {
   ucitajStranicuZaGrupu(): void {
     if (!this.glavnaGrupa || !this.nadgrupa || !this.grupa) { return; }
     this.isLoading = true;
+    console.log(`📡 Gadjam: GET /api/vendors/2/glavnaGrupa/${this.glavnaGrupa}/nadgrupa/${this.nadgrupa}/grupa/${this.grupa}/artikli?sort=${this.sort}`);
 
     const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
 
@@ -325,6 +328,7 @@ export class CategoryPageComponent {
   ucitajStranicuZaNadgrupu(): void {
     if (!this.glavnaGrupa || !this.nadgrupa) { return; }
     this.isLoading = true;
+    console.log(`📡 Gadjam: GET /api/vendors/2/glavnaGrupa/${this.glavnaGrupa}/nadgrupa/${this.nadgrupa}/artikli?sort=${this.sort}`);
 
     const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
 
@@ -463,6 +467,7 @@ export class CategoryPageComponent {
   }
 
   onSortChange(newSort: string) {
+    console.log('🔀 Sort promenjen:', newSort);
     this.sort = newSort;
     this.currentPage = 0;
     this.navigateWithFilters();
@@ -524,7 +529,7 @@ export class CategoryPageComponent {
 
   ucitajBrend(brand: string) {
     this.isLoading = true;
-    const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
+    console.log(`📡 Gadjam: GET /api/vendors/2/artikli/brand/${brand}?sort=${this.sort}`);
 
     this.productService
       .getProductsByBrand(
@@ -534,30 +539,22 @@ export class CategoryPageComponent {
         this.pageSize,
         this.minValue,
         this.maxValue,
-        selektovaniProizvodjaci, // Prosledi izabrane pod-proizvođače brenda
         this.sort
       )
       .subscribe((data: any) => {
-        this.products = data?.items || [];
-        this.totalProducts = data?.total || this.products.length;
+        // Handle both flat array (old backend) and ProductPageResponse object (new backend)
+        if (Array.isArray(data)) {
+          this.products = data;
+          this.totalProducts = data.length;
+        } else {
+          this.products = data?.products || [];
+          this.totalProducts = data?.totalCount || this.products.length;
+        }
         this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
 
-        // Proizvođači se u brend ruti obično nalaze u 'manufacturerCounts' odgovora
-        if (data?.manufacturerCounts) {
-          this.filterCategories = [
-            {
-              category: 'Proizvođač',
-              types: Object.entries(data.manufacturerCounts).map(([name, quantity]) => ({
-                name,
-                quantity: quantity as number,
-              })),
-            },
-          ];
-        }
-
-        // Postavi inicijalne min/max cene ako backend šalje
-        const bMin = data?.initialMinCena ?? data?.minPrice ?? data?.minCena;
-        const bMax = data?.initialMaxCena ?? data?.maxPrice ?? data?.maxCena;
+        // Postavi inicijalne min/max cene (ProductPageResponse format)
+        const bMin = data?.minCena;
+        const bMax = data?.maxCena;
 
         if (bMin !== undefined && (this.initialMinValue === 0 || !this.minValue)) {
           this.initialMinValue = bMin;

@@ -155,10 +155,11 @@
           <label for="sort-select">Sortiraj:</label>
           <select id="sort-select" [ngModel]="sort" (ngModelChange)="onSortChange($event)">
             <option value="">Podrazumevano</option>
-            <option value="PRICE_ASC">Cena: rastuća</option>
-            <option value="PRICE_DESC">Cena: opadajuća</option>
-            <option value="NAME_ASC">Naziv: A-Z</option>
-            <option value="NAME_DESC">Naziv: Z-A</option>
+            <option value="cena_asc">Cena: rastuća</option>
+            <option value="cena_desc">Cena: opadajuća</option>
+            <option value="naziv_asc">Naziv: A-Z</option>
+            <option value="naziv_desc">Naziv: Z-A</option>
+            <option value="najnovije">Najnovije</option>
           </select>
         </div>
       </div>

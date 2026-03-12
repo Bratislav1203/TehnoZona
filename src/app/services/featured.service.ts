@@ -3,17 +3,44 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export type FeatureType = 'TOP' | 'SALE' | 'NEW' | 'RECOMMENDED';
+export type ItemType = 'PRODUCT' | 'CATEGORY' | 'BRAND';
+export type HomepageSection = 'TOP' | 'SALE' | 'RECOMMENDED' | 'NEW';
 
-export interface FeaturedAddRequest {
-  barcode: string;
-  featureType: FeatureType;
+export interface HomepageItemRequest {
+  itemType: ItemType;
+  section: HomepageSection;
   priority?: number;
   validFrom?: string;
   validTo?: string;
+  barcode?: string;
+  glavnaGrupa?: string;
+  nadgrupa?: string;
+  grupa?: string;
+  brandName?: string;
+  customName?: string;
+  customImageUrl?: string;
 }
 
-export interface FeaturedResponseItem {
+export interface HomepageItem {
+  id: number;
+  vendorId: number;
+  itemType: ItemType;
+  section: HomepageSection;
+  priority: number;
+  validFrom: string;
+  validTo: string;
+  // Opciona polja
+  barcode?: string;
+  glavnaGrupa?: string;
+  nadgrupa?: string;
+  grupa?: string;
+  brandName?: string;
+  customName?: string;
+  customImageUrl?: string;
+}
+
+export interface HomepageItemResponse {
+  homepageItem: HomepageItem;
   artikal: {
     barcode: string;
     naziv: string;
@@ -24,16 +51,7 @@ export interface FeaturedResponseItem {
     nadgrupa: string;
     grupa: string;
     proizvodjac: string;
-  };
-  featured: {
-    id: number;
-    barcode: string;
-    vendorId: number;
-    featureType: FeatureType;
-    priority: number;
-    validFrom: string;
-    validTo: string;
-  };
+  } | null;
 }
 
 @Injectable({
@@ -45,42 +63,18 @@ export class FeaturedService {
 
   constructor(private http: HttpClient) { }
 
-  // 🟩 ADMIN – ADD FEATURED
-  addFeatured(vendorId: number, req: FeaturedAddRequest): Observable<void> {
-    let params = new HttpParams()
-      .set('barcode', req.barcode)
-      .set('featureType', req.featureType);
-
-    if (req.priority !== undefined) {
-      params = params.set('priority', req.priority.toString());
-    }
-
-    if (req.validFrom) {
-      params = params.set('validFrom', req.validFrom);
-    }
-
-    if (req.validTo) {
-      params = params.set('validTo', req.validTo);
-    }
-
-    return this.http.post<void>(
-      `${this.apiUrl}/${vendorId}/featured`,
-      null,
-      { params }
-    );
+  // 🟩 ADMIN – ADD HOMEPAGE ITEM
+  addHomepageItem(vendorId: number, req: HomepageItemRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${vendorId}/homepage-items`, req);
   }
 
-  // 🟦 HOME – GET ALL FEATURED
-  getAllFeatured(): Observable<FeaturedResponseItem[]> {
-    return this.http.get<FeaturedResponseItem[]>(
-      `${this.apiUrl}/featured/all`
-    );
+  // 🟦 HOME – GET ALL HOMEPAGE ITEMS
+  getAllHomepageItems(): Observable<HomepageItemResponse[]> {
+    return this.http.get<HomepageItemResponse[]>(`${this.apiUrl}/homepage-items/all?vendorId=2`);
   }
 
   // 🟥 ADMIN – DELETE
-  deleteFeatured(id: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/featured/${id}`
-    );
+  deleteHomepageItem(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/homepage-items/${id}`);
   }
 }

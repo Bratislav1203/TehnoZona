@@ -40,8 +40,7 @@
       <div class="title-divider"></div>
     </div>
     <div class="categories-grid">
-      <div class="category-card" *ngFor="let category of recommendedCategories"
-        [routerLink]="[category.glavnaGrupa, category.nadgrupa, category.name]">
+      <div class="category-card" *ngFor="let category of recommendedCategories" [routerLink]="category.routeSegments">
         <div class="cat-img-wrapper">
           <img [src]="category.imgUrl" [alt]="category.name" />
         </div>
@@ -94,7 +93,7 @@
         </div>
         <div class="product-info">
           <h4>{{ product.name }}</h4>
-          <p class="product-price">{{ product.price | currency:'RSD':'symbol':'1.0-0' }}</p>
+          <p class="product-price">{{ product.price | currency:'RSD':'symbol':'1.2-2' }}</p>
           <button class="btn-add-cart" [routerLink]="['/product', product.barcode]">
             Dodaj u korpu
           </button>
@@ -117,8 +116,8 @@
         <div class="product-info">
           <h4>{{ item.name }}</h4>
           <div class="prices">
-            <span class="old-price">{{ item.oldPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
-            <span class="new-price">{{ item.newPrice | currency:'RSD':'symbol':'1.0-0' }}</span>
+            <span class="old-price">{{ item.oldPrice | currency:'RSD':'symbol':'1.2-2' }}</span>
+            <span class="new-price">{{ item.newPrice | currency:'RSD':'symbol':'1.2-2' }}</span>
           </div>
           <button class="btn-add-cart" [routerLink]="['/product', item.barcode]">
             Kupi sada

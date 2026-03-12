@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService, nameAndImage } from '../../services/product.service';
-import { FeaturedService, FeaturedResponseItem } from '../../services/featured.service';
+import { FeaturedService, HomepageItemResponse } from '../../services/featured.service';
 
 @Component({
   selector: 'app-home-page',
@@ -12,7 +12,7 @@ export class HomePageComponent implements OnInit {
   products: Product[] = [];
   brands: nameAndImage[] = [];
 
-  // 🛒 Top proizvodi (dinamički iz featured)
+  // 🛒 Top proizvodi (dinamički iz baze: itemType=PRODUCT, section=TOP)
   topProducts: {
     barcode: string;
     name: string;
@@ -20,15 +20,14 @@ export class HomePageComponent implements OnInit {
     price: number;
   }[] = [];
 
-  // 🧭 Preporučene kategorije (OSTAJE KAKO JESTE)
+  // 🧭 Preporučene kategorije (dinamički iz baze: itemType=CATEGORY, section=RECOMMENDED)
   recommendedCategories: {
-    glavnaGrupa: string;
-    nadgrupa: string;
     name: string;
     imgUrl: string;
+    routeSegments: string[];
   }[] = [];
 
-  // 💥 Akcije i popusti (dinamički iz featured)
+  // 💥 Akcije i popusti (dinamički iz baze: itemType=PRODUCT, section=SALE)
   saleItems: {
     barcode: string;
     name: string;
@@ -38,7 +37,6 @@ export class HomePageComponent implements OnInit {
   }[] = [];
 
   vendorId = 2;
-  glavnaGrupa: string = 'TV, FOTO, AUDIO I VIDEO';
   page = 0;
   size = 20;
 
@@ -48,9 +46,7 @@ export class HomePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.ucitajProizvode();
-
-    // 🧩 Najpopularniji brendovi (OSTAJE ISTO)
+    // 🧩 OSTAJE ISTO: Najpopularniji brendovi iz starog API-ja za sada
     this.productService.getGlavniProizvodjaci().subscribe(
       (podaci: string[]) => {
         this.brands = podaci.map(naziv => ({
@@ -63,67 +59,71 @@ export class HomePageComponent implements OnInit {
       }
     );
 
-    // 🧭 Preporučene kategorije (OSTAJE STATIČKO)
-    this.recommendedCategories = [
-      {
-        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
-        nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Televizori',
-        imgUrl: 'assets/cat-tv-light.png'
-      },
-      {
-        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
-        nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Laptopovi',
-        imgUrl: 'assets/cat-laptop-light.png'
-      },
-      {
-        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
-        nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Frižideri',
-        imgUrl: 'assets/cat-fridge-light.png'
-      },
-      {
-        glavnaGrupa: 'TV, FOTO, AUDIO I VIDEO',
-        nadgrupa: 'TV, AUDIO, VIDEO',
-        name: 'Mobilni telefoni',
-        imgUrl: 'assets/cat-phone-light.png'
-      }
-    ];
-
-    // 🛒 Featured → Top + Sale
+    // 🛒 Učitavamo sve HomepageItems sa beka (TOP, SALE, RECOMMENDED)
     this.ucitajFeaturedSekcije();
   }
 
   private ucitajFeaturedSekcije(): void {
-    this.featuredService.getAllFeatured().subscribe({
-      next: (data: FeaturedResponseItem[]) => {
+    this.featuredService.getAllHomepageItems().subscribe({
+      next: (data: HomepageItemResponse[]) => {
+        console.log('Homepage Items fetched:', data);
 
-        const top = data.filter(i => i.featured.featureType === 'TOP');
-        const sale = data.filter(i => i.featured.featureType === 'SALE');
+        // 1. Izdvajamo proizvode (TOP)
+        const top = data.filter(i => i.homepageItem.itemType === 'PRODUCT' && i.homepageItem.section === 'TOP');
+        // 2. Izdvajamo proizvode na akciji (SALE)
+        const sale = data.filter(i => i.homepageItem.itemType === 'PRODUCT' && i.homepageItem.section === 'SALE');
+        // 3. Izdvajamo kategorije (Sada hvatamo sve kategorije, pa filtriramo po tipu)
+        const cats = data.filter(i => i.homepageItem.itemType === 'CATEGORY');
+        
+        console.log('Sirovi podaci za popularne kategorije (SVE):', cats);
 
-        this.topProducts = top.map(i => ({
-          barcode: i.featured.barcode,
-          name: i.artikal.naziv,
-          imageUrl: i.artikal.slike?.[0] || 'assets/no-image.png',
-          price: i.artikal.mpcena
-        }));
-        console.log(data);
+        // Mapiramo TOP proizvode
+        this.topProducts = top
+          .filter(i => !!i.artikal)
+          .map(i => ({
+            barcode: i.homepageItem.barcode || i.artikal!.barcode,
+            name: i.artikal!.naziv,
+            imageUrl: i.artikal!.slike?.[0] || 'assets/no-image.png',
+            price: i.artikal!.mpcena
+          }));
+        console.log('🛒 TOP PROIZVODI:', this.topProducts);
 
-        this.saleItems = sale.map(i => ({
-          barcode: i.artikal.barcode,
-          name: i.artikal.naziv,
-          imgUrl: i.artikal.slike?.[0] || 'assets/no-image.png',
-          oldPrice: Math.round(i.artikal.mpcena * 1.2), // privremeno dok ne dobiješ popust iz backenda
-          newPrice: i.artikal.mpcena
-        }));
+        // Mapiramo SALE proizvode
+        this.saleItems = sale
+          .filter(i => !!i.artikal)
+          .map(i => ({
+            barcode: i.homepageItem.barcode || i.artikal!.barcode,
+            name: i.artikal!.naziv,
+            imgUrl: i.artikal!.slike?.[0] || 'assets/no-image.png',
+            oldPrice: Math.round(i.artikal!.mpcena * 1.2), // TODO: Stvarna stara cena kad backend podrži
+            newPrice: i.artikal!.mpcena
+          }));
+        console.log('💥 AKCIJE I POPUSTI:', this.saleItems);
+
+        // Mapiramo KATEGORIJE
+        this.recommendedCategories = cats.map(i => {
+          const item = i.homepageItem;
+          // Dinamički pravimo niz za routerLink: ['Glavna Grupa', 'Nadgrupa', 'Grupa']
+          const routeSegments: string[] = [];
+          if (item.glavnaGrupa) routeSegments.push(item.glavnaGrupa);
+          if (item.nadgrupa) routeSegments.push(item.nadgrupa);
+          if (item.grupa) routeSegments.push(item.grupa);
+
+          return {
+            name: item.customName || item.grupa || item.nadgrupa || item.glavnaGrupa || 'Nepoznato',
+            imgUrl: item.customImageUrl || 'assets/cat-tv-light.png',
+            routeSegments: routeSegments.length > 0 ? routeSegments : ['/'] // fallback da ne pukne link
+          };
+        });
+
+        console.log('--------------------------------------------------');
+        console.log('🚀 POPULARNE KATEGORIJE POVUČENE SA BEKENDA:');
+        console.table(this.recommendedCategories);
+        console.log('--------------------------------------------------');
+
       },
-      error: err => console.error('Greška pri učitavanju featured sekcija:', err)
+      error: err => console.error('Greška pri učitavanju homepage sekcija:', err)
     });
-  }
-
-  ucitajProizvode(): void {
-    // trenutno ne koristiš
   }
 
   formatirajNaziv(naziv: string): string {

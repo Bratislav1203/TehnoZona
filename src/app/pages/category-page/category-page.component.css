@@ -490,6 +490,8 @@ input[type="range"]::-moz-range-thumb {
   .category-title {
     font-size: 20px;
     text-align: center;
+    padding: 12px 16px;
+    margin-bottom: 12px;
   }
 
   .breadcrumb {

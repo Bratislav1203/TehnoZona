@@ -25,7 +25,7 @@
                             <li *ngFor="let mainGrp of mockData" class="nav-item"
                                 [class.active]="activeMain === mainGrp" (mouseenter)="selectMain(mainGrp)">
                                 <div class="item-content">
-                                    <span class="item-text">{{ mainGrp.name }}</span>
+                                    <div class="item-text">{{ mainGrp.name }}</div>
                                     <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round">

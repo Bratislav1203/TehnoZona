@@ -64,7 +64,7 @@
               <span class="item-name">{{ item.naziv }}</span>
               <span class="item-qty">× {{ item.cartKolicina }}</span>
             </div>
-            <span class="item-price">{{ (item.mpcena * item.cartKolicina) | number:'1.0-0' }} RSD</span>
+            <span class="item-price">{{ (item.mpcena * item.cartKolicina) | number:'1.2-2' }} RSD</span>
           </div>
         </div>
 
@@ -72,7 +72,7 @@
 
         <div class="summary-row">
           <span>Proizvodi ({{ getItemCount() }})</span>
-          <span>{{ getTotal() | number:'1.0-0' }} RSD</span>
+          <span>{{ getTotal() | number:'1.2-2' }} RSD</span>
         </div>
 
         <div class="summary-row">
@@ -85,7 +85,7 @@
         <div class="summary-total-row">
           <span>Ukupno</span>
           <div class="grand-total">
-            <span class="grand-amount">{{ getTotal() | number:'1.0-0' }}</span>
+            <span class="grand-amount">{{ getTotal() | number:'1.2-2' }}</span>
             <span class="grand-currency">RSD</span>
           </div>
         </div>
