@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export type ItemType = 'PRODUCT' | 'CATEGORY' | 'BRAND';
-export type HomepageSection = 'TOP' | 'SALE' | 'RECOMMENDED' | 'NEW';
+export type ItemType = 'PRODUCT' | 'CATEGORY' | 'BRAND' | 'BANNER' | 'PROMO';
+export type HomepageSection = 'TOP' | 'SALE' | 'RECOMMENDED' | 'NEW' | 'HERO' | 'NEWS';
 
 export interface HomepageItemRequest {
   itemType: ItemType;
@@ -19,6 +19,9 @@ export interface HomepageItemRequest {
   brandName?: string;
   customName?: string;
   customImageUrl?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonRoute?: string;
 }
 
 export interface HomepageItem {
@@ -37,6 +40,9 @@ export interface HomepageItem {
   brandName?: string;
   customName?: string;
   customImageUrl?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonRoute?: string;
 }
 
 export interface HomepageItemResponse {

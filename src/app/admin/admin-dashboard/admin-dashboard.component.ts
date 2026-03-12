@@ -15,14 +15,18 @@ export class AdminDashboardComponent implements OnInit {
   itemTypes: { value: ItemType, label: string }[] = [
     { value: 'PRODUCT', label: 'Proizvod' },
     { value: 'CATEGORY', label: 'Kategorija' },
-    { value: 'BRAND', label: 'Brend' }
+    { value: 'BRAND', label: 'Brend' },
+    { value: 'BANNER', label: 'Hero Baner' },
+    { value: 'PROMO', label: 'Promo Kartica' }
   ];
 
   sections: { value: HomepageSection, label: string }[] = [
     { value: 'TOP', label: 'Top / Najnovije' },
     { value: 'SALE', label: 'Akcija / Popust' },
     { value: 'RECOMMENDED', label: 'Preporučeno' },
-    { value: 'NEW', label: 'Novo' }
+    { value: 'NEW', label: 'Novo' },
+    { value: 'HERO', label: 'Hero Sekcija' },
+    { value: 'NEWS', label: 'Akcije & Novosti' }
   ];
 
   priorities = [1, 2, 3, 4, 5];
@@ -39,7 +43,10 @@ export class AdminDashboardComponent implements OnInit {
     grupa: '',
     brandName: '',
     customName: '',
-    customImageUrl: ''
+    customImageUrl: '',
+    subtitle: '',
+    buttonText: '',
+    buttonRoute: ''
   };
 
   isSubmitting = false;
@@ -156,7 +163,10 @@ export class AdminDashboardComponent implements OnInit {
           grupa: '',
           brandName: '',
           customName: '',
-          customImageUrl: ''
+          customImageUrl: '',
+          subtitle: '',
+          buttonText: '',
+          buttonRoute: ''
         };
       },
       error: () => {

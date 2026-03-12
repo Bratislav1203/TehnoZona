@@ -121,8 +121,44 @@
               </div>
             </div>
 
-            <!-- CUSTOM NAME & IMAGE (ZA KATEGORIJU ZBOG LEPOK PRIKAZA NA HOME) -->
-            <ng-container *ngIf="newFeatured.itemType === 'CATEGORY' || newFeatured.itemType === 'BRAND'">
+            <!-- AKO JE BANNER ILI PROMO -->
+            <ng-container *ngIf="newFeatured.itemType === 'BANNER' || newFeatured.itemType === 'PROMO'">
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Glavni Naslov (Title)</label>
+                  <input type="text" [(ngModel)]="newFeatured.customName" name="customName" required
+                    placeholder="npr. Super Popusti u TehnoZoni" />
+                </div>
+                <div class="form-field">
+                  <label>Podnaslov (Subtitle)</label>
+                  <input type="text" [(ngModel)]="newFeatured.subtitle" name="subtitle"
+                    placeholder="npr. Iskoristite specijalne ponude..." />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Tekst na dugmetu</label>
+                  <input type="text" [(ngModel)]="newFeatured.buttonText" name="buttonText"
+                    placeholder="npr. Pregledaj ponudu" />
+                </div>
+                <div class="form-field">
+                  <label>Ruta (Gde vodi klik?)</label>
+                  <input type="text" [(ngModel)]="newFeatured.buttonRoute" name="buttonRoute"
+                    placeholder="npr. /products" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Putanja do slike</label>
+                  <input type="text" [(ngModel)]="newFeatured.customImageUrl" name="customImageUrl" required
+                    placeholder="npr. assets/hero-device.png" />
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- CUSTOM NAME & IMAGE (ZA OSTALE) -->
+            <ng-container
+              *ngIf="newFeatured.itemType === 'CATEGORY' || newFeatured.itemType === 'BRAND'">
               <div class="form-divider">Samo za prikaz na sajtu (Estetika)</div>
               <div class="form-row">
                 <div class="form-field">
@@ -234,6 +270,13 @@
                     <div class="p-name">{{ item.customName || item.brandName }}</div>
                     <div class="p-barcode">Brend: {{ item.brandName }}</div>
                   </ng-container>
+
+                  <!-- Ako je BANNER ili PROMO -->
+                  <ng-container *ngIf="item.itemType === 'BANNER' || item.itemType === 'PROMO'">
+                    <div class="p-name">{{ item.customName }}</div>
+                    <div class="p-subtitle">{{ item.subtitle }}</div>
+                    <div class="p-barcode">{{ item.itemType }}: {{ item.section }}</div>
+                  </ng-container>
                 </div>
               </td>
 
@@ -266,6 +309,10 @@
               <div *ngIf="item.itemType === 'BRAND'">
                 <div class="fm-title">{{ item.customName || item.brandName }}</div>
                 <div class="fm-barcode">Brend</div>
+              </div>
+              <div *ngIf="item.itemType === 'BANNER' || item.itemType === 'PROMO'">
+                <div class="fm-title">{{ item.customName }}</div>
+                <div class="fm-barcode">{{ item.itemType }}</div>
               </div>
             </div>
 

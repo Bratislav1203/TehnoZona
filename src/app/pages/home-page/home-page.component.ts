@@ -36,6 +36,24 @@ export class HomePageComponent implements OnInit {
     newPrice: number;
   }[] = [];
 
+  // 🎭 Dinamički Hero (BANNER)
+  heroBanner: {
+    title: string;
+    subtitle: string;
+    imgUrl: string;
+    buttonText: string;
+    buttonRoute: string;
+  } | null = null;
+
+  // 📰 Promo kartice (PROMO)
+  promos: {
+    tag: string;
+    title: string;
+    subtitle: string;
+    imgUrl: string;
+    buttonRoute: string;
+  }[] = [];
+
   vendorId = 2;
   page = 0;
   size = 20;
@@ -113,6 +131,32 @@ export class HomePageComponent implements OnInit {
             name: item.customName || item.grupa || item.nadgrupa || item.glavnaGrupa || 'Nepoznato',
             imgUrl: item.customImageUrl || 'assets/cat-tv-light.png',
             routeSegments: routeSegments.length > 0 ? routeSegments : ['/'] // fallback da ne pukne link
+          };
+        });
+
+        // 4. Izdvajamo BANER (HERO)
+        const banner = data.find(i => i.homepageItem.itemType === 'BANNER' && i.homepageItem.section === 'HERO');
+        if (banner) {
+          const b = banner.homepageItem;
+          this.heroBanner = {
+            title: b.customName || 'Dobrodošli u TehnoZonu',
+            subtitle: b.subtitle || '',
+            imgUrl: b.customImageUrl || 'assets/hero-device.png',
+            buttonText: b.buttonText || 'Pregledaj ponudu',
+            buttonRoute: b.buttonRoute || '/products'
+          };
+        }
+
+        // 5. Izdvajamo PROMO kartice (NEWS)
+        const news = data.filter(i => i.homepageItem.itemType === 'PROMO');
+        this.promos = news.map(i => {
+          const p = i.homepageItem;
+          return {
+            tag: p.section === 'NEW' ? 'Novo' : 'Akcija',
+            title: p.customName || '',
+            subtitle: p.subtitle || '',
+            imgUrl: p.customImageUrl || 'assets/hero-device.png',
+            buttonRoute: p.buttonRoute || '/products'
           };
         });
 

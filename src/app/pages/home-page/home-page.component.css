@@ -553,11 +553,13 @@
 
 @media (max-width: 480px) {
   .section-inner {
-    padding: 0 16px; /* Smanjujemo unutrašnji padding na mobilnom */
+    padding: 0 16px;
+    /* Smanjujemo unutrašnji padding na mobilnom */
   }
 
   .hero-section {
-    padding: 24px 0;
+    padding: 42px 0 24px;
+    /* Smanjujemo gornji padding da se uklopi sa ostalim stranicama */
   }
 
   .hero-text h1 {

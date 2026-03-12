@@ -1,23 +1,40 @@
 <!-- 1️⃣ HERO SEKCIJA -->
-<section class="hero-section">
+<section class="hero-section" *ngIf="heroBanner; else staticHero">
   <div class="hero-inner">
     <div class="hero-text">
-      <h1>Super Popusti u TehnoZoni</h1>
-      <p class="hero-subtitle">Iskoristite specijalne ponude na najpopularnije proizvode.</p>
+      <h1>{{ heroBanner.title }}</h1>
+      <p class="hero-subtitle">{{ heroBanner.subtitle }}</p>
       <div class="hero-buttons">
-        <button class="btn-primary" routerLink="/products">Pregledaj ponudu</button>
-        <button class="btn-secondary" routerLink="/products">Najpopularniji proizvodi</button>
+        <button class="btn-primary" [routerLink]="heroBanner.buttonRoute">{{ heroBanner.buttonText }}</button>
       </div>
     </div>
     <div class="hero-image">
-      <img src="assets/hero-device.png" alt="Premium uređaj" />
-      <div class="hero-badge">
-        <span class="badge-percent">-20%</span>
-        <span class="badge-text">Na izabrane artikle</span>
-      </div>
+      <img [src]="heroBanner.imgUrl" [alt]="heroBanner.title" />
     </div>
   </div>
 </section>
+
+<ng-template #staticHero>
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>Super Popusti u TehnoZoni</h1>
+        <p class="hero-subtitle">Iskoristite specijalne ponude na najpopularnije proizvode.</p>
+        <div class="hero-buttons">
+          <button class="btn-primary" routerLink="/products">Pregledaj ponudu</button>
+          <button class="btn-secondary" routerLink="/products">Najpopularniji proizvodi</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/hero-device.png" alt="Premium uređaj" />
+        <div class="hero-badge">
+          <span class="badge-percent">-20%</span>
+          <span class="badge-text">Na izabrane artikle</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-template>
 
 <!-- 2️⃣ BRENDOVI — Editorial Style -->
 <section class="brands-section">
@@ -53,34 +70,7 @@
   </div>
 </section>
 
-<!-- 4️⃣ AKCIJE & NOVOSTI -->
-<section class="promos-section">
-  <div class="section-inner">
-    <h2 class="section-heading">Akcije & Novosti</h2>
-    <div class="promos-grid">
-      <div class="promo-card promo-left">
-        <div class="promo-content">
-          <span class="promo-tag">Novo</span>
-          <h3>Stigli novi modeli 2025</h3>
-          <p>Pogledajte najnovije telefone i uređaje.</p>
-        </div>
-        <div class="promo-img">
-          <img src="assets/hero-device.png" alt="Novi modeli" />
-        </div>
-      </div>
-      <div class="promo-card promo-right">
-        <div class="promo-content">
-          <span class="promo-tag">Akcija</span>
-          <h3>Gaming oprema na akciji</h3>
-          <p>Do 30% popusta na gaming periferije.</p>
-        </div>
-        <div class="promo-img">
-          <img src="assets/hero-device.png" alt="Gaming oprema" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- 4️⃣ AKCIJE & NOVOSTI UKLONJENO (DUMMY PODACI) -->
 
 <!-- 5️⃣ NAJNOVIJI PROIZVODI (TOP + SALE) -->
 <section class="products-section" *ngIf="topProducts.length > 0">

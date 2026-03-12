@@ -544,11 +544,11 @@ input[type="range"]::-moz-range-thumb {
 
   .product-card {
     padding: 10px;
-    min-height: 260px;
+    height: auto;
   }
 
   .product-image {
-    height: 150px;
+    max-height: 120px;
   }
 
   .product-name {

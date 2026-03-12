@@ -138,31 +138,32 @@
 /* ===== MOBILE ===== */
 @media (max-width: 767px) {
   .product-card {
-    padding: 14px;
+    height: auto; /* Dopuštamo da visina bude flexibilna */
+    padding: 12px;
     border-radius: 16px;
   }
 
   .product-img-wrapper {
-    height: 150px;
-    margin-bottom: 14px;
+    height: 130px; /* Smanjena visina slike */
+    margin-bottom: 12px;
   }
 
   .product-image {
-    max-height: 130px;
+    max-height: 110px;
   }
 
   .product-name {
     font-size: 13px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .product-price {
-    font-size: 17px;
-    margin-bottom: 12px;
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 
   .add-to-cart {
-    padding: 10px 12px;
+    padding: 8px 10px;
     font-size: 13px;
     border-radius: 10px;
   }
