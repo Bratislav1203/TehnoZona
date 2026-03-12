@@ -187,8 +187,9 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getMainImage(item: HomepageItemResponse): string {
-    if (item.customImageUrl) return item.customImageUrl;
-    if (item.itemType === 'PRODUCT' && item.artikal?.slike && item.artikal.slike.length > 0) {
+    const h = item.homepageItem;
+    if (h.customImageUrl) return h.customImageUrl;
+    if (h.itemType === 'PRODUCT' && item.artikal?.slike && item.artikal.slike.length > 0) {
       return item.artikal.slike[0];
     }
     return '/assets/no-image.png';
@@ -197,9 +198,9 @@ export class AdminDashboardComponent implements OnInit {
   deleteFeatured(item: HomepageItemResponse): void {
     if (!confirm('Da li sigurno želiš da obrišeš ovu stavku?')) return;
 
-    this.featuredService.deleteHomepageItem(item.id).subscribe({
+    this.featuredService.deleteHomepageItem(item.homepageItem.id).subscribe({
       next: () => {
-        this.featuredProducts = this.featuredProducts.filter(p => p.id !== item.id);
+        this.featuredProducts = this.featuredProducts.filter(p => p.homepageItem.id !== item.homepageItem.id);
       },
       error: (err) => console.error(err)
     });

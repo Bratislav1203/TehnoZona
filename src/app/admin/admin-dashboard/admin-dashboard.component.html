@@ -246,44 +246,44 @@
 
           <tbody>
             <tr *ngFor="let item of featuredProducts">
-              <td>{{ item.id }}</td>
+              <td>{{ item.homepageItem.id }}</td>
 
               <td class="cell-product">
                 <img class="product-img" [src]="getMainImage(item)" alt="slika" />
                 <div class="product-info">
                   <!-- Ako je PRODUCT -->
-                  <ng-container *ngIf="item.itemType === 'PRODUCT'">
+                  <ng-container *ngIf="item.homepageItem.itemType === 'PRODUCT'">
                     <div class="p-name">{{ item.artikal?.naziv || 'Nepoznat proizvod' }}</div>
-                    <div class="p-barcode">#{{ item.barcode }}</div>
+                    <div class="p-barcode">#{{ item.homepageItem.barcode }}</div>
                     <div class="p-price" *ngIf="item.artikal">{{ item.artikal.mpcena }} RSD</div>
                   </ng-container>
 
                   <!-- Ako je CATEGORY -->
-                  <ng-container *ngIf="item.itemType === 'CATEGORY'">
-                    <div class="p-name">{{ item.customName || item.glavnaGrupa }}</div>
-                    <div class="p-barcode">{{ item.glavnaGrupa }} <span *ngIf="item.nadgrupa">> {{item.nadgrupa}}</span>
+                  <ng-container *ngIf="item.homepageItem.itemType === 'CATEGORY'">
+                    <div class="p-name">{{ item.homepageItem.customName || item.homepageItem.glavnaGrupa }}</div>
+                    <div class="p-barcode">{{ item.homepageItem.glavnaGrupa }} <span *ngIf="item.homepageItem.nadgrupa">> {{item.homepageItem.nadgrupa}}</span>
                     </div>
                   </ng-container>
 
                   <!-- Ako je BRAND -->
-                  <ng-container *ngIf="item.itemType === 'BRAND'">
-                    <div class="p-name">{{ item.customName || item.brandName }}</div>
-                    <div class="p-barcode">Brend: {{ item.brandName }}</div>
+                  <ng-container *ngIf="item.homepageItem.itemType === 'BRAND'">
+                    <div class="p-name">{{ item.homepageItem.customName || item.homepageItem.brandName }}</div>
+                    <div class="p-barcode">Brend: {{ item.homepageItem.brandName }}</div>
                   </ng-container>
 
                   <!-- Ako je BANNER ili PROMO -->
-                  <ng-container *ngIf="item.itemType === 'BANNER' || item.itemType === 'PROMO'">
-                    <div class="p-name">{{ item.customName }}</div>
-                    <div class="p-subtitle">{{ item.subtitle }}</div>
-                    <div class="p-barcode">{{ item.itemType }}: {{ item.section }}</div>
+                  <ng-container *ngIf="item.homepageItem.itemType === 'BANNER' || item.homepageItem.itemType === 'PROMO'">
+                    <div class="p-name">{{ item.homepageItem.customName }}</div>
+                    <div class="p-subtitle">{{ item.homepageItem.subtitle }}</div>
+                    <div class="p-barcode">{{ item.homepageItem.itemType }}: {{ item.homepageItem.section }}</div>
                   </ng-container>
                 </div>
               </td>
 
-              <td><span class="badge type-badge">{{ item.itemType }}</span></td>
-              <td><span class="badge section-badge">{{ item.section }}</span></td>
-              <td>{{ item.priority }}</td>
-              <td>{{ item.validTo ? (item.validTo | date:'dd.MM.yyyy') : 'Zauvek' }}</td>
+              <td><span class="badge type-badge">{{ item.homepageItem.itemType }}</span></td>
+              <td><span class="badge section-badge">{{ item.homepageItem.section }}</span></td>
+              <td>{{ item.homepageItem.priority }}</td>
+              <td>{{ item.homepageItem.validTo ? (item.homepageItem.validTo | date:'dd.MM.yyyy') : 'Zauvek' }}</td>
 
               <td class="cell-actions">
                 <button class="delete-btn" (click)="deleteFeatured(item)">Obriši</button>
@@ -298,32 +298,32 @@
 
             <div class="fm-header">
               <img [src]="getMainImage(item)" alt="slika" />
-              <div *ngIf="item.itemType === 'PRODUCT'">
+              <div *ngIf="item.homepageItem.itemType === 'PRODUCT'">
                 <div class="fm-title">{{ item.artikal?.naziv || 'Nepoznat proizvod' }}</div>
-                <div class="fm-barcode">#{{ item.barcode }}</div>
+                <div class="fm-barcode">#{{ item.homepageItem.barcode }}</div>
               </div>
-              <div *ngIf="item.itemType === 'CATEGORY'">
-                <div class="fm-title">{{ item.customName || item.glavnaGrupa }}</div>
+              <div *ngIf="item.homepageItem.itemType === 'CATEGORY'">
+                <div class="fm-title">{{ item.homepageItem.customName || item.homepageItem.glavnaGrupa }}</div>
                 <div class="fm-barcode">Kategorija</div>
               </div>
-              <div *ngIf="item.itemType === 'BRAND'">
-                <div class="fm-title">{{ item.customName || item.brandName }}</div>
+              <div *ngIf="item.homepageItem.itemType === 'BRAND'">
+                <div class="fm-title">{{ item.homepageItem.customName || item.homepageItem.brandName }}</div>
                 <div class="fm-barcode">Brend</div>
               </div>
-              <div *ngIf="item.itemType === 'BANNER' || item.itemType === 'PROMO'">
-                <div class="fm-title">{{ item.customName }}</div>
-                <div class="fm-barcode">{{ item.itemType }}</div>
+              <div *ngIf="item.homepageItem.itemType === 'BANNER' || item.homepageItem.itemType === 'PROMO'">
+                <div class="fm-title">{{ item.homepageItem.customName }}</div>
+                <div class="fm-barcode">{{ item.homepageItem.itemType }}</div>
               </div>
             </div>
 
             <div class="fm-info-row">
-              <div class="fm-type">{{ item.section }} ({{ item.itemType }})</div>
-              <div class="fm-price" *ngIf="item.itemType === 'PRODUCT' && item.artikal">{{ item.artikal.mpcena }} RSD
+              <div class="fm-type">{{ item.homepageItem.section }} ({{ item.homepageItem.itemType }})</div>
+              <div class="fm-price" *ngIf="item.homepageItem.itemType === 'PRODUCT' && item.artikal">{{ item.artikal.mpcena }} RSD
               </div>
             </div>
 
-            <div class="fm-info-row" *ngIf="item.validTo">
-              <div>Do: {{ item.validTo | date:'dd.MM.yyyy HH:mm' }}</div>
+            <div class="fm-info-row" *ngIf="item.homepageItem.validTo">
+              <div>Do: {{ item.homepageItem.validTo | date:'dd.MM.yyyy HH:mm' }}</div>
             </div>
 
             <div class="fm-actions">
