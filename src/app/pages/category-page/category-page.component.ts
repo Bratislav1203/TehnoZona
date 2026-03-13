@@ -112,10 +112,10 @@ export class CategoryPageComponent {
         if (isSearchRoute && searchQuery) {
           this.searchFilter = searchQuery;
           this.isLoading = true;
-          console.log(`📡 Gadjam: GET /api/vendors/2/search?q=${searchQuery}&sort=${this.sort}`);
+          console.log(`📡 Gadjam: GET /api/vendors/1/search?q=${searchQuery}&sort=${this.sort}`);
           this.productService
             .searchProducts(
-              2,
+              1,
               searchQuery,
               this.currentPage,
               this.pageSize,
@@ -214,11 +214,11 @@ export class CategoryPageComponent {
   ucitajStranicu(): void {
     if (!this.glavnaGrupa) { return; }
     this.isLoading = true;
-    console.log(`📡 Gadjam: GET /api/vendors/2/glavnaGrupa/${this.glavnaGrupa}/artikli?sort=${this.sort}`);
+    console.log(`📡 Gadjam: GET /api/vendors/1/glavnaGrupa/${this.glavnaGrupa}/artikli?sort=${this.sort}`);
 
     this.productService
       .getProductsFromCategory(
-        2,
+        1,
         this.glavnaGrupa,
         this.currentPage,
         this.pageSize,
@@ -269,13 +269,13 @@ export class CategoryPageComponent {
   ucitajStranicuZaGrupu(): void {
     if (!this.glavnaGrupa || !this.nadgrupa || !this.grupa) { return; }
     this.isLoading = true;
-    console.log(`📡 Gadjam: GET /api/vendors/2/glavnaGrupa/${this.glavnaGrupa}/nadgrupa/${this.nadgrupa}/grupa/${this.grupa}/artikli?sort=${this.sort}`);
+    console.log(`📡 Gadjam: GET /api/vendors/1/glavnaGrupa/${this.glavnaGrupa}/nadgrupa/${this.nadgrupa}/grupa/${this.grupa}/artikli?sort=${this.sort}`);
 
     const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
 
     this.productService
       .getProductsFromGrupa(
-        2,
+        1,
         this.glavnaGrupa,
         this.nadgrupa,
         this.grupa,
@@ -328,13 +328,13 @@ export class CategoryPageComponent {
   ucitajStranicuZaNadgrupu(): void {
     if (!this.glavnaGrupa || !this.nadgrupa) { return; }
     this.isLoading = true;
-    console.log(`📡 Gadjam: GET /api/vendors/2/glavnaGrupa/${this.glavnaGrupa}/nadgrupa/${this.nadgrupa}/artikli?sort=${this.sort}`);
+    console.log(`📡 Gadjam: GET /api/vendors/1/glavnaGrupa/${this.glavnaGrupa}/nadgrupa/${this.nadgrupa}/artikli?sort=${this.sort}`);
 
     const selektovaniProizvodjaci = this.selectedTypes['Proizvođač'] || [];
 
     this.productService
       .getProductsFromNadgrupa(
-        2,
+        1,
         this.glavnaGrupa,
         this.nadgrupa,
         this.currentPage,
@@ -529,11 +529,11 @@ export class CategoryPageComponent {
 
   ucitajBrend(brand: string) {
     this.isLoading = true;
-    console.log(`📡 Gadjam: GET /api/vendors/2/artikli/brand/${brand}?sort=${this.sort}`);
+    console.log(`📡 Gadjam: GET /api/vendors/1/artikli/brand/${brand}?sort=${this.sort}`);
 
     this.productService
       .getProductsByBrand(
-        2,
+        1,
         brand,
         this.currentPage,
         this.pageSize,

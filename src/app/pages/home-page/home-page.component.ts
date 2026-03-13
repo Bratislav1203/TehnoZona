@@ -55,7 +55,7 @@ export class HomePageComponent implements OnInit {
   }[] = [];
 
   isLoading: boolean = true;
-  vendorId = 2;
+  vendorId = 1;
   page = 0;
   size = 20;
 
@@ -93,7 +93,7 @@ export class HomePageComponent implements OnInit {
         const sale = data.filter(i => i.homepageItem.itemType === 'PRODUCT' && i.homepageItem.section === 'SALE');
         // 3. Izdvajamo kategorije (Sada hvatamo sve kategorije, pa filtriramo po tipu)
         const cats = data.filter(i => i.homepageItem.itemType === 'CATEGORY');
-        
+
         console.log('Sirovi podaci za popularne kategorije (SVE):', cats);
 
         // Mapiramo TOP proizvode

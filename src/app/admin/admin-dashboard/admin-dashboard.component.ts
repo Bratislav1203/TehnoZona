@@ -143,7 +143,7 @@ export class AdminDashboardComponent implements OnInit {
     this.submitError = '';
     this.isSubmitting = true;
 
-    const vendorId = 2; // Hardkodovan vendorId
+    const vendorId = 1; // Hardkodovan vendorId
 
     this.featuredService.addHomepageItem(vendorId, this.newFeatured).subscribe({
       next: () => {
