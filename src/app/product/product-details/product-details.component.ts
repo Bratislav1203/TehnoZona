@@ -21,12 +21,13 @@ export class ProductDetailsComponent implements OnInit {
     this.product = this.productService.getCurrentProduct();
     if (!this.product) {
       const currentUrl = window.location.href;
+      const vendorId = 0; // Unified vendorId
       const barcode = currentUrl.split('/').pop();
       if (!barcode) {
         console.error('Barcode cannot be extracted from URL:', currentUrl);
         return;
       }
-      this.productService.getProductByBarcode(2, barcode)
+      this.productService.getProductByBarcode(vendorId, barcode)
         .subscribe(prod => {
           this.product = prod;
           this.mainImage = prod.slike?.length ? prod.slike[0] : null;

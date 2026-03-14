@@ -29,6 +29,15 @@ export class ProductcardComponent implements OnInit {
     element.src = 'assets/noImageAvailable.jpg';
   }
 
+  getVendorName(vendorId?: number): string {
+    switch (vendorId) {
+      case 1: return 'Uspon';
+      case 2: return 'Linkom';
+      case 3: return 'Avtera';
+      default: return '';
+    }
+  }
+
 
 }
 

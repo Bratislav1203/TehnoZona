@@ -252,6 +252,7 @@ export class ProductService {
 }
 
 export interface Product {
+  vendorId?: number;
   sifra: string;
   barkod: string;
   naziv: string;

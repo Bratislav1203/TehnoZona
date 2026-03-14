@@ -55,7 +55,7 @@ export class HomePageComponent implements OnInit {
   }[] = [];
 
   isLoading: boolean = true;
-  vendorId = 1;
+  vendorId = 0;
   page = 0;
   size = 20;
 

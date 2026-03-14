@@ -3,6 +3,9 @@
     <div class="product-img-wrapper">
       <img [src]="product.slike && product.slike.length > 0 ? product.slike[0] : 'assets/noImageAvailable.jpg'"
         (error)="onImageError($event)" class="product-image" />
+      <span class="vendor-badge" *ngIf="product.vendorId">
+        {{ getVendorName(product.vendorId) }}
+      </span>
     </div>
 
     <div class="product-details">

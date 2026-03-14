@@ -76,7 +76,7 @@ export class FeaturedService {
 
   // 🟦 HOME – GET ALL HOMEPAGE ITEMS
   getAllHomepageItems(): Observable<HomepageItemResponse[]> {
-    return this.http.get<HomepageItemResponse[]>(`${this.apiUrl}/homepage-items/all?vendorId=1`);
+    return this.http.get<HomepageItemResponse[]>(`${this.apiUrl}/homepage-items/all?vendorId=0`);
   }
 
   // 🟥 ADMIN – DELETE

@@ -115,7 +115,7 @@ export class CategoryPageComponent {
           console.log(`📡 Gadjam: GET /api/vendors/1/search?q=${searchQuery}&sort=${this.sort}`);
           this.productService
             .searchProducts(
-              1,
+              0,
               searchQuery,
               this.currentPage,
               this.pageSize,
@@ -172,7 +172,6 @@ export class CategoryPageComponent {
         // Reset search filter ako nismo na search ruti
         this.searchFilter = '';
 
-        // učitaj nadgrupe ako je glavna grupa
         if (this.glavnaGrupa) {
           this.productService
             .getNadgrupeZaGrupu(this.glavnaGrupa)
@@ -218,7 +217,7 @@ export class CategoryPageComponent {
 
     this.productService
       .getProductsFromCategory(
-        1,
+        0,
         this.glavnaGrupa,
         this.currentPage,
         this.pageSize,
@@ -275,7 +274,7 @@ export class CategoryPageComponent {
 
     this.productService
       .getProductsFromGrupa(
-        1,
+        0,
         this.glavnaGrupa,
         this.nadgrupa,
         this.grupa,
@@ -334,7 +333,7 @@ export class CategoryPageComponent {
 
     this.productService
       .getProductsFromNadgrupa(
-        1,
+        0,
         this.glavnaGrupa,
         this.nadgrupa,
         this.currentPage,
@@ -533,7 +532,7 @@ export class CategoryPageComponent {
 
     this.productService
       .getProductsByBrand(
-        1,
+        0,
         brand,
         this.currentPage,
         this.pageSize,
