@@ -134,31 +134,45 @@
   position: relative;
 }
 
-.vendor-badge {
+.vendor-dot {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  border: 1px solid #e5e7eb;
-  pointer-events: none;
+  top: 10px;
+  left: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
+
+.vendor-dot[data-vendor="1"] {
+  background-color: #3b82f6;
+}
+
+/* Uspon - Blue */
+.vendor-dot[data-vendor="2"] {
+  background-color: #10b981;
+}
+
+/* Linkom - Green */
+.vendor-dot[data-vendor="3"] {
+  background-color: #f59e0b;
+}
+
+/* Avtera - Orange */
 
 /* ===== MOBILE ===== */
 @media (max-width: 767px) {
   .product-card {
-    height: auto; /* Dopuštamo da visina bude flexibilna */
+    height: auto;
+    /* Dopuštamo da visina bude flexibilna */
     padding: 12px;
     border-radius: 16px;
   }
 
   .product-img-wrapper {
-    height: 130px; /* Smanjena visina slike */
+    height: 130px;
+    /* Smanjena visina slike */
     margin-bottom: 12px;
   }
 
