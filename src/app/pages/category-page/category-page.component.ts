@@ -37,6 +37,7 @@ export class CategoryPageComponent {
   timeoutId: any;
 
   subCategories: nameAndImage[] = [];
+  rawNadgrupe: NadgrupaExtended[] = []; // 👈 čuva originalne podatke sa beka
   groups: { name: string }[] = []; // 👈 grupe unutar nadgrupe
   searchFilter = '';
   showMobileFilters = false;
@@ -185,12 +186,18 @@ export class CategoryPageComponent {
               .getNadgrupeExtendedZaGrupu(this.glavnaGrupa)
               .subscribe({
                 next: (nadgrupe: NadgrupaExtended[]) => {
-                  this.subCategories = (nadgrupe || []).map((ng) => ({
+                  this.rawNadgrupe = nadgrupe || [];
+                  this.subCategories = this.rawNadgrupe.map((ng) => ({
                     name: this.utilService.formatirajNaziv(ng.name),
                     imgUrl: `assets/subcategories/${ng.name}.jpg`,
                     fallbackUrl: ng.image
                   }));
                   this.isSubCategoriesLoading = false;
+
+                  // Ako smo već u nadgrupi, osveži i grupe iz novih podataka
+                  if (this.nadgrupa) {
+                    this.groups = this.getGrupeIzPodataka(this.nadgrupa);
+                  }
                 },
                 error: () => this.isSubCategoriesLoading = false
               });
@@ -198,7 +205,7 @@ export class CategoryPageComponent {
 
           // učitaj grupe ako si u nadgrupi
           if (this.nadgrupa && !this.grupa) {
-            this.groups = this.getGrupeIzMockServisa(this.glavnaGrupa, this.nadgrupa);
+            this.groups = this.getGrupeIzPodataka(this.nadgrupa);
           }
         }
 
@@ -215,13 +222,11 @@ export class CategoryPageComponent {
     );
   }
 
-  // 👇 NOVA METODA: dobavlja grupe iz mock servisa
-  private getGrupeIzMockServisa(glavnaGrupa: string, nadgrupa: string): { name: string }[] {
-    const all = this.mockService.getAllGlavneGrupe();
-    const match = all.find(g => g.name.toUpperCase() === glavnaGrupa.toUpperCase());
-    if (!match) { return []; }
-    const groups = match.nadgrupe[nadgrupa.toUpperCase()] || [];
-    return groups.map(name => ({ name: this.utilService.formatirajNaziv(name.trim()) }));
+  // 👇 NOVA METODA: dobavlja grupe iz stvarnih podataka sa beka
+  private getGrupeIzPodataka(nadgrupa: string): { name: string }[] {
+    const match = this.rawNadgrupe.find(ng => ng.name.toUpperCase() === nadgrupa.toUpperCase());
+    if (!match || !match.grupe) { return []; }
+    return match.grupe.map(name => ({ name }));
   }
 
   ucitajStranicu(): void {

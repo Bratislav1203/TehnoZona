@@ -43,7 +43,7 @@
     <div *ngFor="let group of groups" class="sub-category-card no-image group-card"
       [routerLink]="['/', glavnaGrupa, nadgrupa, group.name]">
       <div class="no-image-box">
-        <span>{{ group.name }}</span>
+        <span>{{ utilService.formatirajNazivGrupe(group.name) }}</span>
       </div>
     </div>
   </div>
