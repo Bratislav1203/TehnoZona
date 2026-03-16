@@ -34,6 +34,7 @@ export class ProductcardComponent implements OnInit {
       case 1: return 'Uspon';
       case 2: return 'Linkom';
       case 3: return 'Avtera';
+      case 4: return 'Spektar';
       default: return '';
     }
   }

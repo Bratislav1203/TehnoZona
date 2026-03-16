@@ -74,4 +74,14 @@ export class ProductDetailsComponent implements OnInit {
   addToCart(product: Product): void {
     this.cartService.addToCart(product);
   }
+
+  getVendorName(vendorId?: number): string {
+    switch (vendorId) {
+      case 1: return 'Uspon';
+      case 2: return 'Linkom';
+      case 3: return 'Avtera';
+      case 4: return 'Spektar';
+      default: return '';
+    }
+  }
 }

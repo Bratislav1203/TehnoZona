@@ -24,6 +24,9 @@
         <div class="cart-card" *ngFor="let item of cartItems">
           <div class="card-image">
             <img [src]="item.slike?.length > 0 ? item.slike[0] : 'assets/placeholder.png'" alt="{{ item.naziv }}" />
+            <span class="vendor-dot" *ngIf="item.vendorId" [title]="getVendorName(item.vendorId)"
+              [attr.data-vendor]="item.vendorId">
+            </span>
           </div>
 
           <div class="card-body">

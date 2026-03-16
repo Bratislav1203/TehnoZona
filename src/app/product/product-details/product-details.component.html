@@ -31,7 +31,12 @@
     <!-- DESNA KOLONA: Info -->
     <div class="product-essential-info">
       <div class="info-header">
-        <span class="sku">Šifra artikla: {{ product.sifra }}</span>
+        <div class="sku-wrapper">
+          <span class="sku">Šifra artikla: {{ product.sifra }}</span>
+          <span class="vendor-dot" *ngIf="product.vendorId" [title]="getVendorName(product.vendorId)"
+            [attr.data-vendor]="product.vendorId">
+          </span>
+        </div>
         <h1 class="product-name">{{ product.naziv }}</h1>
       </div>
 

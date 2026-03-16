@@ -58,4 +58,14 @@ export class CartComponent implements OnInit {
       this.updateQuantity(item);
     }
   }
+
+  getVendorName(vendorId?: number): string {
+    switch (vendorId) {
+      case 1: return 'Uspon';
+      case 2: return 'Linkom';
+      case 3: return 'Avtera';
+      case 4: return 'Spektar';
+      default: return '';
+    }
+  }
 }

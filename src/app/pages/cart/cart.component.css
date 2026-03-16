@@ -101,18 +101,47 @@
 
 .cart-card:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f3f4f6;
 }
 
 .card-image {
   flex: 0 0 100px;
   width: 100px;
   height: 100px;
-  background: #fafbfc;
+  background: white;
   border-radius: 12px;
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
+}
+
+.vendor-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.vendor-dot[data-vendor="1"] {
+  background-color: #3b82f6;
+}
+
+.vendor-dot[data-vendor="2"] {
+  background-color: #10b981;
+}
+
+.vendor-dot[data-vendor="3"] {
+  background-color: #f59e0b;
+}
+
+.vendor-dot[data-vendor="4"] {
+  background-color: #a855f7;
 }
 
 .card-image img {

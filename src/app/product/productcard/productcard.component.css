@@ -196,3 +196,6 @@
     border-radius: 10px;
   }
 }
+.vendor-dot[data-vendor="4"] {
+  background-color: #a855f7;
+}
