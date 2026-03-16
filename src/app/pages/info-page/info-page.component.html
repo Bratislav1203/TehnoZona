@@ -1,0 +1,119 @@
+<div class="info-container">
+    <!-- O Nama -->
+    <div *ngIf="type === 'o-nama'" class="content-section">
+        <h1>O nama</h1>
+        <p>Tehno Zona je firma iz Raške koja se bavi prodajom bele tehnike, kućnih aparata i potrošačke elektronike. Naš
+            cilj je da kupcima ponudimo kvalitetne proizvode po povoljnim cenama, uz brzu i sigurnu kupovinu.</p>
+        <p>Sarađujemo sa proverenim dobavljačima kako bismo obezbedili širok izbor proizvoda i pouzdanu isporuku. Na
+            teritoriji Raške obezbeđujemo i besplatnu dostavu za naše kupce.</p>
+        <p>Posvećeni smo korektnom odnosu prema kupcima i odgovornom poslovanju.</p>
+        <p class="slogan">Tehno Zona – Kupuj odgovorno.</p>
+    </div>
+
+    <!-- Podaci o trgovcu -->
+    <div *ngIf="type === 'podaci-o-trgovcu'" class="content-section">
+        <h1>Podaci o trgovcu</h1>
+        <div class="data-grid">
+            <div class="data-row"><strong>Naziv:</strong> NIKOLA NIKOLIĆ PREDUZETNIK TRGOVINSKA RADNJA TEHNO ZONA RAŠKA
+            </div>
+            <div class="data-row"><strong>Skraćeni naziv:</strong> Tehno Zona</div>
+            <div class="data-row"><strong>Adresa:</strong> Golijska 13, 36350 Raška, Srbija</div>
+            <div class="data-row"><strong>Vlasnik / zastupnik:</strong> Nikola Nikolić</div>
+            <div class="data-row"><strong>PIB:</strong> 114681179</div>
+            <div class="data-row"><strong>Matični broj:</strong> 67771125</div>
+            <div class="data-row"><strong>Datum osnivanja:</strong> 23.10.2024.</div>
+            <div class="data-row"><strong>Pretežna delatnost:</strong> 4690 – Nespecijalizovana trgovina na
+                veliko<br>4754 - Trgovina na malo električnim aparatima za domaćinstvo u specijalizovanim prodavnicama
+            </div>
+        </div>
+        <h3 style="margin-top: 30px;">Kontakt:</h3>
+        <p><strong>Telefon:</strong> 065/240-2322</p>
+        <p><strong>Email:</strong> tehnozonaraska@gmail.com</p>
+    </div>
+
+    <!-- Uslovi kupovine -->
+    <div *ngIf="type === 'uslovi-kupovine'" class="content-section">
+        <h1>Uslovi kupovine</h1>
+        <p>Kupovina na sajtu Tehno Zona omogućava jednostavno naručivanje proizvoda iz naše ponude bele tehnike, kućnih
+            aparata i elektronike.</p>
+
+        <h3>Proces kupovine</h3>
+        <p>Kupac bira željeni proizvod, dodaje ga u korpu i popunjava podatke za isporuku. Nakon potvrde narudžbine
+            kupac dobija potvrdu putem emaila ili telefona.</p>
+
+        <h3>Cene</h3>
+        <p>Sve cene na sajtu su izražene u dinarima (RSD). Trgovac zadržava pravo izmene cena bez prethodne najave.</p>
+
+        <h3>Način plaćanja</h3>
+        <p>Plaćanje se može izvršiti:</p>
+        <ul>
+            <li>pouzećem prilikom isporuke</li>
+            <li>uplatom na račun (ukoliko je dostupno)</li>
+        </ul>
+
+        <h3>Dostava</h3>
+        <p>Za teritoriju opštine Raška obezbeđena je besplatna dostava. Za ostale lokacije dostava se vrši putem
+            kurirske službe prema važećem cenovniku.</p>
+
+        <h3>Rok isporuke</h3>
+        <p>Rok isporuke je obično od 1 do 5 radnih dana, u zavisnosti od dostupnosti proizvoda kod dobavljača.</p>
+    </div>
+
+    <!-- Reklamacije i povrat robe -->
+    <div *ngIf="type === 'reklamacije-i-povrat-robe'" class="content-section">
+        <h1>Reklamacije i povrat robe</h1>
+        <p>Kupac ima pravo na reklamaciju u skladu sa Zakon o zaštiti potrošača (Srbija).</p>
+
+        <h3>Reklamacija</h3>
+        <p>Reklamacija se može podneti:</p>
+        <ul>
+            <li>putem emaila</li>
+            <li>telefonom</li>
+            <li>lično</li>
+        </ul>
+        <p>Uz reklamaciju potrebno je priložiti fiskalni račun ili drugi dokaz o kupovini.</p>
+
+        <h3>Rok za odgovor</h3>
+        <p>Trgovac je dužan da odgovori na reklamaciju u roku od 8 dana, a da je reši u roku od 15 dana.</p>
+
+        <h3>Povrat robe</h3>
+        <p>Kupac ima pravo da odustane od kupovine zaključene na daljinu u roku od 14 dana, bez navođenja razloga, u
+            skladu sa zakonom.</p>
+        <p>Roba mora biti nekorišćena, neoštećena i u originalnoj ambalaži.</p>
+
+        <div class="download-box"
+            style="margin-top: 40px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #007bff;">
+            <p style="margin: 0; font-weight: 500;">Potreban vam je obrazac za odustanak?</p>
+            <a href="assets/obrazac_odustanak_tehno_zona_unicode.pdf" target="_blank" class="download-link">
+                <i class="fas fa-file-pdf"></i> Preuzmi obrazac za odustanak od kupovine
+            </a>
+        </div>
+    </div>
+
+    <!-- Politika privatnosti -->
+    <div *ngIf="type === 'politika-privatnosti'" class="content-section">
+        <h1>Politika privatnosti</h1>
+        <p>Sajt Tehno Zona prikuplja samo podatke koji su neophodni za realizaciju narudžbine.</p>
+
+        <h3>Podaci koji se prikupljaju</h3>
+        <p>Prilikom kupovine mogu se prikupljati sledeći podaci:</p>
+        <ul>
+            <li>ime i prezime</li>
+            <li>adresa</li>
+            <li>broj telefona</li>
+            <li>email adresa</li>
+        </ul>
+
+        <h3>Svrha prikupljanja</h3>
+        <p>Podaci se koriste isključivo za:</p>
+        <ul>
+            <li>obradu narudžbine</li>
+            <li>isporuku proizvoda</li>
+            <li>komunikaciju sa kupcem</li>
+        </ul>
+
+        <h3>Zaštita podataka</h3>
+        <p>Podaci se čuvaju u skladu sa Zakon o zaštiti podataka o ličnosti (Srbija) i neće biti prosleđivani trećim
+            licima osim kada je to neophodno za realizaciju dostave.</p>
+    </div>
+</div>

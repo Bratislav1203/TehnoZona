@@ -1,0 +1,98 @@
+.info-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+    line-height: 1.8;
+    color: #333;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.content-section h1 {
+    font-size: 2.5rem;
+    color: #1a1a1a;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.content-section h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background-color: #007bff;
+    border-radius: 2px;
+}
+
+.content-section h3 {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin: 35px 0 15px;
+    font-weight: 600;
+}
+
+.content-section p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.content-section ul {
+    margin-bottom: 25px;
+    padding-left: 20px;
+}
+
+.content-section ul li {
+    margin-bottom: 8px;
+}
+
+.slogan {
+    font-weight: 700;
+    color: #007bff;
+    font-style: italic;
+    font-size: 1.2rem !important;
+    margin-top: 30px;
+}
+
+.data-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fdfdfd;
+    padding: 25px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+}
+
+.data-row {
+    font-size: 1rem;
+}
+
+.download-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.download-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.download-link i {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .info-container {
+        margin: 40px auto;
+    }
+
+    .content-section h1 {
+        font-size: 2rem;
+    }
+}
