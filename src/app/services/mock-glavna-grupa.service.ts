@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 export interface Grupa {
   name: string;
@@ -20,15 +23,33 @@ export interface GlavnaGrupa {
 })
 export class MockGlavnaGrupaService {
 
-  private allGlavneGrupe: GlavnaGrupa[] = [];
+  private allGlavneGrupeSubject = new BehaviorSubject<GlavnaGrupa[]>(this.getHardcodedData());
+  public readonly menu$ = this.allGlavneGrupeSubject.asObservable();
+  private apiUrl = `${environment.apiBaseUrl}api/vendors/menu-structure`;
 
-  constructor() {
-    // Postavljamo hardkodovane podatke
-    this.allGlavneGrupe= this.getHardcodedData();
+  constructor(private http: HttpClient) {
+    this.refreshMenu();
+  }
+
+  public refreshMenu() {
+    console.log('🔄 Loading menu structure...');
+    this.http.get<GlavnaGrupa[]>(this.apiUrl)
+      .pipe(
+        tap(data => {
+          if (data && data.length > 0) {
+            this.allGlavneGrupeSubject.next(data);
+            console.log('✅ Menu structure updated from backend');
+          }
+        }),
+        catchError(err => {
+          console.warn('⚠️ Could not load menu from backend, using hardcoded fallback', err);
+          return of(null);
+        })
+      ).subscribe();
   }
 
   getAllGlavneGrupe(): GlavnaGrupa[] {
-    return this.allGlavneGrupe;
+    return this.allGlavneGrupeSubject.getValue();
   }
 
   private getHardcodedData(): GlavnaGrupa[] {

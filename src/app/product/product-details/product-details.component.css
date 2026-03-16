@@ -215,13 +215,13 @@
 
 /* ===== OPIS SEKCIJA ===== */
 .product-description-section {
-  margin-top: 60px;
+  margin-top: 20px;
   border-top: 1px solid #f3f4f6;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 .section-header {
-  margin-bottom: 32px;
+  margin-bottom: 12px;
 }
 
 .section-title {
@@ -238,8 +238,16 @@
 
 .rich-text-content {
   font-size: 16px;
-  line-height: 1.8;
+  line-height: 1.5;
   color: #374151;
+}
+
+::ng-deep .rich-text-content p {
+  margin: 0 0 8px 0 !important;
+}
+
+::ng-deep .rich-text-content br+br {
+  display: none !important;
 }
 
 /* ===== RESPONZIVNOST ===== */

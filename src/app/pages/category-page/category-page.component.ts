@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { FilterCategory, Product, ProductService, nameAndImage } from '../../services/product.service';
+import { FilterCategory, Product, ProductService, nameAndImage, NadgrupaExtended } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { UtilService } from '../../services/util.service';
-import { MockGlavnaGrupaService } from '../../services/mock-glavna-grupa.service'; // 👈 dodato
+import { MockGlavnaGrupaService } from '../../services/mock-glavna-grupa.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-category-page',
@@ -21,6 +22,7 @@ export class CategoryPageComponent {
   title = '';
   products: Product[] = [];
   isLoading = false;
+  isSubCategoriesLoading = false;
   glavnaGrupa: string | null = null;
   nadgrupa: string | null = null;
   grupa: string | null = null;
@@ -67,8 +69,11 @@ export class CategoryPageComponent {
         // Detekcija promene rute za resetovanje opsega cena
         const currentBrand = isBrandRoute ? brandNameFromBrandRoute : null;
         const brandChanged = currentBrand !== this.lastBrand;
+        const currentGlavna = params.get('glavnaGrupa');
+        const glavnaGrupaChanged = this.lastCategory.glavna !== currentGlavna;
+
         const categoryChanged =
-          this.lastCategory.glavna !== params.get('glavnaGrupa') ||
+          glavnaGrupaChanged ||
           this.lastCategory.nad !== (params.get('nadgrupa')?.toUpperCase() || null) ||
           this.lastCategory.grupa !== params.get('grupa');
 
@@ -99,10 +104,9 @@ export class CategoryPageComponent {
         if (queryParams.maxCena !== undefined) this.maxValue = +queryParams.maxCena;
 
         const proizvodjaciParam = queryParams.proizvodjaci;
+
         if (proizvodjaciParam) {
-          this.selectedTypes['Proizvođač'] = Array.isArray(proizvodjaciParam)
-            ? proizvodjaciParam
-            : proizvodjaciParam.split(',');
+          this.selectedTypes['Proizvođač'] = (Array.isArray(proizvodjaciParam) ? proizvodjaciParam : [proizvodjaciParam]).map(p => p.toUpperCase());
         } else {
           this.selectedTypes['Proizvođač'] = [];
         }
@@ -173,14 +177,24 @@ export class CategoryPageComponent {
         this.searchFilter = '';
 
         if (this.glavnaGrupa) {
-          this.productService
-            .getNadgrupeZaGrupu(this.glavnaGrupa)
-            .subscribe((nadgrupe: string[]) => {
-              this.subCategories = (nadgrupe || []).map((naziv) => ({
-                name: this.utilService.formatirajNaziv(naziv),
-                imgUrl: `assets/subcategories/${naziv}.jpg`,
-              }));
-            });
+          // Osveži nadgrupe SAMO ako se glavna grupa promenila
+          if (glavnaGrupaChanged || this.subCategories.length === 0) {
+            this.isSubCategoriesLoading = true;
+            this.subCategories = []; // 👈 odmah isprazni stare nadgrupe
+            this.productService
+              .getNadgrupeExtendedZaGrupu(this.glavnaGrupa)
+              .subscribe({
+                next: (nadgrupe: NadgrupaExtended[]) => {
+                  this.subCategories = (nadgrupe || []).map((ng) => ({
+                    name: this.utilService.formatirajNaziv(ng.name),
+                    imgUrl: `assets/subcategories/${ng.name}.jpg`,
+                    fallbackUrl: ng.image
+                  }));
+                  this.isSubCategoriesLoading = false;
+                },
+                error: () => this.isSubCategoriesLoading = false
+              });
+          }
 
           // učitaj grupe ako si u nadgrupi
           if (this.nadgrupa && !this.grupa) {
@@ -451,17 +465,18 @@ export class CategoryPageComponent {
     if (!this.selectedTypes[category]) { this.selectedTypes[category] = []; }
 
     if (isChecked) {
-      if (!this.selectedTypes[category].includes(type)) {
-        this.selectedTypes[category].push(type);
+      if (!this.selectedTypes[category].map(t => t.toUpperCase()).includes(type.toUpperCase())) {
+        this.selectedTypes[category].push(type.toUpperCase());
       }
     } else {
       this.selectedTypes[category] = this.selectedTypes[category].filter(
-        (t) => t !== type
+        (t) => t.toUpperCase() !== type.toUpperCase()
       );
     }
 
     this.selectedTypes[category] = Array.from(new Set(this.selectedTypes[category]));
-    this.currentPage = 0; // Resetujemo na prvu stranu pri promeni filtera
+
+    this.currentPage = 0;
     this.navigateWithFilters();
   }
 
@@ -470,6 +485,10 @@ export class CategoryPageComponent {
     this.sort = newSort;
     this.currentPage = 0;
     this.navigateWithFilters();
+  }
+
+  isTypeSelected(category: string, name: string): boolean {
+    return this.selectedTypes[category]?.some(t => t.toUpperCase() === name.toUpperCase()) || false;
   }
 
   navigateWithFilters() {
@@ -494,7 +513,7 @@ export class CategoryPageComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams,
-      queryParamsHandling: 'merge',
+
     });
   }
 
@@ -510,9 +529,15 @@ export class CategoryPageComponent {
       .toUpperCase();
   }
 
-  onImageError(event: Event) {
+  onImageError(event: Event, subCategory?: nameAndImage) {
     const element = event.target as HTMLImageElement;
-    element.src = 'assets/noImageAvailable.jpg';
+    if (subCategory && subCategory.fallbackUrl && element.src.indexOf(subCategory.fallbackUrl) === -1) {
+      // Prepend apiBaseUrl to fallbackUrl if it's a relative path starting with /api
+      const baseUrl = environment.apiBaseUrl.endsWith('/') ? environment.apiBaseUrl.slice(0, -1) : environment.apiBaseUrl;
+      element.src = baseUrl + subCategory.fallbackUrl;
+    } else {
+      element.src = 'assets/noImageAvailable.jpg';
+    }
   }
 
   resetFilters() {

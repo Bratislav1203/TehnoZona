@@ -64,10 +64,12 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   cleanHtml(input: string): string {
-    return input
-      .replace(/<br\s*\/?>\s*/g, '') // Uklanja sve <br> tagove
-      .replace(/\s+/g, ' ') // Uklanja višestruke razmake
-      .trim(); // Uklanja prazne prostore sa početka i kraja stringa
+    if (!input) return '';
+    // Uklanja višestruke razmake i trimuje standardno
+    let cleaned = input.replace(/\s+/g, ' ').trim();
+    // Uklanja vodeće i prateće <br> tagove i &nbsp;
+    cleaned = cleaned.replace(/^(<br\s*\/?>|&nbsp;|\s)+|(<br\s*\/?>|&nbsp;|\s)+$/gi, '');
+    return cleaned;
   }
   addToCart(product: Product): void {
     this.cartService.addToCart(product);

@@ -1,6 +1,6 @@
 <header class="header">
   <!-- Levo: Logo -->
-  <div class="logo" [routerLink]="['/']">
+  <div class="logo" [routerLink]="['/']" (click)="onLogoClick()">
     <img src="assets/logoKum.jpeg" alt="TehnoZona" />
   </div>
 
@@ -29,13 +29,12 @@
 
           <ul class="nav-list vertical-list">
             <li *ngFor="let grupa of allGlavneGrupe" class="nav-item main-group-item"
-              [class.active]="activeGlavnaGrupa === grupa">
+              [class.active]="activeGlavnaGrupa === grupa" (click)="selectGlavnaGrupa(grupa)">
               <div class="item-content">
                 <div class="item-text" (click)="goToGlavnaGrupaStrana(grupa); $event.stopPropagation()">{{
                   utilService.formatirajNaziv(grupa.name) }}</div>
-                <svg class="chevron" (click)="selectGlavnaGrupa(grupa)" xmlns="http://www.w3.org/2000/svg" width="14"
-                  height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
+                <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
               </div>
@@ -60,13 +59,12 @@
             <div class="nadgrupa-section" *ngFor="let nadgrupa of getNadgrupeKeys(activeGlavnaGrupa)">
 
               <!-- Naslov Nadgrupe -->
-              <div class="nadgrupa-header">
+              <div class="nadgrupa-header" (click)="toggleNadgrupa(nadgrupa); $event.stopPropagation()">
                 <h5 class="nadgrupa-link" (click)="goToNadgrupaStrana(nadgrupa); $event.stopPropagation()">{{
                   utilService.formatirajNaziv(nadgrupa) }}</h5>
                 <svg class="nadgrupa-chevron" [class.nad-rotated]="activeNadgrupaName === nadgrupa"
-                  (click)="toggleNadgrupa(nadgrupa); $event.stopPropagation()" xmlns="http://www.w3.org/2000/svg"
-                  width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
+                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </div>

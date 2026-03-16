@@ -36,7 +36,18 @@ export class HeaderBannerComponent implements OnInit {
       this.cartCount = items.length;
     });
 
-    this.allGlavneGrupe = this.mockGlavnaGrupaService.getAllGlavneGrupe();
+    this.mockGlavnaGrupaService.menu$.subscribe(menu => {
+      this.allGlavneGrupe = menu;
+      // Ako je meni obrisan/promenjen, resetuj trenutnu selekciju
+      const isStillPresent = this.allGlavneGrupe.find(g => g.name === this.activeGlavnaGrupa?.name);
+      if (!isStillPresent) {
+        this.activeGlavnaGrupa = null;
+      }
+    });
+  }
+
+  onLogoClick(): void {
+    this.mockGlavnaGrupaService.refreshMenu();
   }
 
   // --- PRETRAGA (SEARCH) ---

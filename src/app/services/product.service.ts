@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -177,10 +178,17 @@ export class ProductService {
     );
   }
 
-  getNadgrupeZaGrupu(glavnaGrupa: string) {
+  private nadgrupeCache = new Map<string, NadgrupaExtended[]>();
+
+  getNadgrupeExtendedZaGrupu(glavnaGrupa: string): Observable<NadgrupaExtended[]> {
+    if (this.nadgrupeCache.has(glavnaGrupa)) {
+      return of(this.nadgrupeCache.get(glavnaGrupa));
+    }
     const encodedGrupa = encodeURIComponent(glavnaGrupa);
-    const url = `${this.apiUrl}/glavneGrupe/${encodedGrupa}/nadgrupe`;
-    return this.http.get<string[]>(url);
+    const url = `${this.apiUrl}/glavneGrupe/${encodedGrupa}/nadgrupe-extended`;
+    return this.http.get<NadgrupaExtended[]>(url).pipe(
+      tap(data => this.nadgrupeCache.set(glavnaGrupa, data))
+    );
   }
   getGlavniProizvodjaci() {
     return this.http.get<string[]>(`${this.apiUrl}/glavni-proizvodjaci`);
@@ -301,4 +309,10 @@ export interface FilterType {
 export interface nameAndImage {
   name: string;
   imgUrl: string;
+  fallbackUrl?: string; // 👈 added
+}
+export interface NadgrupaExtended {
+  name: string;
+  image: string;
+  grupe: string[];
 }

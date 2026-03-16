@@ -25,10 +25,14 @@
   </div>
 
   <!-- Podkategorije (nadgrupe) -->
-  <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row">
+  <div *ngIf="glavnaGrupa && !nadgrupa" class="sub-category-row" [class.is-loading]="isSubCategoriesLoading">
+    <div *ngIf="isSubCategoriesLoading" class="sub-categories-loader">
+      <div class="mini-spinner"></div>
+      <span>Učitavanje kategorija...</span>
+    </div>
     <div *ngFor="let subCategory of subCategories" class="sub-category-card">
       <div [routerLink]="['/', glavnaGrupa, subCategory.name]">
-        <img [src]="subCategory.imgUrl" [alt]="subCategory.name" (error)="onImageError($event)" />
+        <img [src]="subCategory.imgUrl" [alt]="subCategory.name" (error)="onImageError($event, subCategory)" />
         <p>{{ subCategory.name }}</p>
       </div>
     </div>
@@ -83,7 +87,7 @@
         <div class="filter-item" *ngFor="let type of (isExpanded(category.category)
             ? category.types
             : category.types.slice(0, 10))">
-          <input type="checkbox" [checked]="selectedTypes[category.category]?.includes(type.name)"
+          <input type="checkbox" [checked]="isTypeSelected(category.category, type.name)"
             (change)="onTypeChange(category.category, type.name, $event.target.checked)"
             id="{{ category.category }}-{{ type.name }}" />
           <label [for]="category.category + '-' + type.name">
@@ -128,7 +132,7 @@
           <div class="filter-item" *ngFor="let type of (isExpanded(category.category)
               ? category.types
               : category.types.slice(0, 10))">
-            <input type="checkbox" [checked]="selectedTypes[category.category]?.includes(type.name)"
+            <input type="checkbox" [checked]="isTypeSelected(category.category, type.name)"
               (change)="onTypeChange(category.category, type.name, $event.target.checked)"
               id="{{ category.category }}-{{ type.name }}" />
             <label [for]="category.category + '-' + type.name">
