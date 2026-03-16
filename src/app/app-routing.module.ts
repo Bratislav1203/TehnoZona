@@ -7,8 +7,9 @@ import { CategoryPageComponent } from "./pages/category-page/category-page.compo
 import { CartComponent } from "./pages/cart/cart.component";
 import { CheckoutComponent } from "./pages/cart/checkout/checkout.component";
 import { AboutUsPageComponent } from "./pages/about-us-page/about-us-page.component";
-import {AdminLoginComponent} from "./admin/admin-login/admin-login.component";
-import {AdminDashboardComponent} from "./admin/admin-dashboard/admin-dashboard.component";
+import { AdminLoginComponent } from "./admin/admin-login/admin-login.component";
+import { AdminDashboardComponent } from "./admin/admin-dashboard/admin-dashboard.component";
+import { InfoPageComponent } from './pages/info-page/info-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'aboutTehnoZona', component: AboutUsPageComponent },
+  { path: 'info/:type', component: InfoPageComponent },
   { path: 'categoryPage/brand/:brandName', component: CategoryPageComponent },
   { path: 'search/:query', component: CategoryPageComponent },
   { path: ':glavnaGrupa', component: CategoryPageComponent },
@@ -38,4 +40,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

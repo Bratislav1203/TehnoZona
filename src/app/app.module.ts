@@ -33,6 +33,7 @@ import { AllCategoriesMenuComponent } from './menu/all-categories-menu/all-categ
 import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { DemoNavigacijaComponent } from './demo-navigacija/demo-navigacija.component';
+import { InfoPageComponent } from './pages/info-page/info-page.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { DemoNavigacijaComponent } from './demo-navigacija/demo-navigacija.compo
     AllCategoriesMenuComponent,
     AdminLoginComponent,
     AdminDashboardComponent,
-    DemoNavigacijaComponent
+    DemoNavigacijaComponent,
+    InfoPageComponent
   ],
   imports: [
     BrowserModule,
