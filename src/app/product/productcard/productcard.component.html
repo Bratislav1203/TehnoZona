@@ -1,7 +1,7 @@
 <div class="product-card">
   <div class="product-link" [routerLink]="['/product', product.barkod]" (click)="setCurrentProduct(product)">
     <div class="product-img-wrapper">
-      <img [src]="product.slike && product.slike.length > 0 ? product.slike[0] : 'assets/noImageAvailable.jpg'"
+      <img [src]="product.slike && product.slike.length > 0 ? getImageUrl(product.slike[0]) : 'assets/noImageAvailable.jpg'"
         (error)="onImageError($event)" class="product-image" />
       <span class="vendor-dot" *ngIf="product.vendorId" [title]="getVendorName(product.vendorId)"
         [attr.data-vendor]="product.vendorId">

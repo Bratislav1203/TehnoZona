@@ -23,7 +23,7 @@
       <div class="thumb-list" *ngIf="product.slike.length > 1">
         <div class="thumb-item" *ngFor="let image of product.slike; let i = index"
           [class.active]="currentImageIndex === i" (click)="changeMainImage(image); currentImageIndex = i">
-          <img [src]="image" alt="Thumbnail" />
+          <img [src]="toHttps(image)" alt="Thumbnail" />
         </div>
       </div>
     </div>

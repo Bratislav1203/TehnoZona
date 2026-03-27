@@ -29,6 +29,11 @@ export class ProductcardComponent implements OnInit {
     element.src = 'assets/noImageAvailable.jpg';
   }
 
+  getImageUrl(url: string): string {
+    if (!url) return 'assets/noImageAvailable.jpg';
+    return url.replace(/^http:\/\//i, 'https://');
+  }
+
   getVendorName(vendorId?: number): string {
     switch (vendorId) {
       case 1: return 'Uspon';

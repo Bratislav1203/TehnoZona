@@ -30,19 +30,19 @@ export class ProductDetailsComponent implements OnInit {
       this.productService.getProductByBarcode(vendorId, barcode)
         .subscribe(prod => {
           this.product = prod;
-          this.mainImage = prod.slike?.length ? prod.slike[0] : null;
+          this.mainImage = prod.slike?.length ? this.toHttps(prod.slike[0]) : null;
           const cleaned = this.cleanHtml(prod.opis);
           this.sanitizedDescription = this.sanitizer.bypassSecurityTrustHtml(cleaned);
         });
       return;
     }
-    this.mainImage = this.product.slike[0];
+    this.mainImage = this.toHttps(this.product.slike[0]);
     const cleanedDescription = this.cleanHtml(this.product.opis);
     this.sanitizedDescription = this.sanitizer.bypassSecurityTrustHtml(cleanedDescription);
   }
 
   changeMainImage(image: string) {
-    this.mainImage = image;
+    this.mainImage = this.toHttps(image);
   }
 
   previousImage() {
@@ -51,7 +51,7 @@ export class ProductDetailsComponent implements OnInit {
     } else {
       this.currentImageIndex = this.product.slike.length - 1;
     }
-    this.mainImage = this.product.slike[this.currentImageIndex];
+    this.mainImage = this.toHttps(this.product.slike[this.currentImageIndex]);
   }
 
   nextImage() {
@@ -60,7 +60,12 @@ export class ProductDetailsComponent implements OnInit {
     } else {
       this.currentImageIndex = 0;
     }
-    this.mainImage = this.product.slike[this.currentImageIndex];
+    this.mainImage = this.toHttps(this.product.slike[this.currentImageIndex]);
+  }
+
+  toHttps(url: string): string {
+    if (!url) return null;
+    return url.replace(/^http:\/\//i, 'https://');
   }
 
   cleanHtml(input: string): string {
