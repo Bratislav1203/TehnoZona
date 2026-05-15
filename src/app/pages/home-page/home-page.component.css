@@ -94,13 +94,16 @@
 .hero-image {
   flex: 0 0 420px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-image img {
   width: 100%;
-  height: auto;
+  max-height: 340px;
   border-radius: 20px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .hero-badge {
