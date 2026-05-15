@@ -87,12 +87,11 @@ export class HomePageComponent implements OnInit {
       next: (data: HomepageItemResponse[]) => {
         console.log('Homepage Items fetched:', data);
 
-        // 1. Izdvajamo proizvode (TOP)
-        const top = data.filter(i => i.homepageItem.itemType === 'PRODUCT' && i.homepageItem.section === 'TOP');
-        // 2. Izdvajamo proizvode na akciji (SALE)
+        // SALE = PRODUCT+SALE; TOP = svi ostali PRODUCT (TOP, RECOMMENDED, HERO, itd.)
         const sale = data.filter(i => i.homepageItem.itemType === 'PRODUCT' && i.homepageItem.section === 'SALE');
-        // 3. Izdvajamo kategorije (Sada hvatamo sve kategorije, pa filtriramo po tipu)
-        const cats = data.filter(i => i.homepageItem.itemType === 'CATEGORY');
+        const top = data.filter(i => i.homepageItem.itemType === 'PRODUCT' && i.homepageItem.section !== 'SALE');
+        // Sve kategorije i brendovi idu u preporučene kategorije
+        const cats = data.filter(i => i.homepageItem.itemType === 'CATEGORY' || i.homepageItem.itemType === 'BRAND');
 
         console.log('Sirovi podaci za popularne kategorije (SVE):', cats);
 
@@ -122,8 +121,14 @@ export class HomePageComponent implements OnInit {
         // Mapiramo KATEGORIJE
         this.recommendedCategories = cats.map(i => {
           const item = i.homepageItem;
-          // Dinamički pravimo niz za routerLink: ['Glavna Grupa', 'Nadgrupa', 'Grupa']
           const routeSegments: string[] = [];
+          if (item.itemType === 'BRAND') {
+            return {
+              name: item.customName || item.brandName || 'Brend',
+              imgUrl: item.customImageUrl || 'assets/cat-tv-light.png',
+              routeSegments: item.brandName ? ['/brand', item.brandName] : ['/']
+            };
+          }
           if (item.glavnaGrupa) routeSegments.push(item.glavnaGrupa);
           if (item.nadgrupa) routeSegments.push(item.nadgrupa);
           if (item.grupa) routeSegments.push(item.grupa);
@@ -131,7 +136,7 @@ export class HomePageComponent implements OnInit {
           return {
             name: item.customName || item.grupa || item.nadgrupa || item.glavnaGrupa || 'Nepoznato',
             imgUrl: item.customImageUrl || 'assets/cat-tv-light.png',
-            routeSegments: routeSegments.length > 0 ? routeSegments : ['/'] // fallback da ne pukne link
+            routeSegments: routeSegments.length > 0 ? routeSegments : ['/']
           };
         });
 
