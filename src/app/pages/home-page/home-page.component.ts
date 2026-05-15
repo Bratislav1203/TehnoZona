@@ -140,8 +140,8 @@ export class HomePageComponent implements OnInit {
           };
         });
 
-        // 4. Izdvajamo BANER (HERO)
-        const banner = data.find(i => i.homepageItem.itemType === 'BANNER' && i.homepageItem.section === 'HERO');
+        // 4. Izdvajamo BANER (bilo koja sekcija)
+        const banner = data.find(i => i.homepageItem.itemType === 'BANNER');
         if (banner) {
           const b = banner.homepageItem;
           this.heroBanner = {
