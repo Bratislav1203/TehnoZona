@@ -11,6 +11,10 @@
       <button class="tab-btn" [class.active]="activeTab === 'list'" (click)="setTab('list')">
         Pregled postojećih
       </button>
+
+      <button class="tab-btn" [class.active]="activeTab === 'mapping'" (click)="setTab('mapping')">
+        Kategorizacija
+      </button>
     </div>
 
     <div class="tab-content-card">
@@ -221,8 +225,7 @@
 
       <!-- ------------------------------------ -->
       <!-- LIST TAB -->
-      <!-- ------------------------------------ -->
-      <div *ngIf="activeTab === 'list'" class="tab-panel">
+      <!-- ------------------------------------ -->      <div *ngIf="activeTab === 'list'" class="tab-panel">
         <h2 class="section-title">Pregled stavki na početnoj</h2>
         <p class="section-subtitle">Svi istaknuti proizvodi, preporučene kategorije i partner brendovi.</p>
 
@@ -333,6 +336,57 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- ---------------------------------------- -->
+      <!-- MAPPING TAB                               -->
+      <!-- ---------------------------------------- -->
+      <div *ngIf="activeTab === 'mapping'" class="tab-panel">
+        <h2 class="section-title">Kategorizacija nepoznatih nadgrupa</h2>
+        <p class="section-subtitle">
+          Ovo su nadgrupe koje su stigle od dobavljača a nisu prepoznate. Dodeli svakoj ispravnu glavnu grupu i sačuvaj.
+        </p>
+
+        <div *ngIf="mappingSaveSuccess" class="alert alert-success">
+          Uspešno sačuvano. Sledeće noći će artikli biti ispravno kategorizovani.
+        </div>
+
+        <div *ngIf="mappingSaveError" class="alert alert-error">
+          {{ mappingSaveError }}
+        </div>
+
+        <div *ngIf="mappingRows.length === 0 && !mappingSaveSuccess" class="empty-state">
+          Nema nepoznatih nadgrupa. Sve je kategorizovano.
+        </div>
+
+        <div *ngIf="mappingRows.length > 0">
+          <table class="mapping-table">
+            <thead>
+              <tr>
+                <th>Nadgrupa (od dobavljača)</th>
+                <th>Dodeli glavnu grupu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of mappingRows">
+                <td class="nadgrupa-cell">{{ row.nadgrupa }}</td>
+                <td>
+                  <select [(ngModel)]="row.glavna_grupa" [name]="'gg_' + row.nadgrupa">
+                    <option value="OSTALO I OUTLET">-- Ostavi u OSTALO I OUTLET --</option>
+                    <option *ngFor="let g of glavneGrupeOptions" [value]="g">{{ g }}</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mapping-actions">
+            <button class="success-btn" (click)="saveMappings()" [disabled]="mappingSaving">
+              <span *ngIf="!mappingSaving">Sačuvaj sve</span>
+              <span *ngIf="mappingSaving">Čuvanje...</span>
+            </button>
+          </div>
+        </div>
       </div>
 
     </div>

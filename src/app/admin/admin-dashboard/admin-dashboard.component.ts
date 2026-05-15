@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FeaturedService, HomepageItemRequest, ItemType, HomepageSection, HomepageItemResponse } from '../../services/featured.service';
 import { GlavnaGrupa, MockGlavnaGrupaService } from '../../services/mock-glavna-grupa.service';
+import { MappingService, NadgrupaMapping, MappingConfirmRequest } from '../../services/mapping.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -9,7 +10,7 @@ import { GlavnaGrupa, MockGlavnaGrupaService } from '../../services/mock-glavna-
 })
 export class AdminDashboardComponent implements OnInit {
 
-  activeTab: 'add' | 'list' = 'add';
+  activeTab: 'add' | 'list' | 'mapping' = 'add';
   currentStep: number = 1;
 
   itemTypes: { value: ItemType, label: string }[] = [
@@ -55,6 +56,25 @@ export class AdminDashboardComponent implements OnInit {
 
   featuredProducts: HomepageItemResponse[] = [];
 
+  // Mapping state
+  mappingRows: NadgrupaMapping[] = [];
+  mappingSaving = false;
+  mappingSaveSuccess = false;
+  mappingSaveError = '';
+
+  readonly glavneGrupeOptions = [
+    'BELA TEHNIKA I KUĆNI APARATI',
+    'TV, FOTO, AUDIO I VIDEO',
+    'RAČUNARI, KOMPONENTE I GAMING',
+    'TELEFONI, TABLETI I OPREMA',
+    'SIGURNOSNI I ALARMNI SISTEMI',
+    'KANCELARIJSKI I ŠKOLSKI MATERIJAL',
+    'BATERIJE, PUNJAČI I KABLOVI',
+    'ALATI I OPREMA ZA DOM',
+    'FITNESS I SPORT',
+    'OSTALO I OUTLET'
+  ];
+
   // Kategorije state
   svGlavneGrupe: GlavnaGrupa[] = [];
   dostupneNadgrupe: string[] = [];
@@ -62,7 +82,8 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(
     private featuredService: FeaturedService,
-    private mockGlavnaGrupaService: MockGlavnaGrupaService
+    private mockGlavnaGrupaService: MockGlavnaGrupaService,
+    private mappingService: MappingService
   ) { }
 
   ngOnInit(): void {
@@ -73,14 +94,17 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  setTab(tab: 'add' | 'list'): void {
+  setTab(tab: 'add' | 'list' | 'mapping'): void {
     this.activeTab = tab;
     this.submitSuccess = false;
     this.submitError = '';
-    this.currentStep = 1; // Resetuj wizard
+    this.currentStep = 1;
 
     if (tab === 'list') {
       this.loadFeaturedProducts();
+    }
+    if (tab === 'mapping') {
+      this.loadUnconfirmedMappings();
     }
   }
 
@@ -203,6 +227,36 @@ export class AdminDashboardComponent implements OnInit {
         this.featuredProducts = this.featuredProducts.filter(p => p.homepageItem.id !== item.homepageItem.id);
       },
       error: (err) => console.error(err)
+    });
+  }
+
+  loadUnconfirmedMappings(): void {
+    this.mappingService.getUnconfirmed().subscribe({
+      next: (rows) => { this.mappingRows = rows; },
+      error: (err) => console.error(err)
+    });
+  }
+
+  saveMappings(): void {
+    this.mappingSaving = true;
+    this.mappingSaveSuccess = false;
+    this.mappingSaveError = '';
+
+    const payload: MappingConfirmRequest[] = this.mappingRows.map(r => ({
+      nadgrupa: r.nadgrupa,
+      glavnaGrupa: r.glavna_grupa
+    }));
+
+    this.mappingService.confirmMappings(payload).subscribe({
+      next: () => {
+        this.mappingSaving = false;
+        this.mappingSaveSuccess = true;
+        this.mappingRows = [];
+      },
+      error: () => {
+        this.mappingSaving = false;
+        this.mappingSaveError = 'Greška pri čuvanju. Pokušaj ponovo.';
+      }
     });
   }
 

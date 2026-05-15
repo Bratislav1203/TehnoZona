@@ -349,6 +349,94 @@ form small {
   margin-top: 30px;
 }
 
+/* --------------------------------------------- */
+/* ALERT MESSAGES                                 */
+/* --------------------------------------------- */
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.alert-success {
+  background: #e6f4ea;
+  color: #1e7e34;
+  border: 1px solid #a8d5b5;
+}
+
+.alert-error {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 15px;
+}
+
+/* --------------------------------------------- */
+/* MAPPING TABLE                                  */
+/* --------------------------------------------- */
+
+.mapping-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+.mapping-table thead tr {
+  background: #f0f2f5;
+}
+
+.mapping-table th {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+}
+
+.mapping-table tbody tr {
+  background: #fff;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.mapping-table td {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.nadgrupa-cell {
+  font-weight: 600;
+  color: #212121;
+  width: 40%;
+}
+
+.mapping-table select {
+  width: 100%;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.mapping-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
 /* Mobile switches */
 @media (max-width: 767px) {
   .wizard-header {
