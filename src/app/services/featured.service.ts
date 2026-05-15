@@ -83,4 +83,9 @@ export class FeaturedService {
   deleteHomepageItem(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/homepage-items/${id}`);
   }
+
+  // 🟨 ADMIN – UPDATE
+  updateHomepageItem(id: number, req: HomepageItemRequest): Observable<HomepageItem> {
+    return this.http.put<HomepageItem>(`${this.apiUrl}/homepage-items/${id}`, req);
+  }
 }

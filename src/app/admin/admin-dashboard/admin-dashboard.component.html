@@ -23,8 +23,12 @@
       <!-- ADD TAB -->
       <!-- ------------------------------------ -->
       <div *ngIf="activeTab === 'add'" class="tab-panel">
-        <h2 class="section-title">Dodavanje na početnu stranu</h2>
-        <p class="section-subtitle">Dodaj proizvod, kategoriju ili brend na Home Page.</p>
+        <h2 class="section-title">{{ editingId ? 'Izmena stavke #' + editingId : 'Dodavanje na početnu stranu' }}</h2>
+        <p class="section-subtitle">{{ editingId ? 'Promeni podatke i sačuvaj.' : 'Dodaj proizvod, kategoriju ili brend na Home Page.' }}</p>
+
+        <div *ngIf="editingId" class="alert alert-warning">
+          Editujete postojeću stavku. <button class="link-btn" (click)="cancelEdit()">Odustani</button>
+        </div>
 
         <div *ngIf="submitSuccess" class="alert alert-success">
           Uspešno sačuvano.
@@ -52,7 +56,7 @@
             <div class="form-row">
               <div class="form-field">
                 <label>Vrsta (Item Type)</label>
-                <select [(ngModel)]="newFeatured.itemType" name="itemType" required>
+                <select [(ngModel)]="newFeatured.itemType" name="itemType" required (change)="onItemTypeChange()">
                   <option *ngFor="let it of itemTypes" [value]="it.value">{{ it.label }}</option>
                 </select>
                 <small>Biraš da li dodaješ konkretan Proizvod, celu Kategoriju, ili Brend.</small>
@@ -256,7 +260,9 @@
                 <div class="product-info">
                   <!-- Ako je PRODUCT -->
                   <ng-container *ngIf="item.homepageItem.itemType === 'PRODUCT'">
-                    <div class="p-name">{{ item.artikal?.naziv || 'Nepoznat proizvod' }}</div>
+                    <div class="p-name" [class.p-warn]="isNepoznat(item)">
+                      {{ item.artikal?.naziv || '⚠ Nepoznat barkod — artikal nije nađen' }}
+                    </div>
                     <div class="p-barcode">#{{ item.homepageItem.barcode }}</div>
                     <div class="p-price" *ngIf="item.artikal">{{ item.artikal.mpcena }} RSD</div>
                   </ng-container>
@@ -289,6 +295,7 @@
               <td>{{ item.homepageItem.validTo ? (item.homepageItem.validTo | date:'dd.MM.yyyy') : 'Zauvek' }}</td>
 
               <td class="cell-actions">
+                <button class="edit-btn" (click)="editItem(item)">Izmeni</button>
                 <button class="delete-btn" (click)="deleteFeatured(item)">Obriši</button>
               </td>
             </tr>

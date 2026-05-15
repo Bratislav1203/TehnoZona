@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FeaturedService, HomepageItemRequest, ItemType, HomepageSection, HomepageItemResponse } from '../../services/featured.service';
 import { GlavnaGrupa, MockGlavnaGrupaService } from '../../services/mock-glavna-grupa.service';
 import { MappingService, NadgrupaMapping, MappingConfirmRequest } from '../../services/mapping.service';
@@ -12,6 +13,31 @@ export class AdminDashboardComponent implements OnInit {
 
   activeTab: 'add' | 'list' | 'mapping' = 'add';
   currentStep: number = 1;
+  editingId: number | null = null;
+
+  // Sekcije dostupne po tipu
+  private sectionsByType: Record<ItemType, { value: HomepageSection, label: string }[]> = {
+    PRODUCT: [
+      { value: 'TOP', label: 'Najnoviji proizvodi' },
+      { value: 'SALE', label: 'Akcija / Popust' },
+      { value: 'RECOMMENDED', label: 'Preporučeno' },
+    ],
+    CATEGORY: [
+      { value: 'RECOMMENDED', label: 'Preporučene kategorije' },
+      { value: 'TOP', label: 'Top kategorije' },
+    ],
+    BRAND: [
+      { value: 'RECOMMENDED', label: 'Partner brendovi' },
+    ],
+    BANNER: [
+      { value: 'HERO', label: 'Hero sekcija' },
+      { value: 'RECOMMENDED', label: 'Sekundarna sekcija' },
+    ],
+    PROMO: [
+      { value: 'NEW', label: 'Novo' },
+      { value: 'NEWS', label: 'Akcije & Novosti' },
+    ],
+  };
 
   itemTypes: { value: ItemType, label: string }[] = [
     { value: 'PRODUCT', label: 'Proizvod' },
@@ -21,34 +47,13 @@ export class AdminDashboardComponent implements OnInit {
     { value: 'PROMO', label: 'Promo Kartica' }
   ];
 
-  sections: { value: HomepageSection, label: string }[] = [
-    { value: 'TOP', label: 'Top / Najnovije' },
-    { value: 'SALE', label: 'Akcija / Popust' },
-    { value: 'RECOMMENDED', label: 'Preporučeno' },
-    { value: 'NEW', label: 'Novo' },
-    { value: 'HERO', label: 'Hero Sekcija' },
-    { value: 'NEWS', label: 'Akcije & Novosti' }
-  ];
+  get sections(): { value: HomepageSection, label: string }[] {
+    return this.sectionsByType[this.newFeatured.itemType] || [];
+  }
 
   priorities = [1, 2, 3, 4, 5];
 
-  newFeatured: HomepageItemRequest = {
-    itemType: 'PRODUCT',
-    section: 'TOP',
-    barcode: '',
-    priority: 1,
-    validFrom: '',
-    validTo: '',
-    glavnaGrupa: '',
-    nadgrupa: '',
-    grupa: '',
-    brandName: '',
-    customName: '',
-    customImageUrl: '',
-    subtitle: '',
-    buttonText: '',
-    buttonRoute: ''
-  };
+  newFeatured: HomepageItemRequest = this.emptyForm();
 
   isSubmitting = false;
   submitSuccess = false;
@@ -75,7 +80,6 @@ export class AdminDashboardComponent implements OnInit {
     'OSTALO I OUTLET'
   ];
 
-  // Kategorije state
   svGlavneGrupe: GlavnaGrupa[] = [];
   dostupneNadgrupe: string[] = [];
   dostupneGrupe: string[] = [];
@@ -88,10 +92,29 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.svGlavneGrupe = this.mockGlavnaGrupaService.getAllGlavneGrupe();
-
     if (this.activeTab === 'list') {
       this.loadFeaturedProducts();
     }
+  }
+
+  private emptyForm(): HomepageItemRequest {
+    return {
+      itemType: 'PRODUCT',
+      section: 'TOP',
+      barcode: '',
+      priority: 1,
+      validFrom: '',
+      validTo: '',
+      glavnaGrupa: '',
+      nadgrupa: '',
+      grupa: '',
+      brandName: '',
+      customName: '',
+      customImageUrl: '',
+      subtitle: '',
+      buttonText: '',
+      buttonRoute: ''
+    };
   }
 
   setTab(tab: 'add' | 'list' | 'mapping'): void {
@@ -99,28 +122,29 @@ export class AdminDashboardComponent implements OnInit {
     this.submitSuccess = false;
     this.submitError = '';
     this.currentStep = 1;
+    this.editingId = null;
+    this.newFeatured = this.emptyForm();
 
-    if (tab === 'list') {
-      this.loadFeaturedProducts();
-    }
-    if (tab === 'mapping') {
-      this.loadUnconfirmedMappings();
+    if (tab === 'list') this.loadFeaturedProducts();
+    if (tab === 'mapping') this.loadUnconfirmedMappings();
+  }
+
+  onItemTypeChange(): void {
+    // Resetuj sekciju na prvu dostupnu za novi tip
+    const available = this.sectionsByType[this.newFeatured.itemType];
+    if (available && available.length > 0) {
+      this.newFeatured.section = available[0].value;
     }
   }
 
   nextStep(): void {
-    if (this.currentStep < 3) {
-      this.currentStep++;
-    }
+    if (this.currentStep < 3) this.currentStep++;
   }
 
   prevStep(): void {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-    }
+    if (this.currentStep > 1) this.currentStep--;
   }
 
-  // Eventi za padajuće liste
   onGlavnaGrupaChange(): void {
     this.newFeatured.nadgrupa = '';
     this.newFeatured.grupa = '';
@@ -128,11 +152,9 @@ export class AdminDashboardComponent implements OnInit {
     this.dostupneGrupe = [];
 
     const izabrana = this.svGlavneGrupe.find(g => g.name === this.newFeatured.glavnaGrupa);
-    if (izabrana && izabrana.nadgrupe) {
+    if (izabrana?.nadgrupe) {
       this.dostupneNadgrupe = Object.keys(izabrana.nadgrupe);
     }
-
-    // Auto-fill estetike (fallback na Glavnu Grupu dok se ne izabere nadgrupa)
     if (this.newFeatured.glavnaGrupa) {
       this.newFeatured.customName = this.newFeatured.glavnaGrupa;
       this.newFeatured.customImageUrl = `assets/categories/cat_default.png`;
@@ -144,22 +166,63 @@ export class AdminDashboardComponent implements OnInit {
     this.dostupneGrupe = [];
 
     const izabranaGlavna = this.svGlavneGrupe.find(g => g.name === this.newFeatured.glavnaGrupa);
-    if (izabranaGlavna && izabranaGlavna.nadgrupe) {
+    if (izabranaGlavna?.nadgrupe) {
       this.dostupneGrupe = izabranaGlavna.nadgrupe[this.newFeatured.nadgrupa] || [];
     }
-
-    // Auto-fill estetike zavisno od izabrane nadgrupe
     if (this.newFeatured.nadgrupa) {
       this.newFeatured.customName = this.newFeatured.nadgrupa;
-
-      // Mapiramo ime nadgrupe u ime slike (lowercase, bez kvačica, razmaci u donje crte)
       let fn = this.newFeatured.nadgrupa.toLowerCase();
       fn = fn.replace(/č/g, 'c').replace(/ć/g, 'c').replace(/š/g, 's').replace(/đ/g, 'dj').replace(/ž/g, 'z');
-      fn = fn.replace(/[^a-z0-9\s]/g, ''); // izbaci spec karaktere
-      fn = fn.replace(/\s+/g, '_'); // razmake u _
-
+      fn = fn.replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '_');
       this.newFeatured.customImageUrl = `assets/categories/cat_${fn}.png`;
     }
+  }
+
+  editItem(item: HomepageItemResponse): void {
+    const h = item.homepageItem;
+    this.editingId = h.id;
+
+    this.newFeatured = {
+      itemType: h.itemType,
+      section: h.section,
+      priority: h.priority,
+      validFrom: h.validFrom ? h.validFrom.substring(0, 16) : '',
+      validTo: h.validTo ? h.validTo.substring(0, 16) : '',
+      barcode: h.barcode || '',
+      glavnaGrupa: h.glavnaGrupa || '',
+      nadgrupa: h.nadgrupa || '',
+      grupa: h.grupa || '',
+      brandName: h.brandName || '',
+      customName: h.customName || '',
+      customImageUrl: h.customImageUrl || '',
+      subtitle: h.subtitle || '',
+      buttonText: h.buttonText || '',
+      buttonRoute: h.buttonRoute || ''
+    };
+
+    // Učitaj nadgrupe/grupe za kategoriju
+    if (h.itemType === 'CATEGORY' && h.glavnaGrupa) {
+      const izabrana = this.svGlavneGrupe.find(g => g.name === h.glavnaGrupa);
+      if (izabrana?.nadgrupe) {
+        this.dostupneNadgrupe = Object.keys(izabrana.nadgrupe);
+        if (h.nadgrupa) {
+          this.dostupneGrupe = izabrana.nadgrupe[h.nadgrupa] || [];
+        }
+      }
+    }
+
+    this.activeTab = 'add';
+    this.currentStep = 1;
+    this.submitSuccess = false;
+    this.submitError = '';
+  }
+
+  cancelEdit(): void {
+    this.editingId = null;
+    this.newFeatured = this.emptyForm();
+    this.currentStep = 1;
+    this.submitSuccess = false;
+    this.submitError = '';
   }
 
   submitNew(): void {
@@ -167,31 +230,17 @@ export class AdminDashboardComponent implements OnInit {
     this.submitError = '';
     this.isSubmitting = true;
 
-    const vendorId = 0; // Hardkodovan vendorId (Unified)
+    const obs: Observable<unknown> = this.editingId !== null
+      ? this.featuredService.updateHomepageItem(this.editingId, this.newFeatured)
+      : this.featuredService.addHomepageItem(0, this.newFeatured);
 
-    this.featuredService.addHomepageItem(vendorId, this.newFeatured).subscribe({
+    obs.subscribe({
       next: () => {
         this.isSubmitting = false;
         this.submitSuccess = true;
-        this.currentStep = 1; // Vrati na pocetak wizarda
-
-        this.newFeatured = {
-          itemType: 'PRODUCT',
-          section: 'TOP',
-          barcode: '',
-          priority: 1,
-          validFrom: '',
-          validTo: '',
-          glavnaGrupa: '',
-          nadgrupa: '',
-          grupa: '',
-          brandName: '',
-          customName: '',
-          customImageUrl: '',
-          subtitle: '',
-          buttonText: '',
-          buttonRoute: ''
-        };
+        this.editingId = null;
+        this.currentStep = 1;
+        this.newFeatured = this.emptyForm();
       },
       error: () => {
         this.isSubmitting = false;
@@ -202,10 +251,7 @@ export class AdminDashboardComponent implements OnInit {
 
   loadFeaturedProducts(): void {
     this.featuredService.getAllHomepageItems().subscribe({
-      next: (list) => {
-        this.featuredProducts = list;
-        console.log('Homepage Items:', this.featuredProducts);
-      },
+      next: (list) => { this.featuredProducts = list; },
       error: (err) => console.error(err)
     });
   }
@@ -213,15 +259,18 @@ export class AdminDashboardComponent implements OnInit {
   getMainImage(item: HomepageItemResponse): string {
     const h = item.homepageItem;
     if (h.customImageUrl) return h.customImageUrl;
-    if (h.itemType === 'PRODUCT' && item.artikal?.slike && item.artikal.slike.length > 0) {
+    if (h.itemType === 'PRODUCT' && item.artikal?.slike?.length) {
       return item.artikal.slike[0];
     }
     return '/assets/no-image.png';
   }
 
+  isNepoznat(item: HomepageItemResponse): boolean {
+    return item.homepageItem.itemType === 'PRODUCT' && item.artikal == null;
+  }
+
   deleteFeatured(item: HomepageItemResponse): void {
     if (!confirm('Da li sigurno želiš da obrišeš ovu stavku?')) return;
-
     this.featuredService.deleteHomepageItem(item.homepageItem.id).subscribe({
       next: () => {
         this.featuredProducts = this.featuredProducts.filter(p => p.homepageItem.id !== item.homepageItem.id);
@@ -259,5 +308,4 @@ export class AdminDashboardComponent implements OnInit {
       }
     });
   }
-
 }
