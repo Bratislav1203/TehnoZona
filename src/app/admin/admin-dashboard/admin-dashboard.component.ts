@@ -58,6 +58,8 @@ export class AdminDashboardComponent implements OnInit {
   isSubmitting = false;
   submitSuccess = false;
   submitError = '';
+  imageUploading = false;
+  imageUploadError = '';
 
   featuredProducts: HomepageItemResponse[] = [];
 
@@ -223,6 +225,24 @@ export class AdminDashboardComponent implements OnInit {
     this.currentStep = 1;
     this.submitSuccess = false;
     this.submitError = '';
+  }
+
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
+    this.imageUploading = true;
+    this.imageUploadError = '';
+    this.featuredService.uploadImage(file).subscribe({
+      next: (res) => {
+        this.newFeatured.customImageUrl = res.url;
+        this.imageUploading = false;
+      },
+      error: () => {
+        this.imageUploadError = 'Upload nije uspeo. Pokušaj ponovo.';
+        this.imageUploading = false;
+      }
+    });
   }
 
   submitNew(): void {

@@ -159,8 +159,17 @@
                 <div class="form-field">
                   <label>Putanja do slike</label>
                   <input type="text" [(ngModel)]="newFeatured.customImageUrl" name="customImageUrl" required
-                    placeholder="npr. assets/hero-device.png" />
+                    placeholder="npr. assets/hero-device.png ili Cloudinary URL" />
                 </div>
+                <div class="form-field">
+                  <label>Ili učitaj sliku</label>
+                  <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+                  <span *ngIf="imageUploading" class="upload-status">Učitavanje...</span>
+                  <span *ngIf="imageUploadError" class="upload-error">{{ imageUploadError }}</span>
+                </div>
+              </div>
+              <div *ngIf="newFeatured.customImageUrl" class="image-preview-wrapper">
+                <img [src]="newFeatured.customImageUrl" class="image-preview" alt="preview" />
               </div>
             </ng-container>
 
@@ -177,8 +186,19 @@
                 <div class="form-field">
                   <label>Putanja do ikonice (Slika)</label>
                   <input type="text" [(ngModel)]="newFeatured.customImageUrl" name="customImageUrl"
-                    placeholder="npr. assets/cat-tv-light.png" />
+                    placeholder="npr. assets/cat-tv-light.png ili Cloudinary URL" />
                 </div>
+              </div>
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Ili učitaj sliku</label>
+                  <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+                  <span *ngIf="imageUploading" class="upload-status">Učitavanje...</span>
+                  <span *ngIf="imageUploadError" class="upload-error">{{ imageUploadError }}</span>
+                </div>
+              </div>
+              <div *ngIf="newFeatured.customImageUrl" class="image-preview-wrapper">
+                <img [src]="newFeatured.customImageUrl" class="image-preview" alt="preview" />
               </div>
             </ng-container>
 

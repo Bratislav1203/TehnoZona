@@ -361,6 +361,36 @@ form small {
   margin-bottom: 16px;
 }
 
+.image-preview-wrapper {
+  margin-top: 10px;
+  border: 1px solid #d1d3e2;
+  border-radius: 8px;
+  padding: 8px;
+  display: inline-block;
+  background: #fafafa;
+}
+
+.image-preview {
+  max-height: 180px;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.upload-status {
+  font-size: 13px;
+  color: #4285f4;
+  margin-top: 4px;
+  display: block;
+}
+
+.upload-error {
+  font-size: 13px;
+  color: #c0392b;
+  margin-top: 4px;
+  display: block;
+}
+
 .alert-warning {
   background: #fff8e1;
   color: #b45309;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -67,6 +67,9 @@ export class FeaturedService {
 
   private apiUrl = `${environment.apiBaseUrl}api/vendors`;
 
+  private adminUrl = `${environment.apiBaseUrl}api/admin/feeds`;
+  private adminHeaders = new HttpHeaders({ 'X-Admin-Key': 'tehnozona-admin-2024' });
+
   constructor(private http: HttpClient) { }
 
   // 🟩 ADMIN – ADD HOMEPAGE ITEM
@@ -87,5 +90,17 @@ export class FeaturedService {
   // 🟨 ADMIN – UPDATE
   updateHomepageItem(id: number, req: HomepageItemRequest): Observable<HomepageItem> {
     return this.http.put<HomepageItem>(`${this.apiUrl}/homepage-items/${id}`, req);
+  }
+
+  // 📷 ADMIN – UPLOAD IMAGE
+  uploadImage(file: File, folder: string = 'admin-banners'): Observable<{ url: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', folder);
+    return this.http.post<{ url: string }>(
+      `${this.adminUrl}/upload-image`,
+      formData,
+      { headers: this.adminHeaders }
+    );
   }
 }
