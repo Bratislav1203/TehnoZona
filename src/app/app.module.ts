@@ -32,6 +32,7 @@ import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.compon
 import { AllCategoriesMenuComponent } from './menu/all-categories-menu/all-categories-menu.component';
 import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { CeneDobavljacaComponent } from './admin/cene-dobavljaca/cene-dobavljaca.component';
 import { DemoNavigacijaComponent } from './demo-navigacija/demo-navigacija.component';
 import { InfoPageComponent } from './pages/info-page/info-page.component';
 
@@ -60,6 +61,7 @@ import { InfoPageComponent } from './pages/info-page/info-page.component';
     AllCategoriesMenuComponent,
     AdminLoginComponent,
     AdminDashboardComponent,
+    CeneDobavljacaComponent,
     DemoNavigacijaComponent,
     InfoPageComponent
   ],

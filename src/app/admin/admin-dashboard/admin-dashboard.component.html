@@ -15,9 +15,23 @@
       <button class="tab-btn" [class.active]="activeTab === 'mapping'" (click)="setTab('mapping')">
         Kategorizacija
       </button>
+
+      <button class="tab-btn" [class.active]="activeTab === 'cene'" (click)="setTab('cene')">
+        Ponude dobavljača
+      </button>
     </div>
 
     <div class="tab-content-card">
+      <!-- PONUDE DOBAVLJAČA (promene B2B cena iz servisa TehnoZonaCene) -->
+      <div *ngIf="activeTab === 'cene'" class="tab-panel">
+        <h2 class="section-title">Ponude dobavljača — promene nabavnih cena</h2>
+        <p class="section-subtitle">
+          Poređenje se automatski pokreće svako jutro u 06:00. Izaberi dan da vidiš šta je kod dobavljača pojeftinilo
+          ili poskupelo; promene preko praga su izdvojene kao znatne.
+        </p>
+        <app-cene-dobavljaca></app-cene-dobavljaca>
+      </div>
+
 
       <!-- ------------------------------------ -->
       <!-- ADD TAB -->

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { FeaturedService, HomepageItemRequest, ItemType, HomepageSection, HomepageItemResponse } from '../../services/featured.service';
 import { GlavnaGrupa, MockGlavnaGrupaService } from '../../services/mock-glavna-grupa.service';
 import { MappingService, NadgrupaMapping, MappingConfirmRequest } from '../../services/mapping.service';
@@ -11,7 +12,7 @@ import { MappingService, NadgrupaMapping, MappingConfirmRequest } from '../../se
 })
 export class AdminDashboardComponent implements OnInit {
 
-  activeTab: 'add' | 'list' | 'mapping' = 'add';
+  activeTab: 'add' | 'list' | 'mapping' | 'cene' = 'add';
   currentStep: number = 1;
   editingId: number | null = null;
 
@@ -89,10 +90,16 @@ export class AdminDashboardComponent implements OnInit {
   constructor(
     private featuredService: FeaturedService,
     private mockGlavnaGrupaService: MockGlavnaGrupaService,
-    private mappingService: MappingService
+    private mappingService: MappingService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    // .../dashboard/ponude otvara direktno karticu "Ponude dobavljača"
+    const tab = this.route.snapshot.data?.tab;
+    if (tab === 'cene') {
+      this.activeTab = 'cene';
+    }
     this.svGlavneGrupe = this.mockGlavnaGrupaService.getAllGlavneGrupe();
     if (this.activeTab === 'list') {
       this.loadFeaturedProducts();
@@ -119,7 +126,7 @@ export class AdminDashboardComponent implements OnInit {
     };
   }
 
-  setTab(tab: 'add' | 'list' | 'mapping'): void {
+  setTab(tab: 'add' | 'list' | 'mapping' | 'cene'): void {
     this.activeTab = tab;
     this.submitSuccess = false;
     this.submitError = '';

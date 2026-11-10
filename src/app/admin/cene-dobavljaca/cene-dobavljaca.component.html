@@ -1,0 +1,98 @@
+<div class="cd-wrap">
+  <div class="cd-filters">
+    <div class="cd-day">
+      <button class="cd-btn" (click)="promeniDan(-1)" title="Prethodni dan">‹</button>
+      <input type="date" [(ngModel)]="upit.datum" (change)="ucitaj()" />
+      <button class="cd-btn" (click)="promeniDan(1)" title="Sledeći dan">›</button>
+    </div>
+    <label>Prag %
+      <input type="number" min="0" step="1" [(ngModel)]="upit.minPct" placeholder="npr. 10" />
+    </label>
+    <label>Prag RSD
+      <input type="number" min="0" step="100" [(ngModel)]="upit.minRazlika" placeholder="npr. 3000" />
+    </label>
+    <label>Uslov
+      <select [(ngModel)]="upit.uslov">
+        <option value="ILI">% ili RSD</option>
+        <option value="I">% i RSD</option>
+      </select>
+    </label>
+    <label>Dobavljač
+      <select [(ngModel)]="upit.dobavljac">
+        <option [ngValue]="null">Svi</option>
+        <option *ngFor="let d of dobavljaci" [ngValue]="d.id">{{ d.naziv }}</option>
+      </select>
+    </label>
+    <label>Smer
+      <select [(ngModel)]="upit.smer">
+        <option value="">Oba</option>
+        <option value="dole">Pojeftinjenja</option>
+        <option value="gore">Poskupljenja</option>
+      </select>
+    </label>
+    <button class="cd-btn primary" (click)="ucitaj()" [disabled]="ucitava">Prikaži</button>
+    <button class="cd-btn" (click)="pokreniSada()" [disabled]="pokretanje"
+      title="Odmah preuzmi feedove i uporedi cene (inače se radi automatski u 06:00)">
+      {{ pokretanje ? 'Pokrećem…' : 'Pokreni poređenje sada' }}
+    </button>
+  </div>
+  <p class="cd-hint">Ostavi oba praga prazna za sve promene bez podele na znatne i sitne.</p>
+  <p class="cd-hint cd-run" *ngIf="porukaPokretanja">{{ porukaPokretanja }}</p>
+
+  <div class="cd-state" *ngIf="ucitava">Učitavanje… (servis se može buditi i do minut)</div>
+  <div class="cd-state cd-err" *ngIf="greska && !ucitava">{{ greska }}</div>
+
+  <ng-container *ngIf="odgovor && !ucitava">
+    <div class="cd-summary">
+      <span><b>{{ odgovor.ukupno }}</b> promena cena</span>
+      <span *ngIf="klasifikovano" class="big"><b>{{ odgovor.brojZnatnih }}</b> znatnih</span>
+      <span *ngIf="klasifikovano"><b>{{ odgovor.brojSitnih }}</b> sitnih</span>
+    </div>
+
+    <h3 class="cd-title">{{ klasifikovano ? 'Znatne promene' : 'Sve promene' }}</h3>
+    <ng-container *ngTemplateOutlet="tabela; context: { $implicit: znatne }"></ng-container>
+
+    <ng-container *ngIf="klasifikovano">
+      <button class="cd-toggle" (click)="prikaziSitne = !prikaziSitne">
+        {{ prikaziSitne ? '▾' : '▸' }} Sitne promene ({{ sitne.length }})
+      </button>
+      <ng-container *ngIf="prikaziSitne">
+        <ng-container *ngTemplateOutlet="tabela; context: { $implicit: sitne }"></ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #tabela let-stavke>
+  <div class="cd-empty" *ngIf="!stavke.length">Nema promena.</div>
+  <div class="cd-table-wrap" *ngIf="stavke.length">
+    <table class="cd-table">
+      <thead>
+        <tr>
+          <th>Dobavljač</th><th>Artikal</th>
+          <th class="num">Stara B2B</th><th class="num">Nova B2B</th>
+          <th class="num">Razlika</th><th class="num">%</th><th class="num">MP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of stavke">
+          <td><span class="cd-pill">{{ nazivDobavljaca(p.vendorId) }}</span></td>
+          <td class="cd-name">
+            {{ p.naziv }}
+            <small>{{ p.proizvodjac }} · šifra {{ p.sifra }}<span *ngIf="p.barkod"> · {{ p.barkod }}</span>
+              <span *ngIf="p.vracen"> · vraćen u ponudu</span></small>
+          </td>
+          <td class="num">{{ p.staraB2b | number:'1.2-2' }}</td>
+          <td class="num"><b>{{ p.novaB2b | number:'1.2-2' }}</b></td>
+          <td class="num" [class.down]="p.razlika < 0" [class.up]="p.razlika > 0">
+            {{ p.razlika > 0 ? '+' : '' }}{{ p.razlika | number:'1.2-2' }}
+          </td>
+          <td class="num" [class.down]="p.razlika < 0" [class.up]="p.razlika > 0">
+            {{ p.razlikaPct > 0 ? '+' : '' }}{{ p.razlikaPct | number:'1.0-2' }}%
+          </td>
+          <td class="num">{{ (p.novaMp || p.staraMp) | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

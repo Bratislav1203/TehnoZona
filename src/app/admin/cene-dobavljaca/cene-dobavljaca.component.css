@@ -1,0 +1,35 @@
+.cd-wrap { display: flex; flex-direction: column; gap: 12px; }
+
+.cd-filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.cd-filters label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #6b7280; }
+.cd-filters input, .cd-filters select {
+  font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; min-width: 110px;
+}
+.cd-day { display: flex; align-items: center; gap: 4px; }
+
+.cd-btn { font: inherit; font-size: 14px; padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; font-weight: 600; }
+.cd-btn.primary { background: #111827; color: #fff; border-color: #111827; padding: 8px 18px; }
+.cd-btn:disabled { opacity: .5; cursor: default; }
+
+.cd-hint { margin: 0; font-size: 12px; color: #9ca3af; }
+.cd-state { padding: 24px; text-align: center; color: #6b7280; }
+.cd-err { color: #b91c1c; background: #fef2f2; border-radius: 8px; }
+
+.cd-summary { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; color: #4b5563; padding: 10px 14px; background: #f9fafb; border-radius: 10px; }
+.cd-summary .big b { color: #047857; }
+
+.cd-title { font-size: 15px; margin: 8px 0 0; color: #111827; }
+.cd-toggle { align-self: flex-start; background: none; border: 0; font: inherit; font-weight: 600; color: #4b5563; cursor: pointer; padding: 6px 0; }
+
+.cd-empty { color: #9ca3af; padding: 12px 0; }
+.cd-table-wrap { overflow-x: auto; border: 1px solid #f0f0f0; border-radius: 10px; }
+.cd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.cd-table th { text-align: left; font-size: 12px; color: #6b7280; font-weight: 600; background: #fafafa; padding: 8px 10px; border-bottom: 1px solid #f0f0f0; }
+.cd-table td { padding: 8px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: top; }
+.cd-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cd-name { min-width: 240px; }
+.cd-name small { display: block; color: #9ca3af; margin-top: 2px; }
+.cd-pill { font-size: 11px; font-weight: 600; background: #f3f4f6; padding: 2px 8px; border-radius: 6px; }
+.down { color: #047857; font-weight: 700; }
+.up { color: #b91c1c; font-weight: 700; }
+.cd-run { color: #1d4ed8; }

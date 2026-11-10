@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'x9frk2n7pb4qm8stj5h0', component: AdminLoginComponent },
   { path: 'x9frk2n7pb4qm8stj5h0/dashboard', component: AdminDashboardComponent },
+  { path: 'x9frk2n7pb4qm8stj5h0/dashboard/ponude', component: AdminDashboardComponent, data: { tab: 'cene' } },
   { path: 'product/:id', component: ProductDetailsComponent },
   { path: 'auth', component: LoginPageComponent },
   { path: 'cart', component: CartComponent },
